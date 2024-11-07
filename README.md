@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI-Powered News Analysis Platform
 
-## Getting Started
+An intelligent news aggregation and analysis platform that leverages the power of news APIs and OpenAI's language models to provide insightful answers about current events. Built with Flask and featuring a robust ETL pipeline for data processing.
 
-First, run the development server:
+## Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. Intelligent News Aggregation
+- Centralizes news content from multiple trusted news APIs
+- Automatically categorizes and organizes articles by topic
+- Maintains a continuously updated news database
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. AI-Powered Question Answering
+- Natural language processing of user queries about current events
+- Leverages OpenAI's GPT models to generate accurate, contextual responses
+- Cross-references multiple news sources to ensure comprehensive answers
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Smart Content Processing
+- Automated article summarization
+- Key points extraction from news articles
+- Relevance scoring for search results
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. ETL Pipeline Integration
+- Automated data collection from news sources
+- Structured data transformation for consistent formatting
+- Efficient storage and retrieval system
+- Regular updates to maintain current news coverage
 
-## Learn More
+### 5. User Interface
+- Clean, intuitive web interface for query input
+- Real-time search functionality
+- Organized display of news results and AI-generated answers
+- Mobile-responsive design
 
-To learn more about Next.js, take a look at the following resources:
+## Technology Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Core Components
+- **Backend Framework**: Flask
+  - RESTful API implementation
+  - Request handling and routing
+  - Server-side logic management
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Data Storage
+- **Database**: SQLite3
+  - Lightweight and serverless
+  - Easy to set up and maintain
+  - Suitable for moderate data volumes
+  - Built-in support for full-text search
 
-## Deploy on Vercel
+### External APIs
+- **News Data Sources**
+  - NewsAPI for real-time news collection
+  - Additional news provider APIs as configured
+  
+- **AI Integration**
+  - OpenAI API (GPT models)
+  - Used for:
+    - Question answering
+    - Content summarization
+    - Natural language processing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ETL Pipeline
+- **Extract**
+  - Python scripts for API data collection
+  - Scheduled news fetching
+  
+- **Transform**
+  - Data cleaning and normalization
+  - Article content processing
+  - Metadata extraction
+  
+- **Load**
+  - SQLite3 database operations
+  - Data validation and storage
+  - Index management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Development Tools
+- Python 3.8+
+- SQL Alchemy ORM
+- Flask development server
+- Development and testing utilities
+
+This technology stack is designed to be:
+- Easy to set up and maintain
+- Suitable for moderate traffic loads
+- Minimal in dependencies
+- Efficient in resource usage
+- Scalable for future enhancements
+
+Would you like me to provide more details about any of these components or add additional sections to the README?

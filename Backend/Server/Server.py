@@ -14,8 +14,8 @@ app.config["DEBUG"] = True
 
 
 # <file>.db path
-main_db= r'/Users/williamfotso/Workspace/Newsroom/Backend/Database/Db_Files/main_db.db'
-test_db= r'/Users/williamfotso/Workspace/Newsroom/Backend/Database/Db_Files/test_db.db'
+main_db= r'/Users/williamfotso/Workspace/Newsroom/Backend/DB_Files/main_db.db'
+test_db= r'/Users/williamfotso/Workspace/Newsroom/Backend/DB_Files/test_db.db'
 
 # [CREATE] [>>> execute()]
 def dict_factory(cursor, row):
@@ -43,20 +43,6 @@ def execute(sql, isSelect=True, params=None):
             conn.close()
 
 
-@app.route('/Questions', methods=['GET'])
-def get_questions():
-    sql = f"""SELECT * FROM Questions;"""
-
-    users = execute(sql)
-    return jsonify(users)
-
-
-@app.route('/<topic>', methods=['GET'])
-def get_questions_by_topic(topic):
-    sql = f"""SELECT * FROM '{topic}';"""
-
-    users = execute(sql)
-    return jsonify(users)
 
 @app.route('/Favorites', methods=['GET'])
 def get_favorites():
@@ -87,17 +73,35 @@ def add_to_favorites():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/Topics', methods=['GET'])
+def get_topics():
+    sql = f"""SELECT * FROM Topics;"""
 
+    users = execute(sql)
+    return jsonify(users)
 
-@app.route('/<topic>/<id>', methods=['DELETE'])
-def delete_item_by_topic_and_id(topic, id):
-    field = "fav_id" if topic == "Favorites" else "id"
-    print(field)
-    sql = f"DELETE FROM '{topic}' WHERE {field} = '{id}';"
+@app.route('/Questions', methods=['GET'])
+def get_questions():
+    sql = f"""SELECT * FROM Questions;"""
+
+    users = execute(sql)
+    return jsonify(users)
+
+@app.route('/Articles', methods=['GET'])
+def get_articles():
+    sql = f"""SELECT * FROM Articles;"""
+
+    users = execute(sql)
+    return jsonify(users)
+
+@app.route('/Articles/<id>', methods=['DELETE'])
+def delete_articles_by_id(id):
+
+    sql = f"DELETE FROM Articles WHERE id = '{id}';"
     
     try:
         execute(sql, isSelect=False)
-        return jsonify({"message": f"Item with id {id} deleted from {topic} successfully"}), 200
+        return jsonify({"message": f"Item with id {id} deleted successfully"}), 200
     except Exception as e:
         app.logger.error(f"Error deleting item: {e}")
         return jsonify({"error": "Failed to delete item"}), 500

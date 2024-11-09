@@ -25,11 +25,11 @@ class NewsAPI:
         try:
             
             newsapi = NewsApiClient(api_key=NEWSAPI_KEY)
-            NewsAPI_articles = newsapi.get_everything(q=query)
+            NewsAPI_articles = newsapi.get_everything(q=query,page_size=30)
             return NewsAPI_articles['articles']
         
         except Exception as e:
-            print(f"Error fetching articles from {self.source_id}: {e}")
+            print(f"Error fetching articles from {self.__class__.__name__}: {e}")
             return []
 
 class NewsDATA:
@@ -56,7 +56,7 @@ class NewsDATA:
             return NewsDATA_articles["results"]
         
         except Exception as e:
-            print(f"Error fetching articles from {self.source_id}: {e}")
+            print(f"Error fetching articles from {self.__class__.__name__}: {e}")
             return []
 
 class Newsfetcher:
@@ -64,7 +64,7 @@ class Newsfetcher:
     Manages fetching news articles from multiple news API sources.
     """
     def __init__(self):
-        self.__apis = [NewsAPI(),NewsDATA()]
+        self.__apis = [NewsDATA()]
 
     def fetch_articles(self,query:str) -> dict[str,list]:
         """
@@ -78,7 +78,7 @@ class Newsfetcher:
         articles_by_api = dict[str,list]()
         
         for api in self.__apis:
-            articles_by_api[api.__class__.__name__] = api.fetch_articles(query=query)
+            articles_by_api[api.__class__.__name__] = api.fetch_articles(query=query[api.__class__.__name__])
             
         return articles_by_api
 

@@ -1,5 +1,7 @@
-from API.Newsfetcher import Newsfetcher
-from API.Open_AI import fetch_open_AI
+
+
+from ETL.API.Newsfetcher import Newsfetcher
+from ETL.API.Open_AI import fetch_open_AI
 
 def fetch_Topics() -> list[dict[str, str]]:
     """
@@ -25,7 +27,7 @@ def fetch_Topics() -> list[dict[str, str]]:
 
 def fetch_Questions(topic:str,role:str) -> list[str]:
     """
-    Generates insightful questions about a given topic from the perspective of a specified role.
+    Generates questions about a given topic from the perspective of a specified role.
     
     Parameters:
     topic (str): The topic to generate questions about.
@@ -42,7 +44,7 @@ def fetch_Questions(topic:str,role:str) -> list[str]:
         The questions should:
         1. Be specific to how a {role} would approach or think about {topic}
         2. Reflect the professional concerns and interests of a {role}
-        3. Be concise. Keep the question to 50 characters or less
+        3. Be concise. Keep the question to 20 words or less
         
         Format: Return a a JSON schema of a python list with the question as element
         """
@@ -65,7 +67,5 @@ def fetch_Articles(query:str) -> dict[str,list]:
 
 
 if __name__ == "__main__":
-    topic = fetch_Topics()[0]
-    print(fetch_Questions(topic=topic["topic"],role=topic["role"]))
-
+    pass
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Question, Article, HandleNotification } from '@/utils/types'
+import { Topic,Question, Article } from '@/utils/types'
 
 import NewsMain from '@/components/newsMain'
 import Header from '@/components/header'
@@ -10,7 +10,7 @@ import Notification from '@/components/notification'
 
 import { HeaderAndHeroGlobeComponent } from '@/components/header-and-hero-globe'
 
-import { fetchQuestions, fetchFavorites, fetchNewsForTopic } from '../utils/api';
+import { fetchTopics,fetchQuestions, fetchFavorites, fetchArticles } from '../utils/api';
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
@@ -20,8 +20,12 @@ export default function Page() {
   const [mounted, setMounted] = useState(false)
 
   const [newsData, setNewsData] = useState<Record<string, Article[]>>({});
+  
   const [activeTab, setActiveTab] = useState("")
+  const [topics, setTopics] = useState<Topic[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
+  
   const [start, setStart] = useState(false)
 
   const [favorites, setFavorites] = useState<Article[]>([]);
@@ -33,35 +37,29 @@ export default function Page() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      const [questionsData, favoritesData] = await Promise.all([
+      const [topicsData,questionsData, favoritesData,articlesData] = await Promise.all([
+        fetchTopics(),
         fetchQuestions(),
-        fetchFavorites()
+        fetchFavorites(),
+        fetchArticles(),
       ]);
+      setTopics(topicsData)
+      setActiveTab(topicsData[0].title_top);
       setQuestions(questionsData);
-      setActiveTab(questionsData[0].topic);
       setFavorites(favoritesData);
+      setArticles(articlesData)
       setMounted(true);
     };
 
     fetchInitialData();
   }, []);
 
-  useEffect(() => {
-    if (questions.length > 0) {
-      const fetchNewsData = async (): Promise<void> => {
-        const newData: Record<string, Article[]> = {};
-        for (const question of questions) {
-          if (!(question.topic in newsData)) {
-            const topicData = await fetchNewsForTopic(question.topic);
-            newData[question.topic] = topicData;
-          }
-        }
-        setNewsData(prevData => ({ ...prevData, ...newData }));
-      };
-
-      fetchNewsData();
-    }
-  }, [questions]);
+  useEffect(()=>{
+    var data : Record<string, Article[]> = {}
+    topics.forEach((topic) => data[topic.title_top] = articles.filter((article) =>  { console.log("article",article.question_id); return questions[parseInt(article.question_id) - 1].topic == topic.title_top} ))
+    setNewsData(data)
+    console.log(data)
+  },[articles])
 
   // Simplified toggleFavorites function
   const toggleFavorites = () => {

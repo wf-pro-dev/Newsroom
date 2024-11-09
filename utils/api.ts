@@ -1,9 +1,11 @@
-import { Article, Question, HandleNotification } from './types';
+import { Article, Question, Topic } from './types';
 
 const API_BASE_URL = 'http://127.0.0.1:5000'
 
-export async function fetchQuestions(): Promise<Question[]> {
-  const res = await fetch(`${API_BASE_URL}/Questions`)
+
+
+export async function fetchTopics(): Promise<Topic[]> {
+  const res = await fetch(`${API_BASE_URL}/Topics`)
   return res.json()
 }
 
@@ -12,13 +14,20 @@ export async function fetchFavorites(): Promise<Article[]> {
   return res.json()
 }
 
-export async function fetchNewsForTopic(topic: string): Promise<Article[]> {
-  const res = await fetch(`${API_BASE_URL}/${topic.replace(" ", "_")}`)
+export async function fetchQuestions(): Promise<Question[]> {
+  const res = await fetch(`${API_BASE_URL}/Questions`)
   return res.json()
 }
 
-export async function deleteNewsItem(id: number, topic: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/${topic.replace(" ", "_")}/${id}`, {
+
+export async function fetchArticles(): Promise<Article[]> {
+  const res = await fetch(`${API_BASE_URL}/Articles`)
+  return res.json()
+}
+
+
+export async function deleteNewsbyId(id: number, topic: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/Articles/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {

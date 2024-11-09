@@ -19,9 +19,13 @@ type Question = {
   topic: string;
 };
 
-type HandleNotification = () => {
-  setShowNotification: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowDeleteNotification: React.Dispatch<React.SetStateAction<boolean>>;
-}
+type Topic = {
+  id: number;
+  title_top: string;
+  role_top: string;
 
-export type { Article, Question, HandleNotification };
+};
+
+
+
+export type { Article, Question, Topic };

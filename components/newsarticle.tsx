@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { X, HeartIcon, HeartOffIcon, ArrowRight } from 'lucide-react'
 import { Article, Question } from '@/utils/types'
-import { addFavorite, deleteNewsItem, removeFavorite } from '@/utils/api'
+import { addFavorite, deleteNewsbyId, removeFavorite } from '@/utils/api'
 import moment from 'moment'
 
 function NewsArticle({ article, favorites, showFavorites, setFavorites, showDelete, showAdd, questions, newsData, setNewsData }:
@@ -63,7 +63,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
     async function handleDelete() {
         const topic: string = questions!.find((question: Question) => question.id == article.question_id)!.topic
-        await deleteNewsItem(article.id, topic)
+        await deleteNewsbyId(article.id, topic)
             .then(() => {
                 showDelete(true)
                 setIsDeleting(true)

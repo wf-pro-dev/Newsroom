@@ -64,7 +64,7 @@ class Newsfetcher:
     Manages fetching news articles from multiple news API sources.
     """
     def __init__(self):
-        self.__apis = [NewsDATA()]
+        self.__apis = [NewsAPI(),NewsDATA()]
 
     def fetch_articles(self,query:str) -> dict[str,list]:
         """

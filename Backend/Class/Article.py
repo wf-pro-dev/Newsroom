@@ -3,7 +3,7 @@ class Article:
    
     def __init__(self,obj_art:dict) -> None:
         
-        self.__score = self.set_score()
+        self.__score = 0
         self.__question_id = 0
         self.__title = obj_art["title"]
         self.__description = obj_art["description"]
@@ -13,8 +13,7 @@ class Article:
         self.__publishedAt = obj_art["publishedAt"]
         self.__api_source = obj_art["api_source"]
     
-    def set_score(self) -> float: 
-        return 1.0
+    def set_score(self,score:float) -> float : self.__score = score
     def get_score(self) -> float: return self.__score
     
     def set_question_id(self,question_id:int):self.__question_id = question_id

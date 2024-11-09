@@ -21,6 +21,8 @@ class Question:
         return generate_Articles(raw_articles)
     def get_articles(self): return self.__articles
     
+    def get_question(self): return self.__question
+    
     def to_dict(self):
         return {
             "question": self.__question,

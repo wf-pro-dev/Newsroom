@@ -56,7 +56,7 @@ export default function Page() {
 
   useEffect(()=>{
     var data : Record<string, Article[]> = {}
-    topics.forEach((topic) => data[topic.title_top] = articles.filter((article) =>  { console.log("article",article.question_id); return questions[parseInt(article.question_id) - 1].topic == topic.title_top} ))
+    topics.forEach((topic) => data[topic.title_top] = articles.filter((article) =>   questions[parseInt(article.question_id) - 1].topic == topic.title_top ))
     setNewsData(data)
     console.log(data)
   },[articles])
@@ -156,10 +156,10 @@ export default function Page() {
   };
 
   const scrollTriggers = [
-    { limitT: 0 ,limitB:200, scrollTo:window.innerHeight, direction: SCROLL_DIRECTIONS.TOP_ONLY },
+    { limitT: 0 ,limitB: 200, scrollTo:window.innerHeight, direction: SCROLL_DIRECTIONS.TOP_ONLY },
     { limitT: 200 ,limitB: window.innerHeight, scrollTo:0, direction: SCROLL_DIRECTIONS.TOP_ONLY },
-    { limitT: 0 ,limitB: window.innerHeight - 100, scrollTo:window.innerHeight , direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
-    { limitT: window.innerHeight - 100 ,limitB: window.innerHeight , scrollTo:0 , direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
+    { limitT: 0 ,limitB: window.innerHeight - 200, scrollTo:window.innerHeight , direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
+    { limitT: window.innerHeight - 200 ,limitB: window.innerHeight , scrollTo:0 , direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
 
   ];
 
@@ -216,10 +216,11 @@ export default function Page() {
               <div className="pointer-events-auto">
                 <Button
                   variant="outline"
-                  className="text-xl rounded-full border-2 p-5 font-bold bg-gray-800/50 text-gray-300 hover:scale-95 transition-all ease-in-out backdrop-blur-sm"
+                  className="text-xl rounded-full border-2 p-5 bg-gray-800/50 text-gray-300 hover:scale-95 transition-all ease-in-out backdrop-blur-sm"
                   onClick={() => setIsFixed(true)}
                 >
-                  Welcome to NewsRoom
+                  <p>Welcome to the</p>
+                  <p className='font-bold'>NewsRoom</p>
                 </Button>
               </div>
             </div>

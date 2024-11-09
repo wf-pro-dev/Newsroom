@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
-import { X, HeartIcon, HeartOffIcon, ArrowRight } from 'lucide-react'
+import { X, Heart, HeartOff, ArrowRight, CalendarDays} from 'lucide-react'
 import { Article, Question } from '@/utils/types'
 import { addFavorite, deleteNewsbyId, removeFavorite } from '@/utils/api'
 import moment from 'moment'
@@ -23,7 +23,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
     }) {
 
     const [isDeleting, setIsDeleting] = useState(false);
-    const [article_date,setdate] = useState(new Date(article.publishedAt))
+    const [article_date, setdate] = useState(new Date(article.publishedAt))
 
     async function handleFavorite() {
 
@@ -98,8 +98,9 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                     />
                 )}
                 <div className="absolute bottom-4 left-4 ">
-                    <div className='p-2 w-fit bg-gray-700/60 backdrop-blur-sm rounded'>
-                        <p className='text-gray-200 text-sm font-bold'>{moment(article_date).format("D MMM YY")}</p>
+                    <div className='p-2 w-fit flex items-center bg-gray-700/60 backdrop-blur-sm rounded'>
+                        <CalendarDays strokeWidth={1} size={18} className='mr-1' color='white'/>
+                        <p className='text-gray-200 text-xs'>{moment(article_date).format("DD MMMM YY")}</p>
                     </div>
                 </div>
             </div>
@@ -108,23 +109,27 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
                 <div className="absolute top-4 right-4 left-4 flex justify-between">
 
+
                     <Button
                         variant="secondary"
-                        className="p-2 bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
+                        className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                         onClick={handleFavorite}>
-                        {favorites.length > 0 && favorites.some((fav: Article) => fav.title === article.title) ? <HeartOffIcon className="w-5 h-5 stroke-2 text-gray-200" /> : <HeartIcon className="w-5 h-5 stroke-2 text-gray-200" />}
+                        <div className='p-2 flex justify-center items-center'>
+                            {favorites.length > 0 && favorites.some((fav: Article) => fav.title === article.title) ? <HeartOff strokeWidth={2} size={18}  /> : <Heart  strokeWidth={2} size={18} />}
+                        </div>
 
                     </Button>
+
 
 
                     {!showFavorites && (
                         <Button
                             variant="secondary"
-                            className="mt-0 p-2 bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
+                            className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                             onClick={handleDelete}>
-
-                            <X className="w-5 h-5 stroke-2 text-gray-200" />
-
+                            <div className='p-2 flex justify-center items-center'>
+                                <X strokeWidth={2} size={18} />
+                            </div>
                         </Button>
                     )}
                 </div>
@@ -138,6 +143,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
             <CardContent>
                 <CardDescription className="line-clamp-2 text-gray-300">{article.description}</CardDescription>
             </CardContent>
+
             <CardFooter>
                 <Button
                     variant="outline"
@@ -145,7 +151,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                     onClick={() => open(article.url)}
                 >
                     <p className='font-semibold'>Read More</p>
-                    <ArrowRight className="w-5 h-5 stroke-2" />
+                    <ArrowRight strokeWidth={2} size={5} />
                 </Button>
             </CardFooter>
         </Card>
@@ -153,3 +159,4 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 }
 
 export default NewsArticle;
+

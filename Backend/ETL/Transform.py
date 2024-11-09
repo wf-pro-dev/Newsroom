@@ -5,6 +5,7 @@ from typing import Tuple
 from rake_nltk import Rake
 
 from Class.Article import Article
+from Class.Article_Analyzer import analyze_article_relevance
 
 
 def generate_Query(title_top: str, title_qst: str) -> Tuple[str, dict[str, list]]:
@@ -74,10 +75,19 @@ def generate_Articles(articles_by_api: dict[str,list]) -> list[Article]:
                 res_articles.append(NewsAPI_to_Articles(api_article))
             elif api_name == "NewsDATA":
                 res_articles.append(NewsDATA_to_Articles(api_article))
-    
-    res_articles.sort(key=lambda article : article.get_score() ,reverse=True)          
-            
+                     
     return res_articles
+
+def get_relevant_articles(articles:list[Article],question:str) -> list[Article] :
+    
+    for article in articles:
+        description = article.get_description()
+        if (description):
+            article.set_score(analyze_article_relevance(question=question,article_description=description))
+    
+    articles.sort(key=lambda article : article.get_score() ,reverse=True)
+                
+    return articles[:20]
 
 if __name__ == "__main__":
     pass

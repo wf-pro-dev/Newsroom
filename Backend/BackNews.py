@@ -2,10 +2,11 @@ import sqlite3, json
 
 # Class import
 from Class.Topics import Topics
-from Class.Topics import Topics
+
 
 # ETL import
 from ETL.Extract import fetch_Topics
+from ETL.Transform import get_relevant_articles
 from ETL.Load import create_table, insert_data, show_table
 
 # DB paths
@@ -26,21 +27,26 @@ def main():
     for obj_topic in fetch_Topics():
         
         topic = Topics(obj_topic["topic"],obj_topic["role"])
-        insert_data(db_conn=db_conn,table_name="Topics",obj=topic)
+        topic_id = insert_data(db_conn=db_conn,table_name="Topics",obj=topic)
         
         questions = topic.get_questions()
         for question in questions:
             
-            questtion_id = insert_data(db_conn=db_conn,table_name="Questions",obj=question)
+            questtion_id = insert_data(db_conn=db_conn,table_name="Questions",obj=question)    
             
-            articles = question.get_articles()
+            relevant_artciles = get_relevant_articles(question.get_articles(),question=question.get_question())
 
-            for article in articles:
+            for article in relevant_artciles:
+                
                 article.set_question_id(question_id=questtion_id)
+                
                 article_id = insert_data(db_conn=db_conn,table_name="Articles",obj=article)
                 print(f"Artilce with id = {article_id} is complete","-" * 20,sep="\n")
             
-            print(f"Question with id = {questtion_id} is complete")
+            print(f"Question with id = {questtion_id} is complete","-" * 20,sep="\n")
+        
+        print(f"Topic with id = {topic_id} is complete","-" * 20,sep="\n")
+            
     
     show_table(db_conn=db_conn,table_name="Topics")
     

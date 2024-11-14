@@ -27,7 +27,9 @@ def main():
     for obj_topic in fetch_Topics():
         
         topic = Topics(obj_topic["topic"],obj_topic["role"])
+        
         topic_id = insert_data(db_conn=db_conn,table_name="Topics",obj=topic)
+        
         
         questions = topic.get_questions()
         for question in questions:

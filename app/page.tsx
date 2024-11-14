@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Topic,Question, Article } from '@/utils/types'
+import { Topic, Question, Article } from '@/utils/types'
 
 import NewsMain from '@/components/newsMain'
 import Header from '@/components/header'
@@ -10,7 +10,7 @@ import Notification from '@/components/notification'
 
 import { HeaderAndHeroGlobeComponent } from '@/components/header-and-hero-globe'
 
-import { fetchTopics,fetchQuestions, fetchFavorites, fetchArticles } from '../utils/api';
+import { fetchTopics, fetchQuestions, fetchFavorites, fetchArticles } from '../utils/api';
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
@@ -20,13 +20,11 @@ export default function Page() {
   const [mounted, setMounted] = useState(false)
 
   const [newsData, setNewsData] = useState<Record<string, Article[]>>({});
-  
+
   const [activeTab, setActiveTab] = useState("")
   const [topics, setTopics] = useState<Topic[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
-  
-  const [start, setStart] = useState(false)
 
   const [favorites, setFavorites] = useState<Article[]>([]);
   const [showFavorites, setShowFavorites] = useState(false)
@@ -35,9 +33,17 @@ export default function Page() {
   const [DeleteNotification, showDeleteNotification] = useState(false);
 
 
+  const AppPage = ({ title, children, className, ...rest }: { title: string, children: JSX.Element, className?: string }) => {
+    useEffect(() => {
+      if (title) document.title = title
+    }, [title])
+    return <div className={className}>{children}</div>
+  }
+
+
   useEffect(() => {
     const fetchInitialData = async () => {
-      const [topicsData,questionsData, favoritesData,articlesData] = await Promise.all([
+      const [topicsData, questionsData, favoritesData, articlesData] = await Promise.all([
         fetchTopics(),
         fetchQuestions(),
         fetchFavorites(),
@@ -54,12 +60,12 @@ export default function Page() {
     fetchInitialData();
   }, []);
 
-  useEffect(()=>{
-    var data : Record<string, Article[]> = {}
-    topics.forEach((topic) => data[topic.title_top] = articles.filter((article) =>   questions[parseInt(article.question_id) - 1].topic == topic.title_top ))
+  useEffect(() => {
+    var data: Record<string, Article[]> = {}
+    topics.forEach((topic) => data[topic.title_top] = articles.filter((article) => questions[parseInt(article.question_id) - 1].topic == topic.title_top))
     setNewsData(data)
     console.log(data)
-  },[articles])
+  }, [articles])
 
   // Simplified toggleFavorites function
   const toggleFavorites = () => {
@@ -95,11 +101,11 @@ export default function Page() {
         const isScrollingDown = currentScroll > lastScroll;
         const isScrollingUp = currentScroll < lastScroll;
 
-        triggers.forEach(({ limitT,limitB, scrollTo, direction = SCROLL_DIRECTIONS.BOTH, smooth = true }) => {
+        triggers.forEach(({ limitT, limitB, scrollTo, direction = SCROLL_DIRECTIONS.BOTH, smooth = true }) => {
           const shouldTrigger = (() => {
             switch (direction) {
               case SCROLL_DIRECTIONS.TOP_ONLY:
-                console.log("TRIGGER",lastScroll, limitB)
+                console.log("TRIGGER", lastScroll, limitB)
                 return (
                   isScrollingDown &&
                   limitB > currentScroll &&
@@ -107,11 +113,11 @@ export default function Page() {
                 );
 
               case SCROLL_DIRECTIONS.BOTTOM_ONLY:
-               
+
                 return (
                   isScrollingUp &&
-                  limitB > currentScroll  &&
-                  currentScroll > limitT  
+                  limitB > currentScroll &&
+                  currentScroll > limitT
                 );
 
               case SCROLL_DIRECTIONS.BOTH:
@@ -124,7 +130,7 @@ export default function Page() {
                 return false;
             }
           })();
-          
+
           if (shouldTrigger && !triggeredPoints.has(limitT)) {
 
             window.scrollTo({
@@ -156,14 +162,16 @@ export default function Page() {
   };
 
   const scrollTriggers = [
-    { limitT: 0 ,limitB: 200, scrollTo:window.innerHeight, direction: SCROLL_DIRECTIONS.TOP_ONLY },
-    { limitT: 200 ,limitB: window.innerHeight, scrollTo:0, direction: SCROLL_DIRECTIONS.TOP_ONLY },
-    { limitT: 0 ,limitB: window.innerHeight - 200, scrollTo:window.innerHeight , direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
-    { limitT: window.innerHeight - 200 ,limitB: window.innerHeight , scrollTo:0 , direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
+    { limitT: 0, limitB: 200, scrollTo: window.innerHeight, direction: SCROLL_DIRECTIONS.TOP_ONLY },
+    { limitT: 200, limitB: window.innerHeight, scrollTo: 0, direction: SCROLL_DIRECTIONS.TOP_ONLY },
+    { limitT: 0, limitB: window.innerHeight - 200, scrollTo: window.innerHeight, direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
+    { limitT: window.innerHeight - 200, limitB: window.innerHeight, scrollTo: 0, direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
 
   ];
 
   useMultipleScrollTriggers(scrollTriggers);
+
+  
 
 
   useEffect(() => {
@@ -192,7 +200,9 @@ export default function Page() {
   }
 
   return (
+
     <div className="min-h-screen bg-black text-gray-100  overflow-hidden">
+      <AppPage title='The Newsroom'/>
       {/* <div className="fixed inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-700 via-gray-900 to-gray-900 animate-fade-pulse"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-700 via-transparent to-transparent animate-fade-pulse-delayed"></div>
@@ -204,7 +214,7 @@ export default function Page() {
           height: isFixed ? heroRef.current?.offsetHeight : 'auto',
         }}
       >
-        
+
         {/* Initial position of HeaderAndHeroGlobeComponent */}
         {!isFixed && (
           <div
@@ -242,8 +252,8 @@ export default function Page() {
         <HeaderAndHeroGlobeComponent />
       </div>
 
-      
-    
+
+
 
       <div className={`transition-all duration-300 ease-in-out ${isFixed ? 'z-10' : ''}`}>
         <div className="container">
@@ -259,19 +269,19 @@ export default function Page() {
             />
           ) : (
 
-          <NewsMain
-                newsData={newsData}
-                setNewsData={setNewsData}
-                questions={questions}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-
-                favorites={favorites}
-                setFavorites={setFavorites}
-                showFavorites={showFavorites}
-                showDelete={showDeleteNotification}
-                showAdd={showAddNotification}
-              />
+            <NewsMain
+              newsData={newsData}
+              setNewsData={setNewsData}
+              questions={questions}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              favorites={favorites}
+              setFavorites={setFavorites}
+              showFavorites={showFavorites}
+              setShowFavorites={setShowFavorites}
+              showDelete={showDeleteNotification}
+              showAdd={showAddNotification}
+            />
 
           )}
         </div>
@@ -280,4 +290,9 @@ export default function Page() {
       {DeleteNotification && <Notification message="Article removed from favorites !" color="red" />}
     </div >
   )
+}
+
+const metadata = {
+  title: "My new title",
+  description: "My description",
 }

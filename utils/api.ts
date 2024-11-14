@@ -37,8 +37,6 @@ export async function deleteNewsbyId(id: number, topic: string): Promise<void> {
 
 export async function addFavorite(article: Article): Promise<Article> {
 
-  article.fav_id = article.id.toString()+"_"+article.question_id;
-
   const response = await fetch(`${API_BASE_URL}/Favorites`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -50,7 +48,7 @@ export async function addFavorite(article: Article): Promise<Article> {
   return response.json();
 }
 
-export async function removeFavorite(id: string): Promise<void> {
+export async function removeFavorite(id: number): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/Favorites/${id}`, {
     method: 'DELETE',
   });

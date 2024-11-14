@@ -12,8 +12,9 @@ class Topics:
         self.__title_top = title_top
         self.__role_top = role_top
         self.__questions = self.set_questions()
-        
     
+    def get_title_top(self): return self.__title_top
+        
     def get_questions(self): return self.__questions
     
     def set_questions(self):

@@ -2,11 +2,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import NewsArticle from "./newsarticle"
 import NewsCarousel from "./newsCarousel"
-import { Article, HandleNotification, Question } from "@/utils/types"
-import { useState } from "react"
+import { Article, Question } from "@/utils/types"
+import { useEffect, useState } from "react"
+import { Button } from "./ui/button"
+import { Heart } from "lucide-react"
 
 
-function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, setFavorites, showFavorites, questions, showDelete, showAdd }:
+function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, setFavorites, showFavorites,setShowFavorites, questions, showDelete, showAdd }:
 
     {
         newsData: Record<string, Article[]>,
@@ -16,12 +18,14 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
         favorites: Article[],
         setFavorites: React.Dispatch<React.SetStateAction<Article[]>>,
         showFavorites: boolean,
+        setShowFavorites: React.Dispatch<React.SetStateAction<boolean>>,
         questions: Question[],
         showDelete: React.Dispatch<React.SetStateAction<boolean>>,
         showAdd: React.Dispatch<React.SetStateAction<boolean>>
     }) {
 
     const [isChanging, setisChanging] = useState(false)
+    const [showHeader, setShowHeader] = useState(false)
 
     function onValueChange(value: string) {
 
@@ -29,6 +33,7 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
 
         setTimeout(() => {
             setActiveTab(value)
+            window.scrollTo({ top: window.innerHeight })
             setTimeout(() => {
                 setisChanging(false)
             }, 200)
@@ -36,28 +41,62 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
 
     }
 
+    function goUp(category: string) {
+        if (category == activeTab) {
+            window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
+        }
+    }
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowHeader(window.scrollY >= window.innerHeight);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
 
 
         <Tabs value={activeTab} onValueChange={onValueChange} className="relative w-screen">
-            <TabsList className="fixed top-0 left-0 right-0 mx-4 mb-10 grid w-[calc(100%-2rem)] grid-cols-2 lg:grid-cols-5 bg-gray-800/50 z-50">
+            <TabsList className={`group fixed opacity-${showHeader ? 1 : 0} h-fit py-4 top-0 left-0 right-0 grid grid-cols-2 lg:grid-cols-5 bg-transparent z-50 transition-all duration-300 ease-in-out`}>
                 {Object.keys(newsData).map((category) => (
-                    <TabsTrigger
-                        key={category}
-                        value={category}
-                        className="text-sm md:text-base hover:text-gray-300 data-[state=active]:bg-gray-700/50 data-[state=active]:text-white"
-                    >
-                        {category.replace("_", " ")}
-                    </TabsTrigger>
+                    <div className="flex flex-1 justify-center">
+                        <TabsTrigger
+                            key={category}
+                            value={category}
+                            onClick={() => goUp(category)}
+                            className="w-fit py-3 px-5 -translate-y-20 rounded-full text-white/60 text-sm hover:animate-bounce-subtle   hover:bg-gray-700/80 group-hover:translate-y-0 2xl:font-bold data-[state=active]:translate-y-0 data-[state=active]:bg-black/70 backdrop-blur-sm bg-black/70 data-[state=active]:text-white data-[state=active]:border-[1.5px] transition-all duration-300 ease-in-out"
+                        >
+                            {category}
+                        </TabsTrigger>
+                    </div>
                 ))}
+                <div className="-translate-y-20 group-hover:translate-y-0 absolute top-0 right-12 py-4 transition-all duration-300 ease-in-out">
+
+
+                    <Button
+                        variant="secondary"
+                        className="p-0 rounded-full bg-black/10 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
+                        onClick={()=>setShowFavorites(!showFavorites)}>
+                        <div className='p-3 flex justify-center items-center'>
+                             <Heart strokeWidth={3} size={18} />
+                        </div>
+
+                    </Button>
+                </div>
             </TabsList>
 
             {Object.keys(newsData).map((topic) => {
                 var articles_by_topic = newsData[topic as keyof typeof newsData]
                 return (
-                    
-                    <div className="xl:px-20  bg-black/10 backdrop-blur-sm  backdrop-contrast-125">
-                        <TabsContent key={topic} value={topic} className={`${isChanging ? 'opacity-0' : 'opacity-100'} xl:pt-16 transition-all duration-300 ease-in-out`}>
+
+                    <div className=" xl:px-20 2xl:px-40 bg-black/[.05] backdrop-blur-sm  backdrop-contrast-125">
+                        <TabsContent key={topic} value={topic} className={`${isChanging ? 'opacity-0' : 'opacity-100'} 2xl:pt-28 xl:pt-20 transition-all duration-300 ease-in-out`}>
 
                             <NewsCarousel
                                 questions={questions.filter((question: any) => question.topic == activeTab)}
@@ -68,14 +107,16 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
 
                             {questions.filter((question: any) => question.topic == topic).map((question: any) => (
                                 <div>
-                                    <div className="mb-8 flex flex-col items-center justify-center text-lg text-gray-300">
-                                        <h1 className="text-4xl leading-normal mb-4 text-center font-bold  text-gray-300">
+
+                                    <div className="mb-6 flex flex-col items-center justify-center text-lg">
+                                        <h1 className="text-3xl leading-normal mb-2 text-center font-bold">
                                             {question.question}
                                         </h1>
-                                        <p className="text-gray-400 md:text-xl">
+                                        <p className="text-gray-400">
                                             {question.keywords.replaceAll(",", ", ")}
                                         </p>
                                     </div>
+
                                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                                         {articles_by_topic.filter((article: any) => article.question_id == question.id).map((article: any, index: number) => (
                                             <NewsArticle

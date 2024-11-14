@@ -16,6 +16,7 @@ COLUMNS = {
         
         "Favorites": [
             "score",
+            "question_id",
             "title",
             "description",
             "content",

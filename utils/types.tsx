@@ -8,7 +8,7 @@ type Article = {
   source:string
   url:string;
   urlToImage: string;
-  fav_id?: string;
+  api_sourec: string
 };
 
 

@@ -224,22 +224,35 @@ export function HeaderAndHeroGlobeComponent() {
     }
   }, [])
 
+  const [showHeader, setShowHeader] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowHeader(window.scrollY >= window.innerHeight);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <div className=" min-h-screen bg-transparent text-white">
 
-
       <section className="relative h-screen">
-        
+
         <div ref={globeRef} className="w-full h-full" />
-       
+
         {selectedNews && (
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-80 p-4 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold text-blue-400">{selectedNews.title}</h2>
             <Button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white">Read More</Button>
           </div>
         )}
-        
-        <div className="absolute top-4 left-4 bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg shadow-lg">
+
+        <div className={` opacity-${showHeader ? 0 : 1}  absolute top-4 left-4 bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg shadow-lg transition-all duration-300 ease-in-out`}>
 
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
             Today's Top Stories
@@ -247,7 +260,7 @@ export function HeaderAndHeroGlobeComponent() {
           <p className="text-gray-300">Explore breaking news from around the world</p>
         </div>
 
-        
+
 
       </section>
 

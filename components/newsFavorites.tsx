@@ -24,8 +24,8 @@ function NewsFavorites({ favorites, setFavorites, showFavorites, showDelete, sho
         />
       ))}
       {(!favorites.length || favorites.length == 0) && (
-        <div className="col-span-full flex justify-center">
-          <div className="flex flex-col items-center justify-center text-center p-8 rounded-lg bg-gray-800/40 backdrop-blur-sm">
+        <div className="flex w-screen h-screen justify-center items-center">
+          <div className="h-fit flex flex-col items-center justify-center text-center p-8 rounded-lg bg-gray-800/40 backdrop-blur-sm">
             <svg className="w-16 h-16 text-gray-400 mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
                 <animate

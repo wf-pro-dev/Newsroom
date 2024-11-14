@@ -29,9 +29,9 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
         if (favorites.some((fav: Article) => fav.title === article.title)) {
 
-            var id = showFavorites ? article.fav_id! : article.id.toString() + "_" + article.question_id
+            
 
-            await removeFavorite(id)
+            await removeFavorite(article.id)
                 .then(() => {
                     showDelete(true)
                     showFavorites && setIsDeleting(true)
@@ -47,6 +47,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
                 })
         } else {
+            console.log(article)
             await addFavorite(article)
                 .then(() => {
                     setFavorites([...favorites, article])
@@ -97,17 +98,17 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                         priority={true}
                     />
                 )}
-                <div className="absolute bottom-4 left-4 ">
+                <div className="absolute bottom-4 left-6 ">
                     <div className='p-2 w-fit flex items-center bg-gray-700/60 backdrop-blur-sm rounded'>
-                        <CalendarDays strokeWidth={1} size={18} className='mr-1' color='white'/>
-                        <p className='text-gray-200 text-xs'>{moment(article_date).format("DD MMMM YY")}</p>
+                        <CalendarDays strokeWidth={2} size={16} className='mr-1' color='white'/>
+                        <p className='text-white text-xs'>{moment(article_date).format("DD MMMM YY")}</p>
                     </div>
                 </div>
             </div>
 
             <CardHeader className="overflow-hidden">
 
-                <div className="absolute top-4 right-4 left-4 flex justify-between">
+                <div className="absolute top-4 left-6 right-6 flex justify-between">
 
 
                     <Button
@@ -115,7 +116,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                         className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                         onClick={handleFavorite}>
                         <div className='p-2 flex justify-center items-center'>
-                            {favorites.length > 0 && favorites.some((fav: Article) => fav.title === article.title) ? <HeartOff strokeWidth={2} size={18}  /> : <Heart  strokeWidth={2} size={18} />}
+                            {favorites.length > 0 && favorites.some((fav: Article) => fav.title === article.title) ? <HeartOff strokeWidth={3} size={18}  /> : <Heart  strokeWidth={3} size={18} />}
                         </div>
 
                     </Button>
@@ -128,7 +129,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                             className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                             onClick={handleDelete}>
                             <div className='p-2 flex justify-center items-center'>
-                                <X strokeWidth={2} size={18} />
+                                <X strokeWidth={3} size={18} />
                             </div>
                         </Button>
                     )}
@@ -140,6 +141,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                     </CardTitle>
                 </div>
             </CardHeader>
+
             <CardContent>
                 <CardDescription className="line-clamp-2 text-gray-300">{article.description}</CardDescription>
             </CardContent>

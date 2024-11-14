@@ -97,20 +97,14 @@ def analyze_article_relevance(question: str, article_description: str) -> float:
     analyzer = ArticleRelevanceAnalyzer()
     score, metrics = analyzer.calculate_relevance(question, article_description)
     
-    print(f"\nArticle Relevance Analysis:")
-    print(f"Overall Score: {score}")
-    print("\nDetailed Metrics:")
-    print(f"- Topic Overlap: {metrics['topic_overlap']}")
-    print(f"- Key Terms Coverage: {metrics['key_terms_coverage']}")
-    print(f"- Context Relevance: {metrics['context_relevance']}")
+    # print(f"\nArticle Relevance Analysis:")
+    # print(f"Overall Score: {score}")
+    # print("\nDetailed Metrics:")
+    # print(f"- Topic Overlap: {metrics['topic_overlap']}")
+    # print(f"- Key Terms Coverage: {metrics['key_terms_coverage']}")
+    # print(f"- Context Relevance: {metrics['context_relevance']}")
     
-    # Provide interpretation
-    if score >= 0.7:
-        print("\nInterpretation: This article appears highly relevant to your question.")
-    elif score >= 0.4:
-        print("\nInterpretation: This article may contain some relevant information.")
-    else:
-        print("\nInterpretation: This article might not be directly relevant to your question.")
+ 
     return score
 
 # Example usage

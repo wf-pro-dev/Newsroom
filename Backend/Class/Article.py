@@ -18,7 +18,11 @@ class Article:
     
     def set_question_id(self,question_id:int):self.__question_id = question_id
     
+    def get_title(self): return self.__title
+    
     def get_description(self) -> str :return self.__description
+    
+    def get__urlToImage(self) -> str: return self.__urlToImage
    
     def get_api_source(self) -> str :return self.__api_source
     

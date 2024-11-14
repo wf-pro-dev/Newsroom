@@ -26,7 +26,7 @@ def dict_factory(cursor, row):
 
 def execute(sql, isSelect=True, params=None):
     try:
-        conn = connect(main_db)
+        conn = connect(test_db)
         conn.row_factory = dict_factory
         cur = conn.cursor()
         if isSelect:
@@ -54,24 +54,41 @@ def get_favorites():
 @app.route('/Favorites', methods=['POST'])
 def add_to_favorites():
     data = request.json
-    fav_id = data.get('fav_id')
+    
+    id = data.get('id')
+    score = data.get('score')
     question_id = data.get('question_id')
     title = data.get('title')
     description = data.get('description')
+    content = data.get('content')
     urlToImage = data.get('urlToImage')
+    publishedAt = data.get('publishedAt')
+    api_source = data.get('api_source')
     
     # Validate required fields
-    if not all([fav_id,question_id, title, description, urlToImage]):
+    if not all([score, id, question_id, title, description, content, urlToImage, publishedAt, api_source]):
         return jsonify({"error": "Missing required fields"}), 400
     
     # Use parameterized query to prevent SQL injection
-    sql = """INSERT INTO Favorites (fav_id, question_id, title, description, urlToImage) 
-             VALUES (?, ?, ?, ?, ?);"""
+    sql = """INSERT INTO Favorites (score, id, question_id, title, description, content, urlToImage, publishedAt, api_source) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"""
     try:
-        execute(sql, isSelect=False, params=(fav_id, question_id, title, description, urlToImage))
+        execute(sql, isSelect=False, params=(score, id, question_id, title, description, content, urlToImage, publishedAt, api_source))
         return jsonify({"message": "Item added to favorites successfully"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/Favorites/<id>', methods=['DELETE'])
+def delete_favorites_by_id(id):
+
+    sql = f"DELETE FROM Favorites WHERE id = '{id}';"
+    
+    try:
+        execute(sql, isSelect=False)
+        return jsonify({"message": f"Item with id {id} deleted successfully"}), 200
+    except Exception as e:
+        app.logger.error(f"Error deleting item: {e}")
+        return jsonify({"error": "Failed to delete item"}), 500
 
 @app.route('/Topics', methods=['GET'])
 def get_topics():
@@ -90,6 +107,13 @@ def get_questions():
 @app.route('/Articles', methods=['GET'])
 def get_articles():
     sql = f"""SELECT * FROM Articles;"""
+
+    users = execute(sql)
+    return jsonify(users)
+
+@app.route('/Articles/<question_id>', methods=['GET'])
+def get_articles_by_qst(question_id):
+    sql = f"""SELECT * FROM Articles WHERE question_id = '{question_id}';"""
 
     users = execute(sql)
     return jsonify(users)

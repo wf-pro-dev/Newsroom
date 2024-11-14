@@ -13,7 +13,7 @@ def generate_Query(title_top: str, title_qst: str) -> Tuple[str, dict[str, list]
     # get five most important keywords from question
 
     # Initialize RAKE with English stopwords
-    rake = Rake(max_length=2)
+    rake = Rake(max_length=3)
 
     # Extract keywords from the title question
     rake.extract_keywords_from_text(title_qst)
@@ -33,7 +33,7 @@ def generate_Query(title_top: str, title_qst: str) -> Tuple[str, dict[str, list]
 
 def NewsAPI_to_Articles(api_article:dict) -> Article:
     # Transform NewsAPI object to Artcile object
-    
+
     obj_art = {
         "api_source": "NewsAPI",
         "title": api_article["title"],
@@ -49,6 +49,8 @@ def NewsAPI_to_Articles(api_article:dict) -> Article:
 
 def NewsDATA_to_Articles(api_article:dict) -> Article:
     # Transform NewsDATA object to Artcile object
+    
+    
     
     obj_art = {
         "api_source": "NewsDATA",
@@ -80,11 +82,17 @@ def generate_Articles(articles_by_api: dict[str,list]) -> list[Article]:
 
 def get_relevant_articles(articles:list[Article],question:str) -> list[Article] :
     
+    def articles_filter(article:Article):
+        article_to_dict = article.to_dict()
+        description = article_to_dict["description"] and article_to_dict["description"] != None and article_to_dict["description"] != "[Removed]"
+        return description and article_to_dict["title"] != "[Removed]" and article_to_dict["urlToImage"] != None
+    
+    articles = list(filter(lambda article : articles_filter(article),  articles))  
+    
     for article in articles:
         description = article.get_description()
-        if (description):
-            article.set_score(analyze_article_relevance(question=question,article_description=description))
-    
+        article.set_score(analyze_article_relevance(question=question,article_description=description))
+        
     articles.sort(key=lambda article : article.get_score() ,reverse=True)
                 
     return articles[:20]

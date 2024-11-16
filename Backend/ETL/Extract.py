@@ -2,6 +2,7 @@
 
 from ETL.API.Newsfetcher import Newsfetcher
 from ETL.API.Open_AI import fetch_open_AI
+from ETL.API.YT_api import fetch_video
 
 def fetch_Topics() -> list[dict[str, str]]:
     """
@@ -64,6 +65,10 @@ def fetch_Articles(query:str) -> dict[str,list]:
     fetcher = Newsfetcher()
     articles_by_api = fetcher.fetch_articles(query=query)
     return articles_by_api
+
+def fetch_Videos(query:dict) -> list:
+    videos = fetch_video(query=query["YTAPI"])
+    return videos
 
 
 if __name__ == "__main__":

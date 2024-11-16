@@ -1,4 +1,4 @@
-import { Article, Question, Topic } from './types';
+import { Article, Question, Topic, Video } from './types';
 
 const API_BASE_URL = 'http://127.0.0.1:5000'
 
@@ -22,6 +22,11 @@ export async function fetchQuestions(): Promise<Question[]> {
 
 export async function fetchArticles(): Promise<Article[]> {
   const res = await fetch(`${API_BASE_URL}/Articles`)
+  return res.json()
+}
+
+export async function fetchVideos(): Promise<Video[]> {
+  const res = await fetch(`${API_BASE_URL}/Videos`)
   return res.json()
 }
 

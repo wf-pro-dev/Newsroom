@@ -3,8 +3,8 @@ path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 
 from typing import Tuple
 
-from ETL.Extract import fetch_Articles
-from ETL.Transform import generate_Query, generate_Articles
+from ETL.Extract import fetch_Articles, fetch_Videos
+from ETL.Transform import generate_Query, generate_Articles, generate_Videos
 
 class Question:
     
@@ -14,14 +14,22 @@ class Question:
         self.__topic, self.__role = top_and_role
         self.__keywords, self.__query = generate_Query(top_and_role,question)
         self.__articles = self.set_articles()
+        self.__videos = self.set_videos()
     
     
     def set_articles(self) :
         raw_articles = fetch_Articles(self.__query)
         return generate_Articles(raw_articles)
+    
     def get_articles(self): return self.__articles
     
     def get_question(self): return self.__question
+    
+    def set_videos(self):
+        raw_videos = fetch_Videos(self.__query)
+        return generate_Videos(raw_videos)
+    
+    def get_videos(self): return self.__videos
     
     def to_dict(self):
         return {

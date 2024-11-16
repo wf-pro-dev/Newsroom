@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Topic, Question, Article } from '@/utils/types'
+import { Topic, Question, Article, Video } from '@/utils/types'
 
 import NewsMain from '@/components/newsMain'
 import NewsFavorites from '@/components/newsFavorites'
@@ -9,7 +9,7 @@ import Notification from '@/components/notification'
 
 import { HeaderAndHeroGlobeComponent } from '@/components/header-and-hero-globe'
 
-import { fetchTopics, fetchQuestions, fetchFavorites, fetchArticles } from '../utils/api';
+import { fetchTopics, fetchQuestions, fetchFavorites, fetchArticles, fetchVideos } from '../utils/api';
 import { Button } from '@/components/ui/button'
 
 export default function Page() {
@@ -22,6 +22,7 @@ export default function Page() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
 
   const [favorites, setFavorites] = useState<Article[]>([]);
   const [showFavorites, setShowFavorites] = useState(false)
@@ -40,17 +41,19 @@ export default function Page() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      const [topicsData, questionsData, favoritesData, articlesData] = await Promise.all([
+      const [topicsData, questionsData, favoritesData, articlesData, videosData] = await Promise.all([
         fetchTopics(),
         fetchQuestions(),
         fetchFavorites(),
         fetchArticles(),
+        fetchVideos(),
       ]);
       setTopics(topicsData)
       setActiveTab(topicsData[0].title_top);
       setQuestions(questionsData);
       setFavorites(favoritesData);
-      setArticles(articlesData)
+      setArticles(articlesData);
+      setVideos(videosData)
       setMounted(true);
     };
 
@@ -262,6 +265,7 @@ export default function Page() {
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               favorites={favorites}
+              videos={videos}
               setFavorites={setFavorites}
               showFavorites={showFavorites}
               setShowFavorites={setShowFavorites}

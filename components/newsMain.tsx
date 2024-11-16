@@ -2,14 +2,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import NewsArticle from "./newsarticle"
 import NewsCarousel from "./newsCarousel"
-import { Article, Question } from "@/utils/types"
+import { Article, Question, Video } from "@/utils/types"
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { Heart } from "lucide-react"
 import NewsFavorites from "./newsFavorites"
+import NewsVideo from "./newsvideo"
 
 
-function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, setFavorites, showFavorites, setShowFavorites, questions, showDelete, showAdd }:
+function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, setFavorites, showFavorites, setShowFavorites, questions, videos, showDelete, showAdd }:
 
     {
         newsData: Record<string, Article[]>,
@@ -21,6 +22,7 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
         showFavorites: boolean,
         setShowFavorites: React.Dispatch<React.SetStateAction<boolean>>,
         questions: Question[],
+        videos: Video[],
         showDelete: React.Dispatch<React.SetStateAction<boolean>>,
         showAdd: React.Dispatch<React.SetStateAction<boolean>>
     }) {
@@ -63,6 +65,18 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
         };
     }, []);
 
+    function sliceIntoChunks(arr: Array<any>, chunkSize: number) {
+        const result = [];
+        for (let i = 0; i < arr.length; i += chunkSize) {
+            result.push(arr.slice(i, i + chunkSize));
+        }
+        return result;
+    }
+
+    function getRandomArbitrary(min: number, max: number) {
+        return Math.random() * (max - min) + min;
+    }
+
     return (
 
 
@@ -74,7 +88,7 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
                             key={category}
                             value={category}
                             onClick={() => goUp(category)}
-                            className={`w-fit py-3 px-5 -translate-y-${AtinnerHeight ? 0 : 20} rounded-full text-white/60 text-sm hover:animate-bounce-subtle hover:text-white hover:bg-gray-700/80 group-hover:translate-y-0 2xl:font-bold data-[state=active]:translate-y-0 data-[state=active]:bg-black/70 backdrop-blur-sm bg-black/70 data-[state=active]:text-white data-[state=active]:border-[1.5px] transition-all duration-300 ease-in-out`}
+                            className={`w-fit py-3 px-5 -translate-y-${AtinnerHeight ? 0 : 20}  rounded-full text-white/60 text-sm hover:animate-bounce-subtle hover:text-white hover:bg-gray-700/80 group-hover:translate-y-0 2xl:font-bold data-[state=active]:translate-y-0 data-[state=active]:bg-black/70 backdrop-blur-sm bg-black/70 data-[state=active]:text-white data-[state=active]:border-[1.5px] transition-all duration-300 ease-in-out`}
                         >
                             {category}
                         </TabsTrigger>
@@ -97,38 +111,57 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
 
                             <Separator className="my-12 bg-gray-600" />
 
-                            {questions.filter((question: any) => question.topic == topic).map((question: any) => (
-                                <div>
+                            {questions.filter((question: Question) => question.topic == topic).map((question: Question) => {
+                                var video_by_question = videos.filter((video: Video) => parseInt(video.question_id) == question.id)
+                                return (
+                                    <div>
 
-                                    <div className="mb-6 flex flex-col items-center justify-center text-lg">
-                                        <h1 className="text-3xl leading-normal mb-2 text-center font-bold">
-                                            {question.question}
-                                        </h1>
-                                        <p className="text-gray-400">
-                                            {question.keywords.replaceAll(",", ", ")}
-                                        </p>
+                                        <div className="mb-6 flex flex-col items-center justify-center text-lg">
+                                            <h1 className="text-3xl leading-normal mb-2 text-center font-bold">
+                                                {question.question}
+                                            </h1>
+                                            <p className="text-gray-400">
+                                                {question.keywords.replaceAll(",", ", ")}
+                                            </p>
+                                        </div>
+
+                                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                                            {sliceIntoChunks(articles_by_topic.filter((article: any) => article.question_id == question.id), 4).map((articles: Article[], index: number) => {
+                                                return (
+                                                    <>
+                                                        {articles.map((article: Article) => (
+
+                                                            <NewsArticle
+                                                                key={index}
+                                                                article={article}
+                                                                favorites={favorites}
+                                                                showFavorites={showFavorites}
+                                                                setFavorites={setFavorites}
+                                                                showDelete={showDelete}
+                                                                showAdd={showAdd}
+                                                                questions={questions}
+                                                                newsData={newsData}
+                                                                setNewsData={setNewsData}
+                                                            />
+
+                                                        ))}
+                                                        {video_by_question[index] &&
+                                                            (<div className="col-span-2 justify-items-center items-center">
+                                                                <NewsVideo video={video_by_question[index]} />
+                                                            </div>)
+                                                        }
+                                                    </>
+
+                                                )
+                                            }
+                                            )}
+
+                                        </div>
+
+                                        <Separator className="my-12 bg-gray-600" />
                                     </div>
-
-                                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                                        {articles_by_topic.filter((article: any) => article.question_id == question.id).map((article: any, index: number) => (
-                                            <NewsArticle
-                                                key={index}
-                                                article={article}
-                                                favorites={favorites}
-                                                showFavorites={showFavorites}
-                                                setFavorites={setFavorites}
-                                                showDelete={showDelete}
-                                                showAdd={showAdd}
-                                                questions={questions}
-                                                newsData={newsData}
-                                                setNewsData={setNewsData}
-                                            />
-                                        ))}
-                                    </div>
-
-                                    <Separator className="my-12 bg-gray-600" />
-                                </div>
-                            )
+                                )
+                            }
                             )}
 
                         </TabsContent>
@@ -146,13 +179,13 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
                 />
             )}
 
-            <div className={` w-fit h-fit translate-y-${ showHeader ? 0 : "full" } py-8 fixed bottom-0 xl:right-4 2xl:right-12 transition-all duration-300 ease-in-out`}>
+            <div className={` w-fit h-fit translate-y-${showHeader ? 0 : "full"} py-8 fixed bottom-0 xl:right-4 2xl:right-12 transition-all duration-300 ease-in-out`}>
                 <Button
                     variant="secondary"
-                    className={`p-0 w-fit h-fit rounded-full backdrop-blur-sm hover:bg-gray-700/80 ${ showFavorites ? "border-2" : "" } bg-${ showFavorites ? "transparent" : "gray-700/50" } text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle`}
+                    className={`p-0 w-fit h-fit rounded-full backdrop-blur-sm hover:bg-gray-700/80 ${showFavorites ? "border-2" : ""} bg-${showFavorites ? "transparent" : "gray-700/50"} text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle`}
                     onClick={() => setShowFavorites(!showFavorites)}>
                     <div className='p-4 flex justify-center items-center'>
-                        <Heart strokeWidth={2} style={{width:28,height:28}}/>
+                        <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
                     </div>
 
                 </Button>

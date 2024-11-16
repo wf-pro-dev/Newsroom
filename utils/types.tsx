@@ -1,3 +1,9 @@
+type Video = {
+  id:number,
+  question_id:string,
+  video_id:string,
+  description:string
+}
 
 type Article = {
   id: number;
@@ -28,4 +34,4 @@ type Topic = {
 
 
 
-export type { Article, Question, Topic };
+export type { Article, Question, Topic, Video };

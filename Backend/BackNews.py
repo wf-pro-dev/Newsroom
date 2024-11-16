@@ -19,6 +19,7 @@ def init(db_conn):
     create_table(db_conn=db_conn,table_name="Topics")
     create_table(db_conn=db_conn,table_name="Questions")
     create_table(db_conn=db_conn,table_name="Articles")
+    create_table(db_conn=db_conn,table_name="Videos")
     
 def main():
     
@@ -48,6 +49,13 @@ def main():
                 article_id = insert_data(db_conn=db_conn,table_name="Articles",obj=article)
                 print(f"Artilce with id = {article_id} is complete","-" * 20,sep="\n")
             
+            videos = question.get_videos()
+            
+            for video in videos:
+                video.set_question_id(question_id=questtion_id)
+                video_id = insert_data(db_conn=db_conn,table_name="Videos",obj=video)
+                print(f"Video with id = {video_id} is complete","-" * 20,sep="\n")
+            
             print(f"Question with id = {questtion_id} is complete","-" * 20,sep="\n")
         
         print(f"Topic with id = {topic_id} is complete","-" * 20,sep="\n")
@@ -59,8 +67,7 @@ def main():
 
 if __name__ == "__main__":
     
-    db_conn = sqlite3.connect(main_db) 
-    create_table(db_conn=db_conn,table_name="Favorites")
+    main()
     print("Database Complete !")
     # for question in Topic.get_questions():
     #     print(question)

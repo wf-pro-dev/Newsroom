@@ -26,7 +26,7 @@ def dict_factory(cursor, row):
 
 def execute(sql, isSelect=True, params=None):
     try:
-        conn = connect(main_db)
+        conn = connect(test_db)
         conn.row_factory = dict_factory
         cur = conn.cursor()
         if isSelect:
@@ -108,6 +108,13 @@ def get_questions():
 @app.route('/Articles', methods=['GET'])
 def get_articles():
     sql = f"""SELECT * FROM Articles;"""
+
+    users = execute(sql)
+    return jsonify(users)
+
+@app.route('/Videos', methods=['GET'])
+def get_videos():
+    sql = f"""SELECT * FROM Videos;"""
 
     users = execute(sql)
     return jsonify(users)

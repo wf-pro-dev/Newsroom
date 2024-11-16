@@ -2,18 +2,6 @@ from sys import path
 path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 
 COLUMNS = {
-        "Articles": [
-            "score",
-            "question_id",
-            "title",
-            "description",
-            "content",
-            "url",
-            "urlToImage",
-            "publishedAt",
-            "api_source"
-        ],
-        
         "Favorites": [
             "score",
             "question_id",
@@ -26,17 +14,38 @@ COLUMNS = {
             "api_source"
         ],
         
+        "Topics": [
+            "title_top",
+            "role_top"
+        ],
+        
         "Questions": [
             "question",
             "topic",
             "role",
             "keywords",
         ],
-       
-        "Topics": [
-            "title_top",
-            "role_top"
-        ]
+        
+        "Articles": [
+            "score",
+            "question_id",
+            "title",
+            "description",
+            "content",
+            "url",
+            "urlToImage",
+            "publishedAt",
+            "api_source"
+        ],
+        
+        "Videos": [
+            "question_id",
+            "video_id",
+            "description",
+        ],
+        
+         
+        
     }
 
 def execute(db_conn, sql_command: str, params=None):
@@ -59,6 +68,7 @@ def insert_data(db_conn, table_name: str, obj):
     placeholders = ', '.join(['?' for _ in COLUMNS[table_name]])
     # Get values in the same order as columns
     obj_to_dict = obj.to_dict()
+    if(table_name == "Videos"): print(table_name,obj_to_dict)
     values = [obj_to_dict[key] for key in COLUMNS[table_name]]
     
     sql_command = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"

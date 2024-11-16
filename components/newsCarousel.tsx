@@ -72,7 +72,7 @@ export default function NewsCarousel({ questions, articles }: {
                 <div className="flex-1 relative ">
                     {questions.map((question, index) => {
                         return (
-                            <div style={{ left: index * 130, zIndex: (2 - index), scale: 1 - (index * 0.2) }} className={`absolute 2xl:ml-12 border border-white/50 rounded-md overflow-hidden`}>
+                            <div style={{ left: index * 130, zIndex: (2 - index), scale: 1 - (index * 0.2),opacity:1 - (index * 0.2) }} className={`absolute 2xl:ml-12 border border-white/50 rounded-md overflow-hidden`}>
                                 <Carousel
                                     setApi={index == 0 ? setApi : undefined}
                                     opts={{

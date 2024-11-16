@@ -7,6 +7,8 @@ from rake_nltk import Rake
 from Class.Article import Article
 from Class.Article_Analyzer import analyze_article_relevance
 
+from Class.Videos import Videos
+
 
 def generate_Query(title_top: str, title_qst: str) -> Tuple[str, dict[str, list]]:
     # Natural Language Processing
@@ -27,7 +29,8 @@ def generate_Query(title_top: str, title_qst: str) -> Tuple[str, dict[str, list]
 
     return ', '.join(top_keywords), {
         "NewsAPI": f"{title_top} AND {' OR '.join(top_keywords)}",
-        "NewsDATA":  f"{title_top} AND {' OR '.join(top_keywords)}"
+        "NewsDATA":  f"{title_top} AND {' OR '.join(top_keywords)}",
+        "YTAPI" : f"{title_top} | {' | '.join(top_keywords)}"
     }
     
 
@@ -97,6 +100,16 @@ def get_relevant_articles(articles:list[Article],question:str) -> list[Article] 
     articles.sort(key=lambda article : article.get_score() ,reverse=True)
                 
     return articles[:20]
+
+def generate_Videos(videos_api:list) -> list[Videos]:
+    
+    videos = []
+    
+    for video in videos_api:
+        videos.append(Videos(video["id"]["videoId"],video["snippet"]["description"]))
+    
+    return videos
+
 
 if __name__ == "__main__":
     pass

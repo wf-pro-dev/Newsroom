@@ -1,0 +1,14 @@
+# API Dependencies
+newsapi-python==0.2.7  # For NewsAPI integration
+newsdataapi==0.1.21    # For NewsDATA API integration
+openai==1.12.0         # For OpenAI GPT integration
+google-api-python-client==2.153.0 # For Youtube API integration
+
+
+# Web Framework
+Flask==3.0.0           # Main web framework
+flask-cors==4.0.0      # For handling CORS in Flask
+
+# Text Processing
+rake-nltk==1.0.6       # For keyword extraction
+nltk==3.8.1           # Required by rake-nltk

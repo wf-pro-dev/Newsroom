@@ -64,6 +64,21 @@ def insert_data(db_conn, table_name: str, obj):
     sql_command = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
     return execute(db_conn, sql_command, values)
 
+
+
+def delete_all_tables(db_conn):
+    """Deletes all tables from a specified SQLite database."""
+
+    cursor = db_conn.cursor()
+
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = [table[0] for table in cursor.fetchall()]
+
+    for table in tables:
+        execute(db_conn=db_conn,sql_command=f"DROP TABLE {table};")
+
+    
+
 def show_table(db_conn, table_name: str):
     sql_command = f"SELECT * FROM {table_name}"
     cursor = db_conn.cursor()

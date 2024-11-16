@@ -7,13 +7,14 @@ from Class.Topics import Topics
 # ETL import
 from ETL.Extract import fetch_Topics
 from ETL.Transform import get_relevant_articles
-from ETL.Load import create_table, insert_data, show_table
+from ETL.Load import create_table, insert_data, delete_all_tables, show_table
 
 # DB paths
 main_db = '/Users/williamfotso/Workspace/Newsroom/Backend/DB_Files/main_db.db'
 test_db = '/Users/williamfotso/Workspace/Newsroom/Backend/DB_Files/test_db.db'
 
 def init(db_conn):
+    delete_all_tables(db_conn=db_conn)
     create_table(db_conn=db_conn,table_name="Favorites")
     create_table(db_conn=db_conn,table_name="Topics")
     create_table(db_conn=db_conn,table_name="Questions")
@@ -37,8 +38,10 @@ def main():
             questtion_id = insert_data(db_conn=db_conn,table_name="Questions",obj=question)    
             
             relevant_artciles = get_relevant_articles(question.get_articles(),question=question.get_question())
+            
+            unique_articles = list(set(relevant_artciles))
 
-            for article in relevant_artciles:
+            for article in unique_articles:
                 
                 article.set_question_id(question_id=questtion_id)
                 
@@ -56,7 +59,8 @@ def main():
 
 if __name__ == "__main__":
     
-    main()
+    db_conn = sqlite3.connect(main_db) 
+    create_table(db_conn=db_conn,table_name="Favorites")
     print("Database Complete !")
     # for question in Topic.get_questions():
     #     print(question)

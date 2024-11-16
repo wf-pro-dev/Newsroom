@@ -37,11 +37,13 @@ export async function deleteNewsbyId(id: number, topic: string): Promise<void> {
 
 export async function addFavorite(article: Article): Promise<Article> {
 
+  
   const response = await fetch(`${API_BASE_URL}/Favorites`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(article)
   });
+  console.log(response)
   if (!response.ok) {
     throw new Error(`Failed to add favorite: ${response.statusText}`);
   }

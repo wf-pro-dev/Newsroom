@@ -26,7 +26,7 @@ def dict_factory(cursor, row):
 
 def execute(sql, isSelect=True, params=None):
     try:
-        conn = connect(test_db)
+        conn = connect(main_db)
         conn.row_factory = dict_factory
         cur = conn.cursor()
         if isSelect:
@@ -61,6 +61,7 @@ def add_to_favorites():
     title = data.get('title')
     description = data.get('description')
     content = data.get('content')
+    url = data.get('url')
     urlToImage = data.get('urlToImage')
     publishedAt = data.get('publishedAt')
     api_source = data.get('api_source')
@@ -70,10 +71,10 @@ def add_to_favorites():
         return jsonify({"error": "Missing required fields"}), 400
     
     # Use parameterized query to prevent SQL injection
-    sql = """INSERT INTO Favorites (score, id, question_id, title, description, content, urlToImage, publishedAt, api_source) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"""
+    sql = """INSERT INTO Favorites (score, id, question_id, title, description, content, url, urlToImage, publishedAt, api_source) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
     try:
-        execute(sql, isSelect=False, params=(score, id, question_id, title, description, content, urlToImage, publishedAt, api_source))
+        execute(sql, isSelect=False, params=(score, id, question_id, title, description, content, url, urlToImage, publishedAt, api_source))
         return jsonify({"message": "Item added to favorites successfully"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500

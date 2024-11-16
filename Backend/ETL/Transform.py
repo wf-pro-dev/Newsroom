@@ -90,7 +90,8 @@ def get_relevant_articles(articles:list[Article],question:str) -> list[Article] 
     articles = list(filter(lambda article : articles_filter(article),  articles))  
     
     for article in articles:
-        description = article.get_description()
+        article_to_dict = article.to_dict()
+        description = article_to_dict["content"] if article_to_dict["api_source"] == "NewsAPI" else article_to_dict["description"]
         article.set_score(analyze_article_relevance(question=question,article_description=description))
         
     articles.sort(key=lambda article : article.get_score() ,reverse=True)

@@ -255,7 +255,7 @@ export function HeaderAndHeroGlobeComponent() {
         <div className={` opacity-${showHeader ? 0 : 1}  absolute top-4 left-4 bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg shadow-lg transition-all duration-300 ease-in-out`}>
 
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
-            Today's Top Stories
+            The NewsRoom
           </h1>
           <p className="text-gray-300">Explore breaking news from around the world</p>
         </div>

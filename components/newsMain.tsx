@@ -6,9 +6,10 @@ import { Article, Question } from "@/utils/types"
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { Heart } from "lucide-react"
+import NewsFavorites from "./newsFavorites"
 
 
-function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, setFavorites, showFavorites,setShowFavorites, questions, showDelete, showAdd }:
+function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, setFavorites, showFavorites, setShowFavorites, questions, showDelete, showAdd }:
 
     {
         newsData: Record<string, Article[]>,
@@ -26,9 +27,11 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
 
     const [isChanging, setisChanging] = useState(false)
     const [showHeader, setShowHeader] = useState(false)
+    const [AtinnerHeight, setAtinnerHeight] = useState(false)
 
     function onValueChange(value: string) {
 
+        showFavorites && setShowFavorites(false)
         setisChanging(true)
 
         setTimeout(() => {
@@ -50,6 +53,7 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
     useEffect(() => {
         const handleScroll = () => {
             setShowHeader(window.scrollY >= window.innerHeight);
+            setAtinnerHeight(window.scrollY == window.innerHeight)
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -63,40 +67,28 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
 
 
         <Tabs value={activeTab} onValueChange={onValueChange} className="relative w-screen">
-            <TabsList className={`group fixed opacity-${showHeader ? 1 : 0} h-fit py-4 top-0 left-0 right-0 grid grid-cols-2 lg:grid-cols-5 bg-transparent z-50 transition-all duration-300 ease-in-out`}>
+            <TabsList className={`group fixed opacity-${showHeader ? 1 : 0} h-fit py-4 px-0 top-0 left-0 right-0 grid grid-cols-2 lg:grid-cols-5 bg-transparent z-50 transition-all duration-300 ease-in-out`}>
                 {Object.keys(newsData).map((category) => (
                     <div className="flex flex-1 justify-center">
                         <TabsTrigger
                             key={category}
                             value={category}
                             onClick={() => goUp(category)}
-                            className="w-fit py-3 px-5 -translate-y-20 rounded-full text-white/60 text-sm hover:animate-bounce-subtle   hover:bg-gray-700/80 group-hover:translate-y-0 2xl:font-bold data-[state=active]:translate-y-0 data-[state=active]:bg-black/70 backdrop-blur-sm bg-black/70 data-[state=active]:text-white data-[state=active]:border-[1.5px] transition-all duration-300 ease-in-out"
+                            className={`w-fit py-3 px-5 -translate-y-${AtinnerHeight ? 0 : 20} rounded-full text-white/60 text-sm hover:animate-bounce-subtle hover:text-white hover:bg-gray-700/80 group-hover:translate-y-0 2xl:font-bold data-[state=active]:translate-y-0 data-[state=active]:bg-black/70 backdrop-blur-sm bg-black/70 data-[state=active]:text-white data-[state=active]:border-[1.5px] transition-all duration-300 ease-in-out`}
                         >
                             {category}
                         </TabsTrigger>
                     </div>
                 ))}
-                <div className="-translate-y-20 group-hover:translate-y-0 absolute top-0 right-12 py-4 transition-all duration-300 ease-in-out">
 
-
-                    <Button
-                        variant="secondary"
-                        className="p-0 rounded-full bg-black/10 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
-                        onClick={()=>setShowFavorites(!showFavorites)}>
-                        <div className='p-3 flex justify-center items-center'>
-                             <Heart strokeWidth={3} size={18} />
-                        </div>
-
-                    </Button>
-                </div>
             </TabsList>
 
-            {Object.keys(newsData).map((topic) => {
+            {!showFavorites && Object.keys(newsData).map((topic) => {
                 var articles_by_topic = newsData[topic as keyof typeof newsData]
                 return (
 
                     <div className=" xl:px-20 2xl:px-40 bg-black/[.05] backdrop-blur-sm  backdrop-contrast-125">
-                        <TabsContent key={topic} value={topic} className={`${isChanging ? 'opacity-0' : 'opacity-100'} 2xl:pt-28 xl:pt-20 transition-all duration-300 ease-in-out`}>
+                        <TabsContent key={topic} value={topic} className={`${isChanging ? 'opacity-0' : 'opacity-100'} mt-0 2xl:pt-28 xl:pt-20 transition-all duration-300 ease-in-out`}>
 
                             <NewsCarousel
                                 questions={questions.filter((question: any) => question.topic == activeTab)}
@@ -143,6 +135,28 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
                     </div>
                 )
             })}
+
+            {showFavorites && (
+                <NewsFavorites
+                    favorites={favorites}
+                    setFavorites={setFavorites}
+                    showFavorites={showFavorites}
+                    showDelete={showDelete}
+                    showAdd={showAdd}
+                />
+            )}
+
+            <div className={` w-fit h-fit translate-y-${ showHeader ? 0 : "full" } py-8 fixed bottom-0 xl:right-4 2xl:right-12 transition-all duration-300 ease-in-out`}>
+                <Button
+                    variant="secondary"
+                    className={`p-0 w-fit h-fit rounded-full backdrop-blur-sm hover:bg-gray-700/80 ${ showFavorites ? "border-2" : "" } bg-${ showFavorites ? "transparent" : "gray-700/50" } text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle`}
+                    onClick={() => setShowFavorites(!showFavorites)}>
+                    <div className='p-4 flex justify-center items-center'>
+                        <Heart strokeWidth={2} style={{width:28,height:28}}/>
+                    </div>
+
+                </Button>
+            </div>
 
         </Tabs>
 

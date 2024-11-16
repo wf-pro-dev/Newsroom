@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Topic, Question, Article } from '@/utils/types'
 
 import NewsMain from '@/components/newsMain'
-import Header from '@/components/header'
 import NewsFavorites from '@/components/newsFavorites'
 import Notification from '@/components/notification'
 
@@ -12,8 +11,6 @@ import { HeaderAndHeroGlobeComponent } from '@/components/header-and-hero-globe'
 
 import { fetchTopics, fetchQuestions, fetchFavorites, fetchArticles } from '../utils/api';
 import { Button } from '@/components/ui/button'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-
 
 export default function Page() {
 
@@ -161,6 +158,7 @@ export default function Page() {
     }, [handleScroll]);
   };
 
+
   const scrollTriggers = [
     { limitT: 0, limitB: 200, scrollTo: window.innerHeight, direction: SCROLL_DIRECTIONS.TOP_ONLY },
     { limitT: 200, limitB: window.innerHeight, scrollTo: 0, direction: SCROLL_DIRECTIONS.TOP_ONLY },
@@ -170,8 +168,6 @@ export default function Page() {
   ];
 
   useMultipleScrollTriggers(scrollTriggers);
-
-  
 
 
   useEffect(() => {
@@ -256,18 +252,8 @@ export default function Page() {
 
 
       <div className={`transition-all duration-300 ease-in-out ${isFixed ? 'z-10' : ''}`}>
-        <div className="container">
+      
           {/* <Header toggleFavorites={toggleFavorites} showFavorites={showFavorites} /> */}
-
-          {showFavorites ? (
-            <NewsFavorites
-              favorites={favorites}
-              setFavorites={setFavorites}
-              showFavorites={showFavorites}
-              showDelete={showDeleteNotification}
-              showAdd={showAddNotification}
-            />
-          ) : (
 
             <NewsMain
               newsData={newsData}
@@ -283,11 +269,11 @@ export default function Page() {
               showAdd={showAddNotification}
             />
 
-          )}
-        </div>
+
+
       </div>
-      {AddNotification && <Notification message="Article added to favorites !" color="green" />}
-      {DeleteNotification && <Notification message="Article removed from favorites !" color="red" />}
+      {<Notification message="Article added to favorites !" color="green" show={AddNotification} setShow={showAddNotification}/>}
+      {<Notification message="Article removed from favorites !" color="red" show={DeleteNotification} setShow={showDeleteNotification} />}
     </div >
   )
 }

@@ -65,35 +65,40 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
         };
     }, []);
 
-    function sliceIntoChunks(arr: Array<any>, chunkSize: number) {
+    function mixArray(arr: Array<any>, arr2: Array<any>, chunkSize: number) {
         const result = [];
-        for (let i = 0; i < arr.length; i += chunkSize) {
-            result.push(arr.slice(i, i + chunkSize));
+        let j = 0;
+        for (let i = 0; i < arr.length || j < arr2.length; i++) {
+            
+            if (arr2[j] && ((i > 0 && i % chunkSize == 0 ) || i >= arr.length)) { arr2[j]["type"] = "video";result.push(arr2[j]); j++ }
+            if (arr[i]) { arr[i]["type"] = "article";result.push(arr[i]); }
+       
+            
         }
         return result;
     }
 
-    function getRandomArbitrary(min: number, max: number) {
-        return Math.random() * (max - min) + min;
-    }
+
 
     return (
 
-
         <Tabs value={activeTab} onValueChange={onValueChange} className="relative w-screen">
             <TabsList className={`group fixed opacity-${showHeader ? 1 : 0} h-fit py-4 px-0 top-0 left-0 right-0 grid grid-cols-2 lg:grid-cols-5 bg-transparent z-50 transition-all duration-300 ease-in-out`}>
-                {Object.keys(newsData).map((category) => (
-                    <div className="flex flex-1 justify-center">
-                        <TabsTrigger
-                            key={category}
-                            value={category}
-                            onClick={() => goUp(category)}
-                            className={`w-fit py-3 px-5 -translate-y-${AtinnerHeight ? 0 : 20}  rounded-full text-white/60 text-sm hover:animate-bounce-subtle hover:text-white hover:bg-gray-700/80 group-hover:translate-y-0 2xl:font-bold data-[state=active]:translate-y-0 data-[state=active]:bg-black/70 backdrop-blur-sm bg-black/70 data-[state=active]:text-white data-[state=active]:border-[1.5px] transition-all duration-300 ease-in-out`}
-                        >
-                            {category}
-                        </TabsTrigger>
-                    </div>
-                ))}
+                {Object.keys(newsData).map((category) => {
+                   
+                    return (
+                        <div className="flex flex-1 justify-center">
+                            <TabsTrigger
+                                key={category}
+                                value={category}
+                                onClick={() => goUp(category)}
+                                className={`w-fit py-3 px-5 -translate-y-${AtinnerHeight ? 0 : 20}  rounded-full text-white/60 text-sm hover:animate-bounce-subtle hover:text-white hover:bg-gray-700/80 group-hover:translate-y-0 2xl:font-bold data-[state=active]:translate-y-0 data-[state=active]:bg-black/70 backdrop-blur-sm bg-black/70 data-[state=active]:text-white data-[state=active]:border-[1.5px] transition-all duration-300 ease-in-out`}
+                            >
+                                {category}
+                            </TabsTrigger>
+                        </div>
+                    )
+                })}
 
             </TabsList>
 
@@ -126,33 +131,31 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
                                         </div>
 
                                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                                            {sliceIntoChunks(articles_by_topic.filter((article: any) => article.question_id == question.id), 4).map((articles: Article[], index: number) => {
-                                                return (
-                                                    <>
-                                                        {articles.map((article: Article) => (
+                                            {mixArray(articles_by_topic.filter((article: any) => article.question_id == question.id), video_by_question, 4).map((obj: any, index: number) => {
 
-                                                            <NewsArticle
-                                                                key={index}
-                                                                article={article}
-                                                                favorites={favorites}
-                                                                showFavorites={showFavorites}
-                                                                setFavorites={setFavorites}
-                                                                showDelete={showDelete}
-                                                                showAdd={showAdd}
-                                                                questions={questions}
-                                                                newsData={newsData}
-                                                                setNewsData={setNewsData}
-                                                            />
+                                                if (obj["type"] == "article") return (
 
-                                                        ))}
-                                                        {video_by_question[index] &&
-                                                            (<div className="col-span-2 justify-items-center items-center">
-                                                                <NewsVideo video={video_by_question[index]} />
-                                                            </div>)
-                                                        }
-                                                    </>
+                                                    <NewsArticle
+                                                        key={index}
+                                                        article={obj}
+                                                        favorites={favorites}
+                                                        showFavorites={showFavorites}
+                                                        setFavorites={setFavorites}
+                                                        showDelete={showDelete}
+                                                        showAdd={showAdd}
+                                                        questions={questions}
+                                                        newsData={newsData}
+                                                        setNewsData={setNewsData}
+                                                    />
 
                                                 )
+                                                else return (
+                                                    <div className="col-span-2 justify-items-center items-center">
+                                                        <NewsVideo video={obj} />
+                                                    </div>
+
+                                                )
+
                                             }
                                             )}
 

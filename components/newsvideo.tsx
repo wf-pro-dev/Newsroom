@@ -29,26 +29,34 @@ function NewsVideo({ video }: { video: Video }) {
     }, [])
 
     useEffect(() => {
-        setOpts(
-            {
-                height: dimensions.height,
-                width: dimensions.width,
-                playerVars: {
-                    autoplay: 0,
-                },
 
-            }
-        )
+        if (dimensions.height && dimensions.width) {
+            setOpts(
+                {
+                    height: dimensions.height,
+                    width: dimensions.width,
+                    playerVars: {
+                        autoplay: 0,
+                    },
+
+                }
+            )
+        }
     }, [dimensions])
 
 
 
 
     return (
+
+
+
         <div id="parent" ref={containerRef} className="w-full h-full rounded-md border-2 border-gray-700 overflow-hidden">
             <YouTube videoId={video.video_id}
                 opts={opts} />
         </div>
+
+
     )
 }
 

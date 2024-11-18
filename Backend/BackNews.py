@@ -23,7 +23,7 @@ def init(db_conn):
     
 def main():
     
-    db_conn = sqlite3.connect(test_db) 
+    db_conn = sqlite3.connect(main_db) 
     init(db_conn=db_conn)
     
     for obj_topic in fetch_Topics():

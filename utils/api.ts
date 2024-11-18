@@ -48,7 +48,6 @@ export async function addFavorite(article: Article): Promise<Article> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(article)
   });
-  console.log(response)
   if (!response.ok) {
     throw new Error(`Failed to add favorite: ${response.statusText}`);
   }

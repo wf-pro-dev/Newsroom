@@ -2,6 +2,9 @@
 
 An intelligent news aggregation and analysis platform that leverages the power of news APIs and OpenAI's language models to provide insightful answers about current events. Built with Flask and featuring a robust ETL pipeline for data processing.
 
+## Timeline
+[click to see TIMELINE](TIMELINE.md)
+
 ## Key Features
 
 ### 1. Intelligent News Aggregation

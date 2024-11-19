@@ -26,7 +26,7 @@ def dict_factory(cursor, row):
 
 def execute(sql, isSelect=True, params=None):
     try:
-        conn = connect(main_db)
+        conn = connect(test_db)
         conn.row_factory = dict_factory
         cur = conn.cursor()
         if isSelect:

@@ -52,7 +52,7 @@ function NewsVideo({ video }: { video: Video }) {
     }, [dimensions])
 
     const onReady = (event) => {
-        console.log("Player ready:", event);
+        // console.log("Player ready:", event);
         playerRef.current = event.target;
         
         // Instead of playing, just cue the video
@@ -63,7 +63,7 @@ function NewsVideo({ video }: { video: Video }) {
     }
 
     const onStateChange = (event) => {
-        console.log("Player state changed:", event.data);
+        // console.log("Player state changed:", event.data);
         setPlayerState(event.data);
 
         if (bufferingTimeoutRef.current) {
@@ -94,7 +94,7 @@ function NewsVideo({ video }: { video: Video }) {
     }
 
     const onError = (event) => {
-        console.error("YouTube player error:", event);
+        // console.error("YouTube player error:", event);
         setIsFullyLoaded(true);
     }
 

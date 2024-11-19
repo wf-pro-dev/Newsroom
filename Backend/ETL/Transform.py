@@ -106,7 +106,8 @@ def generate_Videos(videos_api:list) -> list[Videos]:
     videos = []
     
     for video in videos_api:
-        if video["id"]["videoId"] and video["snippet"]["description"]:
+        
+        if video["id"] and "videoId" in video["id"].keys() and video["snippet"]["description"]:
             videos.append(Videos(video["id"]["videoId"],video["snippet"]["description"]))
     
     return videos

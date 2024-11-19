@@ -8,6 +8,7 @@ import { Button } from "./ui/button"
 import { Heart } from "lucide-react"
 import NewsFavorites from "./newsFavorites"
 import NewsVideo from "./newsvideo"
+import { preloadVideo } from "@/utils/videoPreloader"
 
 
 function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, setFavorites, showFavorites, setShowFavorites, questions, videos, showDelete, showAdd }:
@@ -64,7 +65,7 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
+    
     function mixArray(arr: Array<any>, arr2: Array<any>, chunkSize: number) {
         const result = [];
         let j = 0;
@@ -76,8 +77,7 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
             
         }
         return result;
-    }
-
+    }    
 
 
     return (

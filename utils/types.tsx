@@ -2,7 +2,9 @@ type Video = {
   id:number,
   question_id:string,
   video_id:string,
-  description:string
+  description:string,
+  thumbnail:string,
+  orientation:string
 }
 
 type Article = {

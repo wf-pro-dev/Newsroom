@@ -101,14 +101,15 @@ def get_relevant_articles(articles:list[Article],question:str) -> list[Article] 
                 
     return articles[:20]
 
-def generate_Videos(videos_api:list) -> list[Videos]:
+def generate_Videos(videos_api:list) -> list:
+
     
     videos = []
     
     for video in videos_api:
         
         if video["id"] and "videoId" in video["id"].keys() and video["snippet"]["description"]:
-            videos.append(Videos(video["id"]["videoId"],video["snippet"]["description"]))
+            videos.append(Videos(video["id"]["videoId"],video["snippet"]["description"],video["snippet"]["thumbnails"]))
     
     return videos
 

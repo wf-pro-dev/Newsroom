@@ -3,34 +3,71 @@ import React, { useEffect, useRef, useState } from "react";
 import YouTube from "react-youtube"
 
 function NewsVideo({ video }: { video: Video }) {
-    const containerRef = useRef(null)
-    const playerRef = useRef(null)
+    const containerRef = useRef(null);
+    const playerRef = useRef(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-    const [opts, setOpts] = useState({})
-    const [isFullyLoaded, setIsFullyLoaded] = useState(false)
-    const [playerState, setPlayerState] = useState(-1)
+    const [opts, setOpts] = useState({});
+    const [isFullyLoaded, setIsFullyLoaded] = useState(false);
+    const [playerState, setPlayerState] = useState(-1);
     const bufferingTimeoutRef = useRef(null);
 
-    useEffect(() => {
-        const observer = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                const { width, height } = entry.contentRect;
-                setDimensions({ width, height });
+    // Function to update dimensions and player size
+    const updateDimensions = () => {
+        if (containerRef.current) {
+            const { offsetWidth, offsetHeight } = containerRef.current;
+            const newDimensions = {
+                width: offsetWidth,
+                height: offsetHeight
+            };
+            
+            setDimensions(newDimensions);
+            
+            // Only update player size if the player is available
+            if (playerRef.current) {
+                try {
+                    playerRef.current.setSize(newDimensions.width, newDimensions.height);
+                } catch (error) {
+                    console.warn('Failed to resize YouTube player:', error);
+                }
             }
-        });
+        }
+    };
 
+    useEffect(() => {
+        // Initial dimension setup
+        updateDimensions();
+
+        // Set up ResizeObserver for container changes
+        const observer = new ResizeObserver(() => {
+            // Debounce resize operations
+            requestAnimationFrame(updateDimensions);
+        });
+        
         if (containerRef.current) {
             observer.observe(containerRef.current);
         }
 
+        // Handle window resize events with debouncing
+        let resizeTimeout;
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(updateDimensions, 100);
+        };
+        
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup
         return () => {
             observer.disconnect();
+            window.removeEventListener('resize', handleResize);
+            clearTimeout(resizeTimeout);
             if (bufferingTimeoutRef.current) {
                 clearTimeout(bufferingTimeoutRef.current);
             }
         };
-    }, [])
+    }, []);
 
+    // Update YouTube player options when dimensions change
     useEffect(() => {
         if (dimensions.height && dimensions.width) {
             setOpts({
@@ -47,15 +84,22 @@ function NewsVideo({ video }: { video: Video }) {
                     origin: window.location.origin,
                     host: 'https://www.youtube-nocookie.com'
                 },
-            })
+            });
         }
-    }, [dimensions])
+    }, [dimensions]);
 
     const onReady = (event) => {
-        // console.log("Player ready:", event);
         playerRef.current = event.target;
         
-        // Instead of playing, just cue the video
+        // Set initial size only if dimensions are available
+        if (dimensions.width && dimensions.height) {
+            try {
+                event.target.setSize(dimensions.width, dimensions.height);
+            } catch (error) {
+                console.warn('Failed to set initial YouTube player size:', error);
+            }
+        }
+        
         event.target.cueVideoById({
             videoId: video.video_id,
             suggestedQuality: 'medium'
@@ -63,14 +107,12 @@ function NewsVideo({ video }: { video: Video }) {
     }
 
     const onStateChange = (event) => {
-        // console.log("Player state changed:", event.data);
         setPlayerState(event.data);
 
         if (bufferingTimeoutRef.current) {
             clearTimeout(bufferingTimeoutRef.current);
         }
 
-        // State 5 means video is cued and ready to play
         if (event.data === 5) {
             setIsFullyLoaded(true);
             if (bufferingTimeoutRef.current) {
@@ -78,12 +120,10 @@ function NewsVideo({ video }: { video: Video }) {
             }
         }
 
-        // Fallback: if we get to any of these states, show the video
         if (event.data === 1 || event.data === 2 || event.data === -1) {
             setIsFullyLoaded(true);
         }
 
-        // Handle persistent buffering
         if (event.data === 3) {
             bufferingTimeoutRef.current = setTimeout(() => {
                 if (playerRef.current && !isFullyLoaded) {
@@ -94,16 +134,14 @@ function NewsVideo({ video }: { video: Video }) {
     }
 
     const onError = (event) => {
-        // console.error("YouTube player error:", event);
         setIsFullyLoaded(true);
     }
 
     function LoadingState() {
-        // Show thumbnail while loading for better UX
         return (
-            <div className="absolute top-0 left-0 w-full h-full bg-stone-800  flex flex-col items-center justify-center gap-2">
+            <div className="absolute top-0 left-0 w-full h-full bg-stone-800 flex flex-col items-center justify-center gap-2">
                 <img 
-                    src={`https://img.youtube.com/vi/${video.video_id}/mqdefault.jpg`}
+                    src={video.thumbnail}
                     alt="Video thumbnail"
                     className="absolute top-0 left-0 w-full h-full object-cover"
                 />
@@ -122,7 +160,7 @@ function NewsVideo({ video }: { video: Video }) {
                 onReady={onReady}
                 onStateChange={onStateChange}
                 onError={onError}
-                className={isFullyLoaded ? 'opacity-100' : 'opacity-0'}
+                className={`${isFullyLoaded ? 'opacity-100' : 'opacity-0'} w-full h-full`}
                 style={{ transition: 'opacity 0.3s ease-in-out' }}
             />
             {!isFullyLoaded && <LoadingState />}
@@ -130,4 +168,4 @@ function NewsVideo({ video }: { video: Video }) {
     )
 }
 
-export default React.memo(NewsVideo)
+export default React.memo(NewsVideo);

@@ -44,7 +44,7 @@ export default function NewsCarousel({ questions, articles }: {
     return (
         <div>
 
-            <h1 className="text-3xl leading-normal mb-10 text-center text-gray-300">
+            <h1 className="text-2xl leading-normal mb-12 text-center text-gray-300">
                 Today's Question about
                 <h1 className="text-4xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
                     {text_question.topic}

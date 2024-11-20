@@ -4,10 +4,11 @@ import { useState, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
-import { X, Heart, HeartOff, ArrowRight, CalendarDays} from 'lucide-react'
+import { X, Heart, HeartOff, ArrowRight, CalendarDays } from 'lucide-react'
 import { Article, Question } from '@/utils/types'
 import { addFavorite, deleteNewsbyId, removeFavorite } from '@/utils/api'
 import moment from 'moment'
+import { Separator } from '@radix-ui/react-separator'
 
 function NewsArticle({ article, favorites, showFavorites, setFavorites, showDelete, showAdd, questions, newsData, setNewsData }:
     {
@@ -29,7 +30,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
         if (favorites.some((fav: Article) => fav.title === article.title)) {
 
-            
+
 
             await removeFavorite(article.id)
                 .then(() => {
@@ -90,8 +91,9 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                 )}
                 <div className="absolute bottom-4 left-6 ">
                     <div className='p-2 w-fit flex items-center bg-gray-700/60 backdrop-blur-sm rounded'>
-                        <CalendarDays strokeWidth={2} size={16} className='mr-1' color='white'/>
-                        <p className='text-white text-xs'>{moment(article_date).format("DD MMMM YY")}</p>
+                        <CalendarDays style={{ width: 18, height: 18 }} strokeWidth={1} color='white' />
+                        <Separator orientation="vertical"  className='mx-1 w-[1px] h-[12px] bg-gray-300'/>
+                        <p className='text-white xl:text-xs 2xl:text-sm'>{moment(article_date).format("DD MMMM YY")}</p>
                     </div>
                 </div>
             </div>
@@ -106,7 +108,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                         className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                         onClick={handleFavorite}>
                         <div className='p-2 flex justify-center items-center'>
-                            {favorites.length > 0 && favorites.some((fav: Article) => fav.title === article.title) ? <HeartOff strokeWidth={3} size={18}  /> : <Heart  strokeWidth={3} size={18} />}
+                            {favorites.length > 0 && favorites.some((fav: Article) => fav.title === article.title) ? <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} /> : <Heart style={{ width: 18, height: 18 }} strokeWidth={2} />}
                         </div>
 
                     </Button>
@@ -119,14 +121,14 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                             className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                             onClick={handleDelete}>
                             <div className='p-2 flex justify-center items-center'>
-                                <X strokeWidth={3} size={18} />
+                                <X style={{ width: 18, height: 18 }} strokeWidth={2} />
                             </div>
                         </Button>
                     )}
                 </div>
 
                 <div className="overflow-hidden">
-                    <CardTitle className="text-gray-100 whitespace-nowrap group-hover:animate-marquee inline-block">
+                    <CardTitle className="text-gray-100 font-medium whitespace-nowrap group-hover:animate-marquee inline-block">
                         {article.title}
                     </CardTitle>
                 </div>

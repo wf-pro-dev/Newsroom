@@ -42,6 +42,8 @@ COLUMNS = {
             "question_id",
             "video_id",
             "description",
+            "thumbnail",
+            "orientation"
         ],
         
          

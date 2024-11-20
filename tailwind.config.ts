@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 const plugin = require('tailwindcss/plugin')
+/** @type {import('tailwindcss').Config} */
 
 const rotateX = plugin(function ({ addUtilities }) {
 	addUtilities({
@@ -26,6 +27,10 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			sans: ['var(--font-inter)'],
+			serif: ['var(--font-playfair)'],
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

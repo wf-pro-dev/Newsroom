@@ -26,7 +26,7 @@ def dict_factory(cursor, row):
 
 def execute(sql, isSelect=True, params=None):
     try:
-        conn = connect(test_db)
+        conn = connect(main_db)
         conn.row_factory = dict_factory
         cur = conn.cursor()
         if isSelect:
@@ -112,6 +112,13 @@ def get_articles():
     users = execute(sql)
     return jsonify(users)
 
+@app.route('/Articles/<question_id>', methods=['GET'])
+def get_articles_by_qst(question_id):
+    sql = f"""SELECT * FROM Articles WHERE question_id = '{question_id}';"""
+
+    users = execute(sql)
+    return jsonify(users)
+
 @app.route('/Videos', methods=['GET'])
 def get_videos():
     sql = f"""SELECT * FROM Videos;"""
@@ -119,12 +126,14 @@ def get_videos():
     users = execute(sql)
     return jsonify(users)
 
-@app.route('/Articles/<question_id>', methods=['GET'])
-def get_articles_by_qst(question_id):
-    sql = f"""SELECT * FROM Articles WHERE question_id = '{question_id}';"""
+@app.route('/Videos/<question_id>', methods=['GET'])
+def get_videos_by_qst(question_id):
+    sql = f"""SELECT * FROM Videos WHERE question_id = '{question_id}';"""
 
     users = execute(sql)
     return jsonify(users)
+
+
 
 @app.route('/Articles/<id>', methods=['DELETE'])
 def delete_articles_by_id(id):

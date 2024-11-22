@@ -2,7 +2,7 @@ from sys import path
 path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 
 COLUMNS = {
-        "Favorites": [
+        "Fav_Articles": [
             "score",
             "question_id",
             "title",
@@ -11,9 +11,11 @@ COLUMNS = {
             "url",
             "urlToImage",
             "publishedAt",
-            "api_source"
+            "api_source",
+            "obj_id"
         ],
         
+       
         "Topics": [
             "title_top",
             "role_top"
@@ -36,6 +38,15 @@ COLUMNS = {
             "urlToImage",
             "publishedAt",
             "api_source"
+        ],
+        
+         "Fav_Videos" : [
+            "question_id",
+            "video_id",
+            "description",
+            "thumbnail",
+            "orientation",
+            "obj_id"
         ],
         
         "Videos": [

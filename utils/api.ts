@@ -9,8 +9,8 @@ export async function fetchTopics(): Promise<Topic[]> {
   return res.json()
 }
 
-export async function fetchFavorites(): Promise<Article[]> {
-  const res = await fetch(`${API_BASE_URL}/Favorites`)
+export async function fetchFavorites(table:"Fav_Articles"|"Fav_Videos"): Promise<Article[]|Video[]> {
+  const res = await fetch(`${API_BASE_URL}/${table}`)
   return res.json()
 }
 
@@ -31,7 +31,7 @@ export async function fetchVideos(): Promise<Video[]> {
 }
 
 
-export async function deleteNewsbyId(id: number, topic: string): Promise<void> {
+export async function deleteNewsbyId(id: number): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/Articles/${id}`, {
     method: 'DELETE',
   });
@@ -40,13 +40,21 @@ export async function deleteNewsbyId(id: number, topic: string): Promise<void> {
   }
 }
 
-export async function addFavorite(article: Article): Promise<Article> {
+export async function delteVideobyId(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/Videos/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to delete news item: ${response.statusText}`);
+  }
+}
 
-  
-  const response = await fetch(`${API_BASE_URL}/Favorites`, {
+export async function addFavorite(table:"Fav_Articles"|"Fav_Videos",obj: Article|Video): Promise<Article|Video> {
+  obj["obj_id"] = obj["id"]
+  const response = await fetch(`${API_BASE_URL}/${table}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(article)
+    body: JSON.stringify(obj)
   });
   if (!response.ok) {
     throw new Error(`Failed to add favorite: ${response.statusText}`);
@@ -54,8 +62,8 @@ export async function addFavorite(article: Article): Promise<Article> {
   return response.json();
 }
 
-export async function removeFavorite(id: number): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/Favorites/${id}`, {
+export async function removeFavorite(table:"Fav_Articles"|"Fav_Videos",id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/${table}/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {

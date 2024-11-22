@@ -8,25 +8,41 @@ import { Button } from "./ui/button"
 import { Heart } from "lucide-react"
 import NewsFavorites from "./newsFavorites"
 import NewsVideo from "./newsvideo"
-import { preloadVideo } from "@/utils/videoPreloader"
 
 
-function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, setFavorites, showFavorites, setShowFavorites, questions, videos, showDelete, showAdd }:
-
-    {
-        newsData: Record<string, Article[]>,
-        setNewsData: React.Dispatch<React.SetStateAction<Record<string, Article[]>>>,
-        activeTab: string,
-        setActiveTab: (tab: string) => void,
-        favorites: Article[],
-        setFavorites: React.Dispatch<React.SetStateAction<Article[]>>,
-        showFavorites: boolean,
-        setShowFavorites: React.Dispatch<React.SetStateAction<boolean>>,
-        questions: Question[],
-        videos: Video[],
-        showDelete: React.Dispatch<React.SetStateAction<boolean>>,
-        showAdd: React.Dispatch<React.SetStateAction<boolean>>
-    }) {
+function NewsMain({
+    newsData,
+    setNewsData,
+    activeTab,
+    setActiveTab,
+    Afavorites,
+    setAFavorites,
+    Vfavorites,
+    setVFavorites,
+    showFavorites,
+    setShowFavorites,
+    questions,
+    videos,
+    setVideos,
+    showDelete,
+    showAdd
+}: {
+    newsData: Record<string, Article[]>,
+    setNewsData: React.Dispatch<React.SetStateAction<Record<string, Article[]>>>,
+    activeTab: string,
+    setActiveTab: (tab: string) => void,
+    Afavorites: Article[],
+    setAFavorites: React.Dispatch<React.SetStateAction<Article[]>>,
+    Vfavorites: Video[],
+    setVFavorites: React.Dispatch<React.SetStateAction<Video[]>>,
+    showFavorites: boolean,
+    setShowFavorites: React.Dispatch<React.SetStateAction<boolean>>,
+    questions: Question[],
+    videos: Video[],
+    setVideos:React.Dispatch<React.SetStateAction<Video[]>>,
+    showDelete: React.Dispatch<React.SetStateAction<boolean>>,
+    showAdd: React.Dispatch<React.SetStateAction<boolean>>
+}) {
 
     const [isChanging, setisChanging] = useState(false)
     const [showHeader, setShowHeader] = useState(false)
@@ -118,8 +134,12 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
 
                             <Separator className="my-12 bg-gray-600" />
 
-                            {questions.filter((question: Question) => question.topic == topic).map((question: Question) => {
+                            {questions.filter((question: Question) => question.topic == topic).map((question: Question,index:number) => {
                                 var video_by_question = videos.filter((video: Video) => parseInt(video.question_id) == question.id)
+                                var news_by_question = mixArray(articles_by_topic.filter((article: any) => article.question_id == question.id), video_by_question, 4)
+                                
+                                if ( question.id == 1 ) {console.log("news",video_by_question,news_by_question[4])}
+                                
                                 return (
                                     <div>
 
@@ -133,16 +153,16 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
                                         </div>
 
                                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                                            {mixArray(articles_by_topic.filter((article: any) => article.question_id == question.id), video_by_question, 4).map((obj: any, index: number) => {
+                                            {news_by_question.map((obj: any, index: number) => {
 
                                                 if (obj["type"] == "article") return (
 
                                                     <NewsArticle
                                                         key={index}
                                                         article={obj}
-                                                        favorites={favorites}
+                                                        favorites={Afavorites}
                                                         showFavorites={showFavorites}
-                                                        setFavorites={setFavorites}
+                                                        setFavorites={setAFavorites}
                                                         showDelete={showDelete}
                                                         showAdd={showAdd}
                                                         questions={questions}
@@ -152,8 +172,14 @@ function NewsMain({ newsData, setNewsData, activeTab, setActiveTab, favorites, s
 
                                                 )
                                                 else return (
-                                                    <div className="col-span-2 justify-items-center items-center">
-                                                        <NewsVideo video={obj} />
+                                                    <div key={obj.id} className="col-span-2 justify-items-center items-center">
+                                                        <NewsVideo 
+                                                        video={obj} 
+                                                        videos={videos} 
+                                                        setVideos={setVideos} 
+                                                        favorites={Vfavorites} 
+                                                        setVFavorites={setVFavorites}
+                                                        />
                                                     </div>
 
                                                 )

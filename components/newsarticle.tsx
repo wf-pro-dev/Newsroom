@@ -10,6 +10,7 @@ import { addFavorite, deleteNewsbyId, removeFavorite } from '@/utils/api'
 import moment from 'moment'
 import { Separator } from '@radix-ui/react-separator'
 
+
 function NewsArticle({ article, favorites, showFavorites, setFavorites, showDelete, showAdd, questions, newsData, setNewsData }:
     {
         article: Article,
@@ -32,7 +33,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
 
 
-            await removeFavorite(article.id)
+            await removeFavorite("Fav_Articles",article.id)
                 .then(() => {
                     showDelete(true)
                     showFavorites && setIsDeleting(true)
@@ -44,7 +45,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
                 })
         } else {
-            await addFavorite(article)
+            await addFavorite("Fav_Articles",article)
                 .then(() => {
                     setFavorites([...favorites, article])
 
@@ -55,7 +56,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
     async function handleDelete() {
         const topic: string = questions!.find((question: Question) => question.id == article.question_id)!.topic
-        await deleteNewsbyId(article.id, topic)
+        await deleteNewsbyId(article.id)
             .then(() => {
                 showDelete(true)
                 setIsDeleting(true)

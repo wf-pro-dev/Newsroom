@@ -90,7 +90,8 @@ export default function Page() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
-  const [favorites, setFavorites] = useState<Article[]>([]);
+  const [Afavorites, setAFavorites] = useState<Article[]>([]);
+  const [Vfavorites, setVFavorites] = useState<Video[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [AddNotification, showAddNotification] = useState(false);
   const [DeleteNotification, showDeleteNotification] = useState(false);
@@ -99,17 +100,19 @@ export default function Page() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      const [topicsData, questionsData, favoritesData, articlesData, videosData] = await Promise.all([
+      const [topicsData, questionsData, AfavoritesData,VfavoritesData, articlesData, videosData] = await Promise.all([
         fetchTopics(),
         fetchQuestions(),
-        fetchFavorites(),
+        fetchFavorites("Fav_Articles"),
+        fetchFavorites("Fav_Videos"),
         fetchArticles(),
         fetchVideos(),
       ]);
       setTopics(topicsData);
       setActiveTab(topicsData[0].title_top);
       setQuestions(questionsData);
-      setFavorites(favoritesData);
+      setAFavorites(AfavoritesData);
+      setVFavorites(VfavoritesData);
       setArticles(articlesData);
       setVideos(videosData);
       setMounted(true);
@@ -192,9 +195,12 @@ const HeroSection = ({ isFixed, heroRef, setIsFixed }) => (
           questions={questions}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          favorites={favorites}
+          Afavorites={Afavorites}
+          Vfavorites={Vfavorites}
           videos={videos}
-          setFavorites={setFavorites}
+          setVideos={setVideos}
+          setAFavorites={setAFavorites}
+          setVFavorites={setVFavorites}
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
           showDelete={showDeleteNotification}

@@ -5,6 +5,8 @@ type Video = {
   description:string,
   thumbnail:string,
   orientation:string
+
+  obj_id?:number;
 }
 
 type Article = {
@@ -16,7 +18,9 @@ type Article = {
   source:string
   url:string;
   urlToImage: string;
-  api_sourec: string
+  api_sourec: string;
+
+  obj_id?:number;
 };
 
 

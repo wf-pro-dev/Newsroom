@@ -7,7 +7,7 @@ from Class.Topics import Topics
 # ETL import
 from ETL.Extract import fetch_Topics
 from ETL.Transform import get_relevant_articles
-from ETL.Load import create_table, insert_data, delete_all_tables, show_table
+from ETL.Load import create_table, insert_data, delete_all_tables, show_table, COLUMNS
 
 # DB paths
 main_db = '/Users/williamfotso/Workspace/Newsroom/Backend/DB_Files/main_db.db'
@@ -15,15 +15,14 @@ test_db = '/Users/williamfotso/Workspace/Newsroom/Backend/DB_Files/test_db.db'
 
 def init(db_conn):
     delete_all_tables(db_conn=db_conn)
-    create_table(db_conn=db_conn,table_name="Favorites")
-    create_table(db_conn=db_conn,table_name="Topics")
-    create_table(db_conn=db_conn,table_name="Questions")
-    create_table(db_conn=db_conn,table_name="Articles")
-    create_table(db_conn=db_conn,table_name="Videos")
+    
+    for table in COLUMNS.keys():
+        create_table(db_conn=db_conn,table_name=table)
+
     
 def main():
     
-    db_conn = sqlite3.connect(main_db) 
+    db_conn = sqlite3.connect(test_db) 
     init(db_conn=db_conn)
     
     for obj_topic in fetch_Topics():

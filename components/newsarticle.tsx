@@ -33,7 +33,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
 
 
-            await removeFavorite("Fav_Articles",article.id)
+            await removeFavorite("Fav_Articles", article.id)
                 .then(() => {
                     showDelete(true)
                     showFavorites && setIsDeleting(true)
@@ -45,11 +45,12 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
                 })
         } else {
-            await addFavorite("Fav_Articles",article)
+            await addFavorite("Fav_Articles", article)
                 .then(() => {
+                    
                     setFavorites([...favorites, article])
-
                     showAdd(true)
+
                 })
         }
     }
@@ -93,7 +94,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                 <div className="absolute bottom-4 left-6 ">
                     <div className='p-2 w-fit flex items-center bg-gray-700/60 backdrop-blur-sm rounded'>
                         <CalendarDays style={{ width: 18, height: 18 }} strokeWidth={1} color='white' />
-                        <Separator orientation="vertical"  className='mx-1 w-[1px] h-[12px] bg-gray-300'/>
+                        <Separator orientation="vertical" className='mx-1 w-[1px] h-[12px] bg-gray-300' />
                         <p className='text-white xl:text-xs 2xl:text-sm'>{moment(article_date).format("DD MMMM YY")}</p>
                     </div>
                 </div>
@@ -109,7 +110,11 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                         className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                         onClick={handleFavorite}>
                         <div className='p-2 flex justify-center items-center'>
-                            {favorites.length > 0 && favorites.some((fav: Article) => fav.title === article.title) ? <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} /> : <Heart style={{ width: 18, height: 18 }} strokeWidth={2} />}
+                            {favorites.length > 0 && favorites.some((fav: Article) => fav.obj_id == article.id) ?
+                                <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} />
+                                :
+                                <Heart style={{ width: 18, height: 18 }} strokeWidth={2} />
+                            }
                         </div>
 
                     </Button>

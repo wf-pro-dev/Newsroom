@@ -50,6 +50,7 @@ export async function delteVideobyId(id: number): Promise<void> {
 }
 
 export async function addFavorite(table:"Fav_Articles"|"Fav_Videos",obj: Article|Video): Promise<Article|Video> {
+
   obj["obj_id"] = obj["id"]
   const response = await fetch(`${API_BASE_URL}/${table}`, {
     method: 'POST',

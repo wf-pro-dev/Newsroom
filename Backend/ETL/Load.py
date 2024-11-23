@@ -1,65 +1,6 @@
 from sys import path
 path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 
-COLUMNS = {
-        "Fav_Articles": [
-            "score",
-            "question_id",
-            "title",
-            "description",
-            "content",
-            "url",
-            "urlToImage",
-            "publishedAt",
-            "api_source",
-            "obj_id"
-        ],
-        
-       
-        "Topics": [
-            "title_top",
-            "role_top"
-        ],
-        
-        "Questions": [
-            "question",
-            "topic",
-            "role",
-            "keywords",
-        ],
-        
-        "Articles": [
-            "score",
-            "question_id",
-            "title",
-            "description",
-            "content",
-            "url",
-            "urlToImage",
-            "publishedAt",
-            "api_source"
-        ],
-        
-         "Fav_Videos" : [
-            "question_id",
-            "video_id",
-            "description",
-            "thumbnail",
-            "orientation",
-            "obj_id"
-        ],
-        
-        "Videos": [
-            "question_id",
-            "video_id",
-            "description",
-            "thumbnail",
-            "orientation"
-        ],
-        
-         
-        
-    }
 
 def execute(db_conn, sql_command: str, params=None):
     cursor = db_conn.cursor()
@@ -98,7 +39,13 @@ def delete_all_tables(db_conn):
     tables = [table[0] for table in cursor.fetchall()]
 
     for table in tables:
-        execute(db_conn=db_conn,sql_command=f"DROP TABLE {table};")
+        execute(db_conn=db_conn,sql_command=f"DROP TABLE IF EXISTS {table};")
+
+def delete_table(db_conn,table_name):
+    """Deletes all tables from a specified SQLite database."""
+
+
+    execute(db_conn=db_conn,sql_command=f"DROP TABLE IF EXISTS {table_name};")
 
     
 

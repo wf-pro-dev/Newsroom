@@ -1,8 +1,8 @@
 
 
-from ETL.API.Newsfetcher import Newsfetcher
-from ETL.API.Open_AI import fetch_open_AI
-from ETL.API.YT_api import fetch_video
+from api.news.client import Newsfetcher
+from api.openai.client import fetch_open_AI
+from api.youtube.client import fetch_video
 
 def fetch_Topics() -> list[dict[str, str]]:
     """

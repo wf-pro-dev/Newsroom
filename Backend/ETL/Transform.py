@@ -4,10 +4,10 @@ path.append('/Users/williamfotso/Workspace/Newsroom/Backend')
 from typing import Tuple
 from rake_nltk import Rake
 
-from Class.Article import Article
-from Class.Article_Analyzer import analyze_article_relevance
+from core.models.article import Article
+from core.services.article_analyzer import analyze_article_relevance
 
-from Class.Videos import Videos
+from core.models.video import Videos
 
 
 def generate_Query(title_top: str, title_qst: str) -> Tuple[str, dict[str, list]]:

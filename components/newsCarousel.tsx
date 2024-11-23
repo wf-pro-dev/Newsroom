@@ -44,11 +44,11 @@ export default function NewsCarousel({ questions, articles }: {
     return (
         <div>
 
-            <h1 className="text-2xl leading-normal mb-12 text-center text-gray-300">
+            <h1 className="text-2xl leading-normal mb-8 text-center text-gray-300">
                 Today's Question about
-                <h1 className="text-4xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
+                <p className="text-4xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
                     {text_question.topic}
-                </h1>
+                </p>
             </h1>
 
             <div className="flex 2xl:h-[315px] xl:h-[275px]">
@@ -72,7 +72,7 @@ export default function NewsCarousel({ questions, articles }: {
                 <div className="flex-1 relative ">
                     {questions.map((question, index) => {
                         return (
-                            <div style={{ left: index * 130, zIndex: (2 - index), scale: 1 - (index * 0.2),opacity:1 - (index * 0.2) }} className={`absolute 2xl:ml-12 border border-white/50 rounded-md overflow-hidden`}>
+                            <div key={index} style={{ left: index * 130, zIndex: (2 - index), scale: 1 - (index * 0.2),opacity:1 - (index * 0.2) }} className={`absolute 2xl:ml-12 border border-white/50 rounded-md overflow-hidden`}>
                                 <Carousel
                                     setApi={index == 0 ? setApi : undefined}
                                     opts={{
@@ -91,14 +91,14 @@ export default function NewsCarousel({ questions, articles }: {
 
                                     <CarouselContent className="2xl:h-[315px] 2xl:max-w-[545px] xl:h-[275px] xl:w-[475px]" >
 
-                                        {questions.map((question) => {
+                                        {questions.map((question,index) => {
 
 
                                             var qst_head = articles.filter((article) => article.question_id == question.id.toString())[0]
 
                                             return (
 
-                                                <CarouselItem className="flex-none 2xl:h-[315px] 2xl:min-w-[545px] xl:h-[275px] xl:w-[475px] pl-0 overflow-hidden">
+                                                <CarouselItem key={index} className="flex-none 2xl:h-[315px] 2xl:min-w-[545px] xl:h-[275px] xl:w-[475px] pl-0 overflow-hidden">
                                                     {qst_head.urlToImage && (
                                                         <div className="flex-none 2xl:h-[315px] 2xl:min-w-[545px] xl:h-[275px] xl:w-[475px]" >
                                                             <Image

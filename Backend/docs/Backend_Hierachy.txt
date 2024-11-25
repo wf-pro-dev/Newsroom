@@ -1,0 +1,48 @@
+Backend
+├── api
+│   ├── __init__.py
+│   ├── news
+│   │   ├── client.py
+│   │   ├── newsapi.py
+│   │   └── newsdata.py
+│   ├── openai
+│   │   └── client.py
+│   └── youtube
+│       └── client.py
+├── config
+│   ├── __init__.py
+│   ├── constants.py
+│   └── settings.py
+├── core
+│   ├── __init__.py
+│   ├── models
+│   │   ├── article.py
+│   │   ├── question.py
+│   │   ├── topic.py
+│   │   └── video.py
+│   └── services
+│       └── article_analyzer.py
+├── data
+│   ├── main_db.db
+│   └── test_db.db
+├── database
+│   ├── __init__.py
+│   ├── connection.py
+│   └── operations.py
+├── etl
+│   ├── Extract.py
+│   ├── Load.py
+│   ├── Transform.py
+│   └── __init__.py
+├── main.py
+├── requirements.txt
+└── server
+    ├── Server.py
+    ├── __init__.py
+    ├── app.py
+    └── routes
+        ├── articles.py
+        ├── questions.py
+        ├── topics.py
+        └── videos.py
+

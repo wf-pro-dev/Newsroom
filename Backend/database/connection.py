@@ -1,7 +1,8 @@
-import sqlite3
+import sqlite3, os
 from typing import Optional, Any, List, Dict
 from pathlib import Path
-import os
+
+from config.constants import TEST_MODE
 
 class DatabaseConnection:
     """
@@ -20,7 +21,7 @@ class DatabaseConnection:
         self.test_db_path = self.db_folder / 'test_db.db'
         
         self.conn: Optional[sqlite3.Connection] = None
-        self.is_test_mode = True
+        self.is_test_mode = TEST_MODE
 
     def dict_factory(self, cursor: sqlite3.Cursor, row: tuple) -> dict:
         """Convert database row to dictionary."""
@@ -33,7 +34,7 @@ class DatabaseConnection:
         """Create a database connection."""
         
         db_path = self.test_db_path if self.is_test_mode else self.main_db_path
-
+        print("db_path",db_path, self.is_test_mode == False)
         self.conn = sqlite3.connect(str(db_path))
         self.conn.row_factory = self.dict_factory
         return self.conn

@@ -51,7 +51,7 @@ export default function NewsCarousel({ questions, articles }: {
                 </p>
             </h1>
 
-            <div className="flex 2xl:h-[315px] xl:h-[275px]">
+            <div className="flex 2xl:h-[315px] xl:h-[275px] overflow-hidden">
 
                 <div className="flex-1 px-6 2xl:h-[315px] xl:h-[275px]">
 
@@ -72,7 +72,7 @@ export default function NewsCarousel({ questions, articles }: {
                 <div className="flex-1 relative ">
                     {questions.map((question, index) => {
                         return (
-                            <div key={index} style={{ left: index * 130, zIndex: (2 - index), scale: 1 - (index * 0.2),opacity:1 - (index * 0.2) }} className={`absolute 2xl:ml-12 border border-white/50 rounded-md overflow-hidden`}>
+                            <div key={index} style={{ left: index * 130, zIndex: (2 - index), scale: 1 - (index * 0.2),opacity:1 - (index * 0.2) }} className={`absolute 2xl:ml-12 border-[.5px] border-gray-400 rounded-md overflow-hidden`}>
                                 <Carousel
                                     setApi={index == 0 ? setApi : undefined}
                                     opts={{

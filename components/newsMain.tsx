@@ -114,7 +114,7 @@ function NewsMain({
                                 className={
                                     `tab-trigger
                                     group-hover:translate-y-0
-                                    data-[state=active]:${showHeader ? "translate-y-0" : "-translate-y-20"} 
+                                    ${showHeader ? "data-[state=active]:translate-y-0" : "data-[state=active]:-translate-y-20"} 
                                     ${AtinnerHeight ? "translate-y-0" : "-translate-y-20"}`
                                 }>
                                 <p className="text-[15px]">

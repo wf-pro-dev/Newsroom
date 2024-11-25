@@ -3,6 +3,9 @@ import NewsArticle from './core/newsarticle';
 import NewsVideo from './core/newsvideo';
 import { useEffect, useState } from 'react';
 
+import '@/styles/newsmain.css';
+import { Separator } from './ui/separator';
+
 function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, videos, setVideos, showFavorites, showDelete, showAdd }:
   {
     Afavorites: Article[],
@@ -38,10 +41,13 @@ function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, v
 
   return (
 
-    <div className="min-h-screen w-screen xl:px-20 2xl:px-40 py-24  bg-black/60 backdrop-blur-sm  backdrop-contrast-125">
+    <div className="min-h-screen w-screen xl:px-24 2xl:px-40 bg-black/60 backdrop-blur-sm  backdrop-contrast-125">
 
       {mix_array.length > 0 && (
-        <div className='justify-items-center' >
+        <div className='justify-items-center py-12' >
+          
+          <Separator className="separator" />
+
           <h1 className="text-2xl leading-normal mb-8 text-center text-gray-300">
             Your Favorite News
             <p className="text-4xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">

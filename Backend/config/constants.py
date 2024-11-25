@@ -1,5 +1,13 @@
 import os
 
+# /* TEST MODE */
+TEST_MODE=os.environ.get("NEWSROOM_TESTMODE") == "1"
+
+# /* APi Keys */
+NEWSAPI_KEY=os.environ.get("NEWSAPI")
+NEWSDATA_KEY=os.environ.get("NEWSDATA")
+
+# /* Table and columns for .db file */
 COLUMNS = {
         "Fav_Articles": [
             "score",
@@ -59,7 +67,3 @@ COLUMNS = {
          
         
     }
-
-
-NEWSAPI_KEY=os.environ.get("NEWSAPI")
-NEWSDATA_KEY=os.environ.get("NEWSDATA")

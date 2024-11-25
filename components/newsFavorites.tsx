@@ -1,6 +1,6 @@
 import { Article, Video } from '@/utils/types';
-import NewsArticle from './newsarticle';
-import NewsVideo from './newsvideo';
+import NewsArticle from './core/newsarticle';
+import NewsVideo from './core/newsvideo';
 import { useEffect, useState } from 'react';
 
 function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, videos, setVideos, showFavorites, showDelete, showAdd }:
@@ -38,10 +38,10 @@ function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, v
 
   return (
 
-    <div className="min-h-screen w-screen xl:px-20 2xl:px-32 bg-black/[.05] backdrop-blur-sm  backdrop-contrast-125">
+    <div className="min-h-screen w-screen xl:px-20 2xl:px-40 py-24  bg-black/60 backdrop-blur-sm  backdrop-contrast-125">
 
       {mix_array.length > 0 && (
-        <div className='py-24 justify-items-center' >
+        <div className='justify-items-center' >
           <h1 className="text-2xl leading-normal mb-8 text-center text-gray-300">
             Your Favorite News
             <p className="text-4xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
@@ -54,7 +54,7 @@ function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, v
             {mix_array.map((obj: Article | Video, index) => {
               if (obj["type"] == "article") {
                 return (
-                  <div key={obj.type + obj.id} className="col-span-2 h-[400px]">
+                  <div key={obj.type + obj.id} >
                     <NewsArticle
                       key={index}
                       article={obj}

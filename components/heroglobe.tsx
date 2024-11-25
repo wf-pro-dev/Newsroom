@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { start } from 'repl'
+import '@/styles/HeroGlobe.css'
 
 
 const newsData = [
@@ -20,7 +20,7 @@ const newsData = [
 
 
 
-export function HeaderAndHeroGlobeComponent() {
+export function HeroGlobe() {
   const globeRef = useRef<HTMLDivElement | null>(null)
   const [selectedNews, setSelectedNews] = useState<{ id: number; title: string; lat: number; lon: number } | null>(null)
 
@@ -239,31 +239,26 @@ export function HeaderAndHeroGlobeComponent() {
   }, []);
 
   return (
-    <div className=" min-h-screen bg-transparent text-white">
-
-      <section className="relative h-screen">
-
-        <div ref={globeRef} className="w-full h-full" />
+    <div className="hero-globe-container">
+      <section className="hero-section">
+        <div ref={globeRef} className="globe" />
 
         {selectedNews && (
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-80 p-4 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold text-blue-400">{selectedNews.title}</h2>
-            <Button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white">Read More</Button>
+          <div className="news-popup">
+            <h2 className="news-title">{selectedNews.title}</h2>
+            <Button className="read-more-button">Read More</Button>
           </div>
         )}
 
-        <div className={` opacity-${showHeader ? 0 : 1}  absolute top-4 left-4 bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg shadow-lg transition-all duration-300 ease-in-out`}>
-
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
+        <div className={`header ${showHeader ? 'hidden' : 'visible'}`}>
+          <h1 className="header-title">
             The NewsRoom
           </h1>
-          <p className="text-gray-300">Explore breaking news from around the world</p>
+          <p className="header-description">
+            Explore breaking news from around the world
+          </p>
         </div>
-
-
-
       </section>
-
     </div>
   )
 }

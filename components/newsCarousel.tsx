@@ -56,7 +56,7 @@ export default function NewsCarousel({ questions, articles }: {
                 <div className="flex-1 px-6 2xl:h-[315px] xl:h-[275px]">
 
                     <div className="mb-6">
-                        <h2 className="text-2xl line-clamp-3 overflow-hidden ... font-bold">{text_question.question}</h2>
+                        <h2 className="text-2xl line-clamp-3 overflow-hidden ... font-medium">{text_question.question}</h2>
                     </div>
 
                     <div className="mb-2">

@@ -2,7 +2,7 @@ import { Question, Video } from "@/utils/types";
 import { HeartOff, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import YouTube from "react-youtube"
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
 import { addFavorite, delteVideobyId, removeFavorite } from "@/utils/api";
 

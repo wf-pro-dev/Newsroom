@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Topic, Question, Article, Video } from '@/utils/types'
-import NewsMain from '@/components/newsMain'
-import Notification from '@/components/notification'
-import { HeaderAndHeroGlobeComponent } from '@/components/header-and-hero-globe'
+import NewsMain from '@/components/newsmain'
+import Notification from '@/components/core/notification'
+import { HeroGlobe } from '@/components/heroglobe'
 import { fetchTopics, fetchQuestions, fetchFavorites, fetchArticles, fetchVideos } from '../utils/api'
 import { Button } from '@/components/ui/button'
 import '@/styles/page.css'
@@ -135,7 +135,7 @@ export default function Page() {
   useEffect(() => {
     const data: Record<string, Article[]> = {}
     topics.forEach((topic) => {
-      data[topic.title_top] = articles.filter((article) => 
+      data[topic.title_top] = articles.filter((article) =>
         questions[parseInt(article.question_id) - 1]?.topic === topic.title_top
       )
     })
@@ -153,18 +153,18 @@ export default function Page() {
     ...(isFixed ? {} : { opacity: 1, transform: 'scale(1)' })
   })
 
-  // HeroSection Component
-  const HeroSection = ({ isFixed, heroRef, setIsFixed }) => (
+  // DupeHero Component
+  const DupeHero = ({ isFixed, heroRef, setIsFixed }) => (
     <div
       ref={heroRef}
-      className="hero-section"
+      className="dupe-section"
       style={getHeroStyles(isFixed)}
     >
-      <div className="hero-content">
+      <div className="dupe-content">
         <div className="pointer-events-auto">
           <Button
             variant="outline"
-            className="hero-button"
+            className="dupe-button"
             onClick={() => setIsFixed(true)}
           >
             <p>Welcome to the</p>
@@ -181,17 +181,20 @@ export default function Page() {
 
   return (
     <div className="app-page">
-      <div className="z-100 w-screen h-screen transition-[height] duration-300 ease-in-out" 
-           style={{ height: isFixed ? heroRef.current?.offsetHeight : 'auto' }}>
-        {!isFixed && <HeroSection isFixed={isFixed} heroRef={heroRef} setIsFixed={setIsFixed} />}
+      
+      <div className="dupe-main"
+        style={{ height: isFixed ? heroRef.current?.offsetHeight : 'auto' }}>
+        {!isFixed && <DupeHero isFixed={isFixed} heroRef={heroRef} setIsFixed={setIsFixed} />}
       </div>
 
-      <div className="header-hero" style={{
-        height: heroRef.current?.offsetHeight,
-        pointerEvents: isFixed ? 'auto' : 'none',
-        ...getHeroStyles(true)
-      }}>
-        <HeaderAndHeroGlobeComponent />
+      <div className="header-hero"
+        style={{
+          height: heroRef.current?.offsetHeight,
+          pointerEvents: isFixed ? 'auto' : 'none',
+          ...getHeroStyles(true)
+        }}
+      >
+        <HeroGlobe />
       </div>
 
       <div className={`news-main ${isFixed ? 'z-10' : ''}`}>
@@ -213,17 +216,19 @@ export default function Page() {
           showAdd={showAddNotification}
         />
       </div>
-      <Notification 
-        message="Article added to favorites!" 
-        color="green" 
-        show={AddNotification} 
-        setShow={showAddNotification} 
+
+      <Notification
+        message="Article added to favorites!"
+        color="green"
+        show={AddNotification}
+        setShow={showAddNotification}
       />
-      <Notification 
-        message="Article removed from favorites!" 
-        color="red" 
-        show={DeleteNotification} 
-        setShow={showDeleteNotification} 
+
+      <Notification
+        message="Article removed from favorites!"
+        color="red"
+        show={DeleteNotification}
+        setShow={showDeleteNotification}
       />
     </div>
   )

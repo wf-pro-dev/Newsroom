@@ -28,9 +28,9 @@ def generate_Query(title_top: str, title_qst: str) -> Tuple[str, dict[str, list]
 
 
     return ', '.join(top_keywords), {
-        "NewsAPI": f"{title_top} AND {' OR '.join(top_keywords)}",
-        "NewsDATA":  f"{title_top} AND {' OR '.join(top_keywords)}",
-        "YTAPI" : f"{title_top} | {' | '.join(top_keywords)}"
+        "NewsAPI": f"{title_top} {'AND' if len(top_keywords) > 0 else '' } {' OR '.join(top_keywords)}",
+        "NewsDATA":  f"{title_top} {'AND' if len(top_keywords) > 0 else '' } {' OR '.join(top_keywords)}",
+        "YTAPI" : f"{title_top} {'|' if len(top_keywords) > 0 else '' } {' | '.join(top_keywords)}"
     }
     
 
@@ -96,10 +96,11 @@ def get_relevant_articles(articles:list[Article],question:str) -> list[Article] 
         article_to_dict = article.to_dict()
         description = article_to_dict["content"] if article_to_dict["api_source"] == "NewsAPI" else article_to_dict["description"]
         article.set_score(analyze_article_relevance(question=question,article_description=description))
-        
-    articles.sort(key=lambda article : article.get_score() ,reverse=True)
+    
+    set_of_articles = set(articles)
+    relevant_articles = sorted(set_of_articles,key=lambda article : article.get_score() ,reverse=True)
                 
-    return articles[:20]
+    return relevant_articles[:20]
 
 def generate_Videos(videos_api:list) -> list:
 

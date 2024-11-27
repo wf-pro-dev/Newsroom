@@ -1,63 +1,80 @@
 
-# core import
-from core.models.topic import Topics
+from Server.models.db_topic import topics
 
 
 # ETL import
 from etl.extract import fetch_Topics
-from etl.transform import get_relevant_articles
+from etl.transform import get_relevant_articles, generate_Query
 
-from database.operations import init, insert_data, show_table, COLUMNS
+from database.connection import db
+
+from Server.app import create_app
 
 
 
-
-    
 def main():
 
-    init()
-    
-    for obj_topic in fetch_Topics():
+    app=create_app()
+   
+    with app.app_context():
+         # Drop all tables
+        db.drop_all()
         
-        topic = Topics(obj_topic["topic"],obj_topic["role"])
-        
-        topic_id = insert_data(table_name="Topics",obj=topic)
-        
-        
-        questions = topic.get_questions()
-        for question in questions:
-            
-            questtion_id = insert_data(table_name="Questions",obj=question)    
-            
-            relevant_artciles = get_relevant_articles(question.get_articles(),question=question.get_question())
-            
-            unique_articles = list(set(relevant_artciles))
+        # Recreate all tables
+        db.create_all()
+        for obj_topic in fetch_Topics():
 
-            for article in unique_articles:
+            topic = topics(title=obj_topic["topic"], role=obj_topic["role"])
+
+            
+            db.session.add(topic)
+            db.session.commit()
+
+            questions = topic.set_questions()
+            
+            for question in questions:
+
+                keywords, query = generate_Query((topic.title,topic.role),question.text)
+                question.keywords = keywords
                 
-                article.set_question_id(question_id=questtion_id)
+
+                db.session.add(question)
+                db.session.commit()
+
+                relevant_artciles = get_relevant_articles(
+                    question.set_articles(query=query), question=question.text
+                )
+
                 
-                article_id = insert_data(table_name="Articles",obj=article)
-                print(f"Artilce with id = {article_id} is complete","-" * 20,sep="\n")
-            
-            videos = question.get_videos()
-            
-            for video in videos:
-                video.set_question_id(question_id=questtion_id)
-                video_id = insert_data(table_name="Videos",obj=video)
-                print(f"Video with id = {video_id} is complete","-" * 20,sep="\n")
-            
-            print(f"Question with id = {questtion_id} is complete","-" * 20,sep="\n")
-        
-        print(f"Topic with id = {topic_id} is complete","-" * 20,sep="\n")
-            
-    
-    show_table(table_name="Topics")
-    
-    
+                for article in relevant_artciles:
+
+                    article.question_id = question.id
+
+                    db.session.add(article)
+                    db.session.commit()
+                        
+                    print(f"Artilce with id = {article.id} is complete", "-" * 20, sep="\n")
+
+                videos = question.set_videos(query=query)
+
+                for video in videos:
+                    
+                    video.question_id = question.id
+                    
+
+                    db.session.add(video)
+                    db.session.commit()
+                        
+                    print(f"Video with id = {video.id} is complete", "-" * 20, sep="\n")
+
+                print(f"Question with id = {question.id} is complete", "-" * 20, sep="\n")
+
+            print(f"Topic with id = {topic.id} is complete", "-" * 20, sep="\n")
+
+
 
 if __name__ == "__main__":
-    
+
     main()
     print("Database Complete !")
     # for question in Topic.get_questions():

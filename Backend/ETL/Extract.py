@@ -1,21 +1,20 @@
-
-
 from api.news.client import Newsfetcher
 from api.openai.client import fetch_open_AI
 from api.youtube.client import fetch_video
 
+
 def fetch_Topics() -> list[dict[str, str]]:
     """
     Fetches a list of topics related to current news along with the best suited role to educate about those topics.
-    
+
     Parameters:
     None
-    
+
     Returns:
     list[dict[str, str]]: A list of JSON objects, each containing a topic and a role.
     """
-    
-    prompt ="""
+
+    prompt = """
             Create a list of 5 elements of JSON schema with the following structure:
             {
                 "topic": "Find a topic related to current news. Write it in 1 or 2 words",
@@ -23,23 +22,24 @@ def fetch_Topics() -> list[dict[str, str]]:
             }
             Make the response as concise as possible. Include only the list
             """
-   
+
     return fetch_open_AI(prompt=prompt)
 
-def fetch_Questions(topic:str,role:str) -> list[str]:
+
+def fetch_Questions(topic: str, role: str) -> list[str]:
     """
     Generates questions about a given topic from the perspective of a specified role.
-    
+
     Parameters:
     topic (str): The topic to generate questions about.
     role (str): The role from whose perspective the questions are generated.
-    
+
     Returns:
     list[str]: A list of questions related to the topic from the role's perspective.
     """
-    
+
     N_QST_PER_TOP = 3
-    
+
     prompt = f"""
         Generate {N_QST_PER_TOP} insightful questions about {topic} from the perspective of a {role}.
         The questions should:
@@ -49,16 +49,17 @@ def fetch_Questions(topic:str,role:str) -> list[str]:
         
         Format: Return a a JSON schema of a python list with the question as element
         """
-   
+
     return fetch_open_AI(prompt=prompt)
 
-def fetch_Articles(query:str) -> dict[str,list]:
+
+def fetch_Articles(query: str) -> dict[str, list]:
     """
     Fetches news articles from multiple news API sources based on a given query.
-    
+
     Parameters:
     query (str): The query to search for articles.
-    
+
     Returns:
     dict[str,list]: A dictionary where the keys are the names of the news API sources and the values are lists of articles.
     """
@@ -66,11 +67,12 @@ def fetch_Articles(query:str) -> dict[str,list]:
     articles_by_api = fetcher.fetch_articles(query=query)
     return articles_by_api
 
-def fetch_Videos(query:dict) -> list:
+
+def fetch_Videos(query: dict) -> list:
+    
     videos = fetch_video(query=query["YTAPI"])
     return videos
 
 
 if __name__ == "__main__":
     pass
-

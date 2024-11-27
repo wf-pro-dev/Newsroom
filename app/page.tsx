@@ -114,13 +114,13 @@ export default function Page() {
       const [topicsData, questionsData, AfavoritesData, VfavoritesData, articlesData, videosData] = await Promise.all([
         fetchTopics(),
         fetchQuestions(),
-        fetchFavorites("Fav_Articles"),
-        fetchFavorites("Fav_Videos"),
+        fetchFavorites("fav_articles"),
+        fetchFavorites("fav_videos"),
         fetchArticles(),
         fetchVideos(),
       ])
       setTopics(topicsData)
-      setActiveTab(topicsData[0].title_top)
+      setActiveTab(topicsData[0].title)
       setQuestions(questionsData)
       setAFavorites(AfavoritesData)
       setVFavorites(VfavoritesData)
@@ -135,8 +135,8 @@ export default function Page() {
   useEffect(() => {
     const data: Record<string, Article[]> = {}
     topics.forEach((topic) => {
-      data[topic.title_top] = articles.filter((article) =>
-        questions[parseInt(article.question_id) - 1]?.topic === topic.title_top
+      data[topic.title] = articles.filter((article) =>
+        questions[parseInt(article.question_id) - 1]?.topic === topic.title
       )
     })
     setNewsData(data)

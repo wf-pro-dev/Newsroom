@@ -27,14 +27,14 @@ type Article = {
 type Question = {
   id: number;
   keywords: string;
-  question: string;
+  text: string;
   topic: string;
 };
 
 type Topic = {
   id: number;
-  title_top: string;
-  role_top: string;
+  title: string;
+  role: string;
 
 };
 

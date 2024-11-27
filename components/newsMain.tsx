@@ -103,7 +103,6 @@ function NewsMain({
 
             <TabsList className={`tabs-list group`}>
                 {Object.keys(newsData).map((category, index) => {
-
                     return (
                         <div key={index} className="tab-item">
                             <TabsTrigger
@@ -132,6 +131,7 @@ function NewsMain({
 
             {!showFavorites && Object.keys(newsData).map((topic, index) => {
                 var articles_by_topic = newsData[topic as keyof typeof newsData]
+                console.log(Object.keys(newsData)[index], activeTab )
                 return (
                     Object.keys(newsData)[index] == activeTab && (
                         <div key={index} className="tabs-content-container xl:px-24 2xl:px-40">
@@ -155,11 +155,11 @@ function NewsMain({
 
                                             <div className="question-header">
                                                 <h1 className="question-title">
-                                                    {question.question}
+                                                    {question.text}
                                                 </h1>
-                                                <p className="question-keywords">
+                                                {/* <p className="question-keywords">
                                                     {question.keywords.replaceAll(",", ", ")}
-                                                </p>
+                                                </p> */}
                                             </div>
 
                                             <div className="news-grid">

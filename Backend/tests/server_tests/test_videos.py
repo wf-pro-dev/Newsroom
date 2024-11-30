@@ -1,3 +1,6 @@
+from sys import path
+path.append("/Users/williamfotso/Workspace/Newsroom/Backend/")
+
 import unittest
 from flask import json
 from server.app import create_app

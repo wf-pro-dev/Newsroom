@@ -31,4 +31,5 @@ jobs:
       - name: Run tests
         run: |
           source env/bin/activate
+          ls Backend/
           python3.11 -m unittest discover -s Backend/tests/server_tests 

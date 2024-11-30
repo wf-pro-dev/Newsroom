@@ -32,4 +32,4 @@ jobs:
         run: |
           source env/bin/activate
           cd Backend
-          python3.11 -m unittest discover -s Backend/tests/server_tests 
+          python3.11 -m unittest discover -s tests/server_tests 

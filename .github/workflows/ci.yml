@@ -22,11 +22,6 @@ jobs:
         with:
           python-version: '3.11'
       
-      - name: Set PYTHONPATH
-        env:
-           PYTHONPATH: ${{ github.workspace }}/Backend
-        run: echo "PYTHONPATH is set to $PYTHONPATH"
-
       - name: Install dependencies
         run: |
           python -m venv env
@@ -36,4 +31,5 @@ jobs:
       - name: Run tests
         run: |
           source env/bin/activate
+          cd Backend
           python3.11 -m unittest discover -s Backend/tests/server_tests 

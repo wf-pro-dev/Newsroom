@@ -6,38 +6,28 @@ import { useEffect, useState } from 'react';
 import '@/styles/newsmain.css';
 import { Separator } from './ui/separator';
 
-function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, videos, setVideos, showFavorites, showDelete, showAdd }:
+import { useGlobalState } from '@/components/context/GlobalStateContext'
+import { id_to_obj, mixArray } from '@/lib/utils';
+
+
+function NewsFavorites({ showFavorites, showDelete, showAdd }:
   {
-    Afavorites: Article[],
-    setAFavorites: React.Dispatch<React.SetStateAction<Article[]>>,
-    Vfavorites: Video[],
-    setVFavorites: React.Dispatch<React.SetStateAction<Video[]>>,
-    videos: Video[],
-    setVideos: React.Dispatch<React.SetStateAction<Video[]>>,
+
     showFavorites: boolean,
     showDelete: React.Dispatch<React.SetStateAction<boolean>>,
     showAdd: React.Dispatch<React.SetStateAction<boolean>>
   }) {
 
-  const [mix_array, setMix_array] = useState([])
+  const { newsData, setNewsData, questions, favourites, setFavourites, videos, setVideos, articles } = useGlobalState()
 
-  function mixArray(arr: Array<any>, arr2: Array<any>, chunkSize: number) {
-    const result = [];
-    let j = 0;
-    for (let i = 0; i < arr.length || j < arr2.length; i++) {
+  
+  const {favArticles,favVideos} = id_to_obj(favourites,articles,videos)
+  const [mix_array, setMix_Array] = useState(mixArray(favArticles,favVideos,4))
 
-      if (arr2[j] && ((i > 0 && i % chunkSize == 0) || i >= arr.length)) { arr2[j]["type"] = "video"; result.push(arr2[j]); j++ }
-      if (arr[i]) { arr[i]["type"] = "article"; result.push(arr[i]); }
-
-
-    }
-    return result;
-  }
-
-  useEffect(() => {
-    setMix_array(mixArray(Afavorites, Vfavorites, 4))
-  }, [Afavorites, Vfavorites])
-
+  useEffect(()=>{
+    const {favArticles,favVideos} = id_to_obj(favourites,articles,videos)
+    setMix_Array(mixArray(favArticles,favVideos,4))
+  },[favourites])
 
   return (
 
@@ -45,7 +35,7 @@ function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, v
 
       {mix_array.length > 0 && (
         <div className='justify-items-center py-12' >
-          
+
           <Separator className="separator" />
 
           <h1 className="text-2xl leading-normal mb-8 text-center text-gray-300">
@@ -55,7 +45,7 @@ function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, v
             </p>
           </h1>
 
-          <div className=" grid gap-6 md:grid-cols-2 lg:grid-cols-4 ">
+          <div className=" grid gap-6 md:grid-cols-2 w-full lg:grid-cols-4 ">
 
             {mix_array.map((obj: Article | Video, index) => {
               if (obj["type"] == "article") {
@@ -64,11 +54,14 @@ function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, v
                     <NewsArticle
                       key={index}
                       article={obj}
-                      favorites={Afavorites}
-                      showFavorites={showFavorites}
-                      setFavorites={setAFavorites}
+                      favourites={favourites}
+                      showFavourites={showFavorites}
+                      setFavourites={setFavourites}
                       showDelete={showDelete}
                       showAdd={showAdd}
+                      questions={questions}
+                      newsData={newsData}
+                      setNewsData={setNewsData}
                     />
                   </div>
                 )
@@ -81,8 +74,8 @@ function NewsFavorites({ Afavorites, setAFavorites, Vfavorites, setVFavorites, v
                         video={obj}
                         videos={videos}
                         setVideos={setVideos}
-                        favorites={Vfavorites}
-                        setFavorites={setVFavorites}
+                        favourites={favourites}
+                        setFavourites={setFavourites}
                         showFavorites={showFavorites}
                         showDelete={showDelete}
                         showAdd={showAdd}

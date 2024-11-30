@@ -1,4 +1,5 @@
 from sys import path
+
 path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 
 import os

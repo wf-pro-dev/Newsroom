@@ -2,7 +2,7 @@ from sys import path
 
 path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 
-# Config
+# config
 from config.constants import NEWSAPI_KEY
 
 from newsapi import NewsApiClient

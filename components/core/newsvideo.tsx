@@ -1,23 +1,23 @@
-import { Question, Video } from "@/utils/types";
+import { Favourite, Question, Video } from "@/utils/types";
 import { HeartOff, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import YouTube from "react-youtube"
 import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
-import { addFavorite, delteVideobyId, removeFavorite } from "@/utils/api";
+import { addFavourite, removeFavourite } from "@/utils/api";
 
 type NewsVideoProps = {
     video: Video;
     videos: Video[];
     setVideos: React.Dispatch<React.SetStateAction<Video[]>>;
-    favorites: Video[];
-    setFavorites: React.Dispatch<React.SetStateAction<Video[]>>,
+    favourites: Favourite[];
+    setFavourites: React.Dispatch<React.SetStateAction<Favourite[]>>,
     showFavorites: boolean
     showAdd: React.Dispatch<React.SetStateAction<boolean>>,
     showDelete: React.Dispatch<React.SetStateAction<boolean>>,
 };
 
-function NewsVideo({ video, videos, setVideos, favorites, setFavorites, showFavorites, showAdd, showDelete }: NewsVideoProps) {
+function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFavorites, showAdd, showDelete }: NewsVideoProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef<any>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -99,7 +99,7 @@ function NewsVideo({ video, videos, setVideos, favorites, setFavorites, showFavo
     // Update YouTube player options when dimensions change
     useEffect(() => {
         if (!isMounted) return;
-        
+
         if (dimensions.height && dimensions.width) {
             setOpts({
                 height: dimensions.height,
@@ -122,7 +122,7 @@ function NewsVideo({ video, videos, setVideos, favorites, setFavorites, showFavo
 
     const onReady = (event: any) => {
         if (!isMounted) return;
-        
+
         playerRef.current = event.target;
 
         // Set initial size only if dimensions are available
@@ -189,52 +189,62 @@ function NewsVideo({ video, videos, setVideos, favorites, setFavorites, showFavo
     );
 
     // Rest of your handlers
-    const handleFavorite = async () => {
-        if (!isMounted) return;
-        
-        if (favorites.some((fav: Video) => fav.obj_id == video.obj_id || (!showFavorites && fav.obj_id == video.id))) {
-            await removeFavorite("Fav_Videos", video.id)
-                .then(() => {
-                    if (!isMounted) return;
-                    showDelete(true);
-                    showFavorites && setIsDeleting(true);
-                    setTimeout(() => {
-                        if (!isMounted) return;
-                        setFavorites(favorites.filter((fav: Video) => !(fav.obj_id == video.obj_id || (!showFavorites && fav.obj_id == video.id))));
-                        showFavorites && setIsDeleting(false);
-                    }, 400);
-                });
-        } else {
-            await addFavorite("Fav_Videos", video)
-                .then(() => {
-                    if (!isMounted) return;
-                    setFavorites([...favorites, video]);
-                    showAdd(true);
-                });
-        }
-    };
+    async function handleFavorite() {
 
-    const handleDelete = async () => {
-        if (!isMounted) return;
-        
-        await delteVideobyId(video.obj_id!)
-            .then(() => {
-                if (!isMounted) return;
+        try {
+            var favourite = favourites.find((fav: Favourite) => fav.entity_id == video.id && fav.entity_type == "video")
+            if (favourite) {
+                if (showFavorites) setIsDeleting(true);
+
+                // Optimistically update UI
+                setTimeout(() => {
+                    setFavourites(favourites.filter((fav: Favourite) => fav.entity_id !== video.id || fav.entity_type !== "video"));
+                }, 300)
+
                 showDelete(true);
-                setIsDeleting(true);
+                
 
-                setTimeout(() => {
-                    if (!isMounted) return;
-                    showDelete(false);
-                }, 2000);
+                await removeFavourite(favourite.entity_type,favourite.entity_id);
 
-                setTimeout(() => {
-                    if (!isMounted) return;
-                    setVideos(videos.filter((vid) => vid.id != video.id));
-                    setIsDeleting(false);
-                }, 400);
-            });
-    };
+            } else {
+                // Optimistically update UI
+                setFavourites([...favourites, { entity_id: video.id, entity_type: "video" }]);
+                showAdd(true);
+
+                await addFavourite(video.id, "video");
+            }
+        } catch (error) {
+            console.error("Error handling favorite:", error);
+            // Revert optimistic updates if necessary
+
+            // Optionally, set an error state to inform the user
+        }
+    }
+    async function handleDelete() {
+
+        // Optimistically update UI
+        setIsDeleting(true);
+
+        setTimeout(() => {
+            setVideos(videos.filter((vid) => vid.id != video.id));
+        }, 300)
+
+        try {
+            //await deleteVideobyId(video._id);
+            showDelete(true);
+
+            setTimeout(() => {
+                showDelete(false);
+            }, 2000);
+
+
+        } catch (error) {
+            console.error("Error deleting article:", error);
+            // Revert optimistic update if necessary
+            // Fetch the latest data or handle the error state
+            setIsDeleting(false);
+        }
+    }
 
     if (!isMounted) return null;
 
@@ -257,25 +267,26 @@ function NewsVideo({ video, videos, setVideos, favorites, setFavorites, showFavo
                 <div className="z-50 p-4 pr-2 rounded-l-3xl bg-gray-700/50 backdrop-blur-sm grid grid-cols-1  absolute gap-2 right-0 top-1/2 transform -translate-y-1/2 translate-x-11 hover:translate-x-0 transition-all duration-300 ease-in-out">
                     <Button
                         variant="secondary"
-                        className="p-0 h-fit  bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
-                        onClick={handleDelete}>
-                        <div className='p-2 flex justify-center items-center'>
-                            <X style={{ width: 18, height: 18 }} strokeWidth={2} />
-                        </div>
-                    </Button>
-
-                    <Button
-                        variant="secondary"
                         className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                         onClick={handleFavorite}>
                         <div className='p-2 flex justify-center items-center'>
-                            {favorites.length > 0 && favorites.some((fav: Video) => fav.obj_id == video.obj_id || (!showFavorites && fav.obj_id == video.id)) ?
+                            {favourites.length > 0 && favourites.find((fav: Favourite) => fav.entity_id == video.id && fav.entity_type == "video") ?
                                 <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} />
                                 :
                                 <Heart style={{ width: 18, height: 18 }} strokeWidth={2} />
                             }
                         </div>
                     </Button>
+                    
+                    <Button
+                        variant="secondary"
+                        className="p-0 h-fit  bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
+                        onClick={handleDelete}>
+                        <div className='p-2 flex justify-center items-center'>
+                            <X style={{ width: 18, height: 18 }} strokeWidth={2} />
+                        </div>
+                    </Button>
+                    
                 </div>
             )}
         </div>

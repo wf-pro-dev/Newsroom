@@ -2,8 +2,8 @@ from sys import path
 
 path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 
-from api.news.newsapi import NewsAPI
-from api.news.newsdata import NewsDATA
+from Api.news.newsapi import NewsAPI
+from Api.news.newsdata import NewsDATA
 
 
 class Newsfetcher:

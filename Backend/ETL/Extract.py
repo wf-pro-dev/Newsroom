@@ -1,6 +1,6 @@
-from api.news.client import Newsfetcher
-from api.openai.client import fetch_open_AI
-from api.youtube.client import fetch_video
+from Api.news.client import Newsfetcher
+from Api.openai.client import fetch_open_AI
+from Api.youtube.client import fetch_video
 
 
 def fetch_Topics() -> list[dict[str, str]]:
@@ -69,7 +69,7 @@ def fetch_Articles(query: str) -> dict[str, list]:
 
 
 def fetch_Videos(query: dict) -> list:
-    
+
     videos = fetch_video(query=query["YTAPI"])
     return videos
 

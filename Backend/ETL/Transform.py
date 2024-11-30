@@ -1,44 +1,28 @@
-from sys import path
-
-path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
-
-from typing import Tuple
+from typing import Tuple, List, Dict
 from rake_nltk import Rake
 
-
-from Server.models.db_article import articles
-from Server.models.db_video import videos
+from server.models.db_article import articles
+from server.models.db_video import videos
 from core.services.article_analyzer import analyze_article_relevance
 
 
-
-def generate_Query(title_top: str, title_qst: str) -> Tuple[str, dict[str, list]]:
-    # Natural Language Processing
-    # get five most important keywords from question
-
-    # Initialize RAKE with English stopwords
+def generate_query(title_top: str, title_qst: str) -> Tuple[str, Dict[str, List[str]]]:
+    """Generate a query string and a dictionary of queries for different APIs."""
     rake = Rake(max_length=3)
-
-    # Extract keywords from the title question
     rake.extract_keywords_from_text(title_qst)
-
-    # Get the ranked phrases with their scores
     ranked_phrases = rake.get_ranked_phrases()
-
-    # Extract the top 5 keywords/phrases
     top_keywords = ranked_phrases[:5]
 
     return ", ".join(top_keywords), {
-        "NewsAPI": f"{title_top} {'AND' if len(top_keywords) > 0 else '' } {' OR '.join(top_keywords)}",
-        "NewsDATA": f"{title_top} {'AND' if len(top_keywords) > 0 else '' } {' OR '.join(top_keywords)}",
-        "YTAPI": f"{title_top} {'|' if len(top_keywords) > 0 else '' } {' | '.join(top_keywords)}",
+        "NewsAPI": f"{title_top} {'AND' if top_keywords else ''} {' OR '.join(top_keywords)}",
+        "NewsDATA": f"{title_top} {'AND' if top_keywords else ''} {' OR '.join(top_keywords)}",
+        "YTAPI": f"{title_top} {'|' if top_keywords else ''} {' | '.join(top_keywords)}",
     }
 
 
-def NewsAPI_to_Articles(api_article: dict) -> articles:
-    # Transform NewsAPI object to Artcile object
-
-    res_article = articles(
+def newsapi_to_articles(api_article: dict) -> articles:
+    """Transform a NewsAPI article object to an Article model instance."""
+    return articles(
         api_source="NewsAPI",
         title=api_article["title"],
         description=api_article["description"],
@@ -47,14 +31,11 @@ def NewsAPI_to_Articles(api_article: dict) -> articles:
         urlToImage=api_article["urlToImage"],
         publishedAt=api_article["publishedAt"],
     )
- 
-    return res_article
 
 
-def NewsDATA_to_Articles(api_article: dict) -> articles:
-    # Transform NewsDATA object to Artcile object
-
-    res_article = articles(
+def newsdata_to_articles(api_article: dict) -> articles:
+    """Transform a NewsDATA article object to an Article model instance."""
+    return articles(
         api_source="NewsDATA",
         title=api_article["title"],
         description=api_article["description"],
@@ -63,72 +44,54 @@ def NewsDATA_to_Articles(api_article: dict) -> articles:
         urlToImage=api_article["image_url"],
         publishedAt=api_article["pubDate"],
     )
- 
-    return res_article
 
 
-def generate_Articles(articles_by_api: dict[str, list]) -> list[articles]:
-    # Takes in articles_by_api returns list of 20 Article
-
+def generate_articles(articles_by_api: Dict[str, List[dict]]) -> List[articles]:
+    """Generate a list of Article model instances from API data."""
     res_articles = []
-
     for api_name, api_list in articles_by_api.items():
         for api_article in api_list:
-
             if api_name == "NewsAPI":
-                res_articles.append(NewsAPI_to_Articles(api_article))
+                res_articles.append(newsapi_to_articles(api_article))
             elif api_name == "NewsDATA":
-                res_articles.append(NewsDATA_to_Articles(api_article))
-
+                res_articles.append(newsdata_to_articles(api_article))
     return res_articles
 
 
-def get_relevant_articles(articles: list[articles], question: str) -> list[articles]:
+def get_relevant_articles(articles: List[articles], question: str) -> List[articles]:
+    """Filter and sort articles based on their relevance to a question."""
 
-    def articles_filter(article: articles):
+    def articles_filter(article: articles) -> bool:
         article_to_dict = article.to_dict()
         description = (
             article_to_dict["description"]
-            and article_to_dict["description"] != None
             and article_to_dict["description"] != "[Removed]"
+            and article_to_dict["urlToImage"] is not None
         )
-        return (
-            description
-            and article_to_dict["title"] != "[Removed]"
-            and article_to_dict["urlToImage"] != None
-        )
+        return description and article_to_dict["title"] != "[Removed]"
 
-    articles = list(filter(lambda article: articles_filter(article), articles))
+    filtered_articles = filter(articles_filter, articles)
 
-    for article in articles:
+    for article in filtered_articles:
         article_to_dict = article.to_dict()
-        
-        description = article_to_dict["content"] 
+        description = article_to_dict["content"]
         if article_to_dict["api_source"] == "NewsDATA":
             description = article_to_dict["description"]
-        
-        article.score = (
-            analyze_article_relevance(
-                question=question, article_description=description
-            )
+        article.score = analyze_article_relevance(
+            question=question, article_description=description
         )
 
-    set_of_articles = set(articles)
     relevant_articles = sorted(
-        set_of_articles, key=lambda article: article.score, reverse=True
+        filtered_articles, key=lambda article: article.score, reverse=True
     )
-
     return relevant_articles[:20]
 
-def generate_Videos(videos_api: list) -> list[videos]:  # Assuming videos is the model class
-    video_objects = []
 
+def generate_videos(videos_api: List[dict]) -> List[videos]:
+    """Generate a list of Video model instances from API data."""
+    video_objects = []
     for video in videos_api:
-        if (
-            video["id"]
-            and "videoId" in video["id"].keys()
-            and video["snippet"]["description"]
-        ):
+        if video["id"] and "videoId" in video["id"] and video["snippet"]["description"]:
             video_objects.append(
                 videos(
                     video_id=video["id"]["videoId"],

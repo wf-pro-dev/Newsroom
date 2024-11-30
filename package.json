@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev & npx next-video sync -w",
+    "dev": "NODE_OPTIONS=--no-warnings next dev & npx next-video sync -w",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_OPTIONS=--no-warnings next start",
     "lint": "next lint"
   },
+
+  
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",

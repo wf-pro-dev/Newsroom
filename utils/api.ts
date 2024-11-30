@@ -1,16 +1,19 @@
-import { Article, Question, Topic, Video } from './types';
+import { Article, Favourite, Question, Topic, Video } from './types';
 
 const API_BASE_URL = 'http://127.0.0.1:5000'
 
-
+export async function fetchAllData(): Promise<any> {
+  const res = await fetch(`${API_BASE_URL}/all_data`)
+  return res.json()
+}
 
 export async function fetchTopics(): Promise<Topic[]> {
   const res = await fetch(`${API_BASE_URL}/topics`)
   return res.json()
 }
 
-export async function fetchFavorites(table:"fav_articles"|"fav_videos"): Promise<Article[]|Video[]> {
-  const res = await fetch(`${API_BASE_URL}/${table}`)
+export async function fetchFavorites(): Promise<Favourite[]> {
+  const res = await fetch(`${API_BASE_URL}/favourites`)
   return res.json()
 }
 
@@ -40,7 +43,7 @@ export async function deleteNewsbyId(id: number): Promise<void> {
   }
 }
 
-export async function delteVideobyId(id: number): Promise<void> {
+export async function deleteVideobyId(id: number): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/videos/${id}`, {
     method: 'DELETE',
   });
@@ -49,25 +52,24 @@ export async function delteVideobyId(id: number): Promise<void> {
   }
 }
 
-export async function addFavorite(table:"fav_articles"|"fav_videos",obj: Article|Video): Promise<Article|Video> {
 
-  obj["obj_id"] = obj["id"]
-  const response = await fetch(`${API_BASE_URL}/${table}`, {
+export async function addFavourite(entity_id: number, entity_type: string): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/favourites`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(obj)
+    body: JSON.stringify({ entity_id, entity_type })
   });
   if (!response.ok) {
-    throw new Error(`Failed to add favorite: ${response.statusText}`);
+    throw new Error(`Failed to add favourite: ${response.statusText}`);
   }
   return response.json();
 }
 
-export async function removeFavorite(table:"fav_articles"|"fav_videos",id: number): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/${table}/${id}`, {
+export async function removeFavourite(type:string,id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/favourites/${type}/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {
-    throw new Error(`Failed to remove favorite: ${response.statusText}`);
+    throw new Error(`Failed to remove favourite: ${response.statusText}`);
   }
 }

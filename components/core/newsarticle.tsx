@@ -5,18 +5,20 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { X, Heart, HeartOff, ArrowRight, CalendarDays } from 'lucide-react'
-import { Article, Question } from '@/utils/types'
-import { addFavorite, deleteNewsbyId, removeFavorite } from '@/utils/api'
+import { Article, Question, Favourite } from '@/utils/types'
+import { deleteNewsbyId, addFavourite, removeFavourite, fetchFavorites } from '@/utils/api'
 import moment from 'moment'
 import { Separator } from '@radix-ui/react-separator'
+import { useGlobalState } from '@/components/context/GlobalStateContext'
 
 
-function NewsArticle({ article, favorites, showFavorites, setFavorites, showDelete, showAdd, questions, newsData, setNewsData }:
+
+function NewsArticle({ article, favourites, showFavorites, setFavourites, showDelete, showAdd, questions, newsData, setNewsData }:
     {
         article: Article,
-        favorites: Article[],
+        favourites: Favourite[],
         showFavorites: boolean,
-        setFavorites: React.Dispatch<React.SetStateAction<Article[]>>,
+        setFavourites: React.Dispatch<React.SetStateAction<Favourite[]>>,
         showDelete: React.Dispatch<React.SetStateAction<boolean>>,
         showAdd: React.Dispatch<React.SetStateAction<boolean>>,
         questions?: Question[],
@@ -26,55 +28,60 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
 
     const [isDeleting, setIsDeleting] = useState(false);
     const [article_date, setdate] = useState(new Date(article.publishedAt))
+    const { topics, articles, setArticles } = useGlobalState()
 
     async function handleFavorite() {
 
-        if (favorites.some((fav: Article) => fav.title === article.title)) {
+        try {
+            var favourite = favourites.find((fav: Favourite) => fav.entity_id == article.id && fav.entity_type == "article")
+            if (favourite) {
+                if (showFavorites) setIsDeleting(true);
 
+                // Optimistically update UI
+                setTimeout(() => {
+                    setFavourites(favourites.filter((fav: Favourite) => fav.entity_id !== article.id || fav.entity_type !== "article"));
+                }, 300)
 
+                showDelete(true);
+                
 
-            await removeFavorite("Fav_Articles", article.id)
-                .then(() => {
-                    showDelete(true)
-                    showFavorites && setIsDeleting(true)
+                await removeFavourite(favourite.entity_type,favourite.entity_id);
 
-                    setTimeout(() => {
-                        setFavorites(favorites.filter((fav: Article) => fav.title !== article.title))
-                        showFavorites && setIsDeleting(false)
-                    }, 400)
+            } else {
+                // Optimistically update UI
+                setFavourites([...favourites, { entity_id: article.id, entity_type: "article" }]);
+                showAdd(true);
 
-                })
-        } else {
-            await addFavorite("Fav_Articles", article)
-                .then(() => {
-                    
-                    setFavorites([...favorites, article])
-                    showAdd(true)
+                await addFavourite(article.id, "article");
+            }
+        } catch (error) {
+            console.error("Error handling favorite:", error);
+            // Revert optimistic updates if necessary
 
-                })
+            // Optionally, set an error state to inform the user
         }
     }
 
     async function handleDelete() {
-        const topic: string = questions!.find((question: Question) => question.id == article.question_id)!.topic
-        await deleteNewsbyId(article.id)
-            .then(() => {
-                showDelete(true)
-                setIsDeleting(true)
 
-                setTimeout(() => {
-                    showDelete(false)
-                }, 2000)
+        // Optimistically update UI
+        setIsDeleting(true);
 
-                setTimeout(() => {
-                    setNewsData!(() => ({
-                        ...newsData,
-                        [topic]: newsData[topic].filter((art: Article) => art.id !== article.id)
-                    }));
-                    setIsDeleting(false)
-                }, 400)
 
-            })
+        setTimeout(() => {
+            setArticles(articles.filter((art) => art.id != article.id));
+        }, 300);
+
+        try {
+            //await deleteNewsbyId(article.id);
+            showDelete(true);
+
+        } catch (error) {
+            console.error("Error deleting article:", error);
+            // Revert optimistic update if necessary
+            // Fetch the latest data or handle the error state
+            setIsDeleting(false);
+        }
     }
 
 
@@ -84,7 +91,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                 {article.urlToImage && (
                     <Image
                         src={article.urlToImage}
-                        alt={`Illustration for ${article.title}`}
+                        alt={`Illustration for ${article.urlToImage}`}
                         width={300}
                         height={200}
                         className="w-full h-48 object-cover"
@@ -110,7 +117,7 @@ function NewsArticle({ article, favorites, showFavorites, setFavorites, showDele
                         className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                         onClick={handleFavorite}>
                         <div className='p-2 flex justify-center items-center'>
-                            {favorites.length > 0 && favorites.some((fav: Article) => fav.obj_id == article.id) ?
+                            {favourites.length > 0 && favourites.find((fav: Favourite) => fav.entity_id == article.id && fav.entity_type == "article") ?
                                 <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} />
                                 :
                                 <Heart style={{ width: 18, height: 18 }} strokeWidth={2} />

@@ -1,7 +1,8 @@
 from sys import path
+
 path.append("/Users/williamfotso/Workspace/Newsroom/Backend/")
 
-from Server.app import create_app
+from server.app import create_app
 
 from config.constants import DEBUG
 

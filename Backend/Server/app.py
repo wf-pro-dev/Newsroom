@@ -7,13 +7,14 @@ from flask_sqlalchemy import SQLAlchemy
 
 from database.connection import db
 
-from Server.routes.articles import articles_bp
-from Server.routes.videos import videos_bp
-from Server.routes.topics import topics_bp
-from Server.routes.questions import questions_bp
+from server.routes.articles import articles_bp
+from server.routes.videos import videos_bp
+from server.routes.topics import topics_bp
+from server.routes.questions import questions_bp
+from server.routes.favourites import favourites_bp
+from server.routes.all_data import all_data_bp
 
 from config.constants import DATABASE_URI
-
 
 
 def create_app():
@@ -31,8 +32,8 @@ def create_app():
     )
 
     # Configure SQLAlchemy
-    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
     # Register blueprints
@@ -40,6 +41,8 @@ def create_app():
     app.register_blueprint(videos_bp)
     app.register_blueprint(topics_bp)
     app.register_blueprint(questions_bp)
+    app.register_blueprint(favourites_bp)
+    app.register_blueprint(all_data_bp)
 
     # Error handlers
     @app.errorhandler(Exception)

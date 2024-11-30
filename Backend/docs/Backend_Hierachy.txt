@@ -37,7 +37,7 @@ Backend
 ├── main.py
 ├── requirements.txt
 └── server
-    ├── Server.py
+    ├── server.py
     ├── __init__.py
     ├── app.py
     └── routes

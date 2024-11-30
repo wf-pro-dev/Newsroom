@@ -3,7 +3,6 @@ from flask import json
 from server.app import create_app
 from database.connection import db
 from server.models.db_topic import topics
-from etl.extract import fetch_Topics
 
 class TopicsRoutesTestCase(unittest.TestCase):
     def setUp(self):

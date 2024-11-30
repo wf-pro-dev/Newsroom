@@ -44,3 +44,10 @@ videos/*
 !videos/*.js
 !videos/*.ts
 public/_next-video
+
+# python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python

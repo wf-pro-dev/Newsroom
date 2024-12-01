@@ -1,5 +1,10 @@
 from sys import path
-path.append("/Users/williamfotso/Workspace/Newsroom/Backend/")
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, '../../../'))
+backend_root = project_root + "/Backend"
+path.append(backend_root)
 
 import unittest
 from server.app import create_app
@@ -49,4 +54,4 @@ class FavouritesRoutesTestCase(unittest.TestCase):
         self.assertIn('Item not found', str(response.data))
 
 if __name__ == '__main__':
-    unittest.main()
+    print(backend_root)

@@ -30,3 +30,6 @@ class topics(db.Model):
         return [
             questions(text=question, topic_id=self.id) for question in str_questions
         ]
+        
+if __name__ == "__main__":
+    print(backend_root)

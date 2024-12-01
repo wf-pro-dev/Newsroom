@@ -6,8 +6,8 @@ project_root = os.path.abspath(os.path.join(current_dir, '../../'))
 backend_root = project_root + "/Backend"
 path.append(backend_root)
 
-from Api.news.newsapi import NewsAPI
-from Api.news.newsdata import NewsDATA
+from api.news.newsapi import NewsAPI
+from api.news.newsdata import NewsDATA
 
 
 class Newsfetcher:

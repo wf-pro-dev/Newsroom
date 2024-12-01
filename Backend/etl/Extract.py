@@ -6,9 +6,9 @@ project_root = os.path.abspath(os.path.join(current_dir, '../../'))
 backend_root = project_root + "/Backend"
 path.append(backend_root)
 
-from Api.news.client import Newsfetcher
-from Api.openai.client import fetch_open_AI
-from Api.youtube.client import fetch_video
+from api.news.client import Newsfetcher
+from api.openai.client import fetch_open_AI
+from api.youtube.client import fetch_video
 
 
 def fetch_Topics() -> list[dict[str, str]]:

@@ -54,4 +54,4 @@ class FavouritesRoutesTestCase(unittest.TestCase):
         self.assertIn('Item not found', str(response.data))
 
 if __name__ == '__main__':
-    print(backend_root)
+    unittest.main()

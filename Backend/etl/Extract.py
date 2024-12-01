@@ -1,3 +1,11 @@
+from sys import path
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, '../../'))
+backend_root = project_root + "/Backend"
+path.append(backend_root)
+
 from Api.news.client import Newsfetcher
 from Api.openai.client import fetch_open_AI
 from Api.youtube.client import fetch_video

@@ -11,7 +11,7 @@ from server.models.db_topic import topics
 
 # ETL imports
 from etl.extract import fetch_Topics
-from etl.transform import get_relevant_articles, generate_Query
+from etl.transform import get_relevant_articles, generate_query
 
 
 def main():
@@ -35,7 +35,7 @@ def main():
             for question in questions:
                 question.topic_id = topic.id
 
-                keywords, query = generate_Query(
+                keywords, query = generate_query(
                     (topic.title, topic.role), question.text
                 )
 

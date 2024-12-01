@@ -28,7 +28,7 @@ BLACK_LINE_LENGTH = os.getenv("BLACK_LINE_LENGTH", "88")
 # Load environment variables for the specific FLASK_ENV
 load_dotenv(f"{NEWSROOM_PATH}/.env.{env}")
 DEBUG = os.getenv("DEBUG", "True") == "True"
-DATABASE_URI = os.getenv("DATABASE_URI", "postgresql://williamfotso:076ifDf9f5ovd8zn4zrO8S5RS0CaT9u2@localhost:5432/newsroom_test")
+DATABASE_URI = os.getenv("DATABASE_URI", "sqlite:///test.db")
 
 # Table and columns for .db file
 COLUMNS = {

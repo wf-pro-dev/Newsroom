@@ -3,7 +3,7 @@ Script for linting and formatting the codebase using Pylint and Black.
 """
 
 import subprocess
-from  constants import PYLINT_RCFILE, LINT_PATH, BLACK_LINE_LENGTH, FORMAT_PATH
+from constants import PYLINT_RCFILE, LINT_PATH, BLACK_LINE_LENGTH, FORMAT_PATH
 
 
 def run_subprocess(command):

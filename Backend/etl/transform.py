@@ -1,9 +1,17 @@
+from sys import path
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, "../../"))
+backend_root = project_root + "/Backend"
+path.append(backend_root)
+
 from typing import Tuple, List, Dict
 from rake_nltk import Rake
-
 from server.models.db_article import articles
 from server.models.db_video import videos
 from core.services.article_analyzer import analyze_article_relevance
+from etl.extract import fetch_articles
 
 
 def generate_query(title_top: str, title_qst: str) -> Tuple[str, Dict[str, List[str]]]:
@@ -58,20 +66,22 @@ def generate_articles(articles_by_api: Dict[str, List[dict]]) -> List[articles]:
     return res_articles
 
 
-def get_relevant_articles(articles: List[articles], question: str) -> List[articles]:
+def get_relevant_articles(list_article: List[articles], question: str) -> List[articles]:
     """Filter and sort articles based on their relevance to a question."""
 
     def articles_filter(article: articles) -> bool:
         article_to_dict = article.to_dict()
+        
         description = (
             article_to_dict["description"]
             and article_to_dict["description"] != "[Removed]"
             and article_to_dict["urlToImage"] is not None
         )
+        
         return description and article_to_dict["title"] != "[Removed]"
 
-    filtered_articles = filter(articles_filter, articles)
-
+    filtered_articles = list(filter(articles_filter, list_article))
+    
     for article in filtered_articles:
         article_to_dict = article.to_dict()
         description = article_to_dict["content"]
@@ -84,6 +94,7 @@ def get_relevant_articles(articles: List[articles], question: str) -> List[artic
     relevant_articles = sorted(
         filtered_articles, key=lambda article: article.score, reverse=True
     )
+    
     return relevant_articles[:20]
 
 
@@ -103,4 +114,6 @@ def generate_videos(videos_api: List[dict]) -> List[videos]:
 
 
 if __name__ == "__main__":
-    pass
+    query = {"NewsAPI" : "Tech","NewsDATA": "Tech" }
+    articles = generate_articles(fetch_articles(query=query))
+    print(get_relevant_articles(list_article=articles,question="What is Latest tech news"))

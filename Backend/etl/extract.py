@@ -2,7 +2,7 @@ from sys import path
 import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '../../'))
+project_root = os.path.abspath(os.path.join(current_dir, "../../"))
 backend_root = project_root + "/Backend"
 path.append(backend_root)
 
@@ -11,7 +11,7 @@ from api.openai.client import fetch_open_AI
 from api.youtube.client import fetch_video
 
 
-def fetch_Topics() -> list[dict[str, str]]:
+def fetch_topics() -> list[dict[str, str]]:
     """
     Fetches a list of topics related to current news along with the best suited role to educate about those topics.
 
@@ -34,7 +34,7 @@ def fetch_Topics() -> list[dict[str, str]]:
     return fetch_open_AI(prompt=prompt)
 
 
-def fetch_Questions(topic: str, role: str) -> list[str]:
+def fetch_questions(topic: str, role: str) -> list[str]:
     """
     Generates questions about a given topic from the perspective of a specified role.
 
@@ -61,7 +61,7 @@ def fetch_Questions(topic: str, role: str) -> list[str]:
     return fetch_open_AI(prompt=prompt)
 
 
-def fetch_Articles(query: str) -> dict[str, list]:
+def fetch_articles(query: dict) -> dict[str, list]:
     """
     Fetches news articles from multiple news API sources based on a given query.
 
@@ -73,14 +73,16 @@ def fetch_Articles(query: str) -> dict[str, list]:
     """
     fetcher = Newsfetcher()
     articles_by_api = fetcher.fetch_articles(query=query)
+
     return articles_by_api
 
 
-def fetch_Videos(query: dict) -> list:
+def fetch_videos(query: dict) -> list:
 
     videos = fetch_video(query=query["YTAPI"])
     return videos
 
 
 if __name__ == "__main__":
-    pass
+    query = {"NewsAPI" : "Tech","NewsDATA": "Tech" }
+    print(fetch_articles(query=query))

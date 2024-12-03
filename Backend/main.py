@@ -10,7 +10,7 @@ from server.app import create_app
 from server.models.db_topic import topics
 
 # ETL imports
-from etl.extract import fetch_Topics
+from etl.extract import fetch_topics
 from etl.transform import get_relevant_articles, generate_query
 
 
@@ -24,9 +24,10 @@ def main():
 
         # Recreate all tables
         db.create_all()
-        for obj_topic in fetch_Topics():
-            
+        for obj_topic in fetch_topics():
+
             topic = topics(title=obj_topic["topic"], role=obj_topic["role"])
+            topic.set_img_urls()
             db.session.add(topic)
             db.session.commit()
 
@@ -43,12 +44,14 @@ def main():
 
                 db.session.add(question)
                 db.session.commit()
-
-                relevant_artciles = get_relevant_articles(
-                    question.set_articles(query=query), question=question.text
+                
+                articles = question.set_articles(query=query)
+                
+                relevant_articles = get_relevant_articles(
+                   articles, question=question.text
                 )
-
-                for article in relevant_artciles:
+                
+                for article in relevant_articles:
                     article.question_id = question.id
 
                     db.session.add(article)

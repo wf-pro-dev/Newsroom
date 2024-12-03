@@ -20,7 +20,7 @@ def get_topics():
 def get_question(id):
     try:
         question = questions.query.filter_by(id=id).one()
-        
+
         return jsonify(question.to_dict()), 200
 
     except Exception as e:
@@ -31,14 +31,12 @@ def get_question(id):
 def add_question():
     try:
         data = request.get_json()
-        question = questions(text=data["text"] ,keywords=data["keywords"])
+        question = questions(text=data["text"], keywords=data["keywords"])
         db.session.add(question)
         db.session.commit()
         return jsonify(question.to_dict()), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
-
 
 
 # Add more routes as needed (PUT, DELETE, etc.)

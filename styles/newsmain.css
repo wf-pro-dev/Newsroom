@@ -62,15 +62,15 @@
 }
 
 .question-header {
-    @apply mb-6 flex flex-col items-center justify-center text-lg;
+    @apply flex flex-col items-center justify-center text-lg;
 }
 
 .question-title {
-    @apply text-3xl leading-normal mb-2 text-center font-medium;
+    @apply text-3xl leading-normal text-center font-medium;
 }
 
 .question-keywords {
-    @apply text-gray-400;
+    @apply my-6 text-gray-400;
 }
 
 .news-grid {

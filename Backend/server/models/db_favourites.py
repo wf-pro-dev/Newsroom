@@ -2,11 +2,12 @@ from sys import path
 import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '../../../'))
+project_root = os.path.abspath(os.path.join(current_dir, "../../../"))
 backend_root = project_root + "/Backend"
 path.append(backend_root)
 
 from database.connection import db
+
 
 class favourites(db.Model):
     id = db.Column(db.Integer, primary_key=True)

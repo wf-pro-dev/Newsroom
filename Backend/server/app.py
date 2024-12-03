@@ -1,25 +1,24 @@
-from sys import path
-import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '../../'))
-backend_root = project_root + "/Backend"
-path.append(backend_root)
-
+"""
+This module sets up the Flask application, configures CORS, 
+and registers the necessary blueprints for the server.
+"""
 from flask import Flask, jsonify
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-
 from database.connection import db
-
 from server.routes.articles import articles_bp
 from server.routes.videos import videos_bp
 from server.routes.topics import topics_bp
 from server.routes.questions import questions_bp
 from server.routes.favourites import favourites_bp
 from server.routes.all_data import all_data_bp
-
 from config.constants import DATABASE_URI
+from sys import path
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, "../../"))
+backend_root = project_root + "/Backend"
+path.append(backend_root)
 
 
 def create_app():

@@ -108,7 +108,7 @@ function NewsMain({
                                     ${showHeader ? "data-[state=active]:translate-y-0" : "data-[state=active]:-translate-y-20"} 
                                     ${AtinnerHeight ? "translate-y-0" : "-translate-y-20"}`
                                 }>
-                                <p className="2xl:text-[15px] xl:text-sm">
+                                <p className="2xl:text-[15px] xl:text-sm font-medium">
                                     {category}
                                 </p>
 

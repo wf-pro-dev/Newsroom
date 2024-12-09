@@ -61,6 +61,10 @@
     @apply mt-0 transition-all duration-300 ease-in-out !important;
 }
 
+/* .question-refresh {
+    
+} */
+
 .question-header {
     @apply flex flex-col items-center justify-center text-lg;
 }

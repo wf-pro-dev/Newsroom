@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import YouTube from "react-youtube"
 import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
-import { addFavourite, removeFavourite } from "@/utils/api";
+import { addFavourite, deleteVideobyId, removeFavourite } from "@/utils/api";
 
 type NewsVideoProps = {
     video: Video;
@@ -230,7 +230,7 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
         }, 300)
 
         try {
-            //await deleteVideobyId(video._id);
+            await deleteVideobyId(video.id);
             showDelete(true);
 
             setTimeout(() => {

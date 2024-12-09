@@ -115,5 +115,5 @@ def generate_videos(videos_api: List[dict]) -> List[videos]:
 
 if __name__ == "__main__":
     query = {"NewsAPI" : "Tech","NewsDATA": "Tech" }
-    articles = generate_articles(fetch_articles(query=query))
-    print(get_relevant_articles(list_article=articles,question="What is Latest tech news"))
+    list_article = generate_articles(fetch_articles(query=query))
+    print(get_relevant_articles(list_article=list_article,question="What is Latest tech news"))

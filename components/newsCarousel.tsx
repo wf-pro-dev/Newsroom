@@ -5,6 +5,7 @@ import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image'
 import { useGlobalState } from "./context/GlobalStateContext";
 import { Globe, Heart, Newspaper } from "lucide-react";
+import DynamicImage from "./core/dynamicimage";
 
 
 export default function NewsCarousel({ topic, questions, videos }: {
@@ -144,17 +145,19 @@ const IconSwitcher = ({index}:{index:number}) => {
                                     <div className="flex-column overflow-hidden h-full">
                                         <CarouselContent className="m-0 max-w-fit h-full" >
 
-                                            {topics.find((tpc) => tpc.title == topic).img_urls.map((img_url, index) => {
+                                            {[1,2,3].map((_, index) => {
 
+                                              var topic_i = topics.find((tpc) => tpc.title == topic)?.id
 
                                                 return (
 
                                                     <CarouselItem key={index} className="flex-none  2xl:h-[315px] xl:h-[275px] aspect-video pl-0 overflow-hidden">
 
                                                         <div className="flex-none w-full h-full aspect-video" >
-                                                            <Image
-                                                                src={img_url}
-                                                                alt={`Illustration for carousel-${img_url}`}
+                                                            <DynamicImage
+                                                                src={`topic_${topic_i}_${index}.webp`}
+                                                                folder={"topic_img"}
+                                                                alt={`Illustration for topic_${topic_i}_${index}.webp`}
                                                                 width={300}
                                                                 height={315}
                                                                 style={{ height: "100%", width: "100%" }}

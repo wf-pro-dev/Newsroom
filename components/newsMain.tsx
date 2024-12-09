@@ -5,7 +5,7 @@ import NewsCarousel from "./newsCarousel"
 import { Article, Favourite, Question, Topic, Video } from "@/utils/types"
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
-import { Heart } from "lucide-react"
+import { Heart, RefreshCw } from "lucide-react"
 import NewsFavorites from "./newsFavorites"
 import NewsVideo from "./core/newsvideo"
 import '@/styles/newsmain.css';
@@ -34,7 +34,7 @@ function NewsMain({
     const [showHeader, setShowHeader] = useState(false)
     const [AtinnerHeight, setAtinnerHeight] = useState(false)
 
-    const  {newsData,setNewsData,topics,questions,articles,videos,setVideos,favourites,setFavourites}  = useGlobalState()
+    const { newsData, setNewsData, topics, questions, articles, videos, setVideos, favourites, setFavourites } = useGlobalState()
 
     useEffect(() => {
         const data: Record<string, Record<string, Array<Video | Article>>> = {}
@@ -53,7 +53,7 @@ function NewsMain({
                 })
         })
         setNewsData(data)
-    }, [topics ,questions ,articles ,videos])
+    }, [topics, questions, articles, videos])
 
     function onValueChange(value: string) {
 
@@ -120,7 +120,7 @@ function NewsMain({
             </TabsList>
 
 
-            
+
             {!showFavorites && Object.keys(newsData).map((topic, index) => {
                 return (
                     topic == activeTab && (
@@ -138,16 +138,29 @@ function NewsMain({
 
                                 <Separator className="separator" />
 
-                                {Object.keys(newsData[activeTab]).map((question_text:string) => {
-                                    var question_keywords = questions.find((qst : Question) => qst.text == question_text)?.keywords
+                                {Object.keys(newsData[activeTab]).map((question_text: string) => {
+                                    var question_keywords = questions.find((qst: Question) => qst.text == question_text)?.keywords
                                     return (
                                         <div key={index}>
+                                            
+                                            <div className="w-fit h-fit xl:left-2 2xl:left-12">
+                                                <Button
+                                                    variant="secondary"
+                                                    className={`button ${showFavorites ? 'bg-gray-700/80' : 'bg-black/70'}`}
+                                                    onClick={() => setShowFavorites(!showFavorites)}>
+                                                    <div className='button-content'>
+                                                        <RefreshCw strokeWidth={2} style={{ width: 20, height: 20 }} />
+                                                    </div>
+                                                </Button>
+
+                                            </div>
+
 
                                             <div className="question-header">
                                                 <h1 className="question-title">
                                                     {question_text}
                                                 </h1>
-                                                 <p className="question-keywords">
+                                                <p className="question-keywords">
                                                     {question_keywords}
                                                 </p>
                                             </div>

@@ -29,8 +29,9 @@ class topics(db.Model):
             "img_urls": self.img_urls 
         }
 
-    def set_questions(self) -> list[questions]:
-        str_questions = fetch_questions(topic=self.title, role=self.role)
+    def set_questions(self,n_qst:int=3) -> list[questions]:
+        str_questions = fetch_questions(topic=self.title, role=self.role,n_qst=n_qst)
+        
         return [
             questions(text=question, topic_id=self.id) for question in str_questions
         ]

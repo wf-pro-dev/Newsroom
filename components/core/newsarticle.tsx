@@ -73,7 +73,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
         }, 300);
 
         try {
-            //await deleteNewsbyId(article.id);
+            await deleteNewsbyId(article.id);
             showDelete(true);
 
         } catch (error) {

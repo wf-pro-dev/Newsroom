@@ -11,7 +11,7 @@ from api.openai.client import fetch_open_AI
 from api.youtube.client import fetch_video
 
 
-def fetch_topics() -> list[dict[str, str]]:
+def fetch_topics(n_elem:int) -> list[dict[str, str]]:
     """
     Fetches a list of topics related to current news along with the best suited role to educate about those topics.
 
@@ -22,8 +22,8 @@ def fetch_topics() -> list[dict[str, str]]:
     list[dict[str, str]]: A list of JSON objects, each containing a topic and a role.
     """
 
-    prompt = """
-            Create a list of 5 elements of JSON schema with the following structure:
+    prompt = f"""
+            Create a list of {n_elem} elements of JSON schema with the following structure:
             {
                 "topic": "Find a topic related to current news. Write it in 1 or 2 words",
                 "role": "Find the best suited role to educate about the topics"
@@ -34,7 +34,7 @@ def fetch_topics() -> list[dict[str, str]]:
     return fetch_open_AI(prompt=prompt)
 
 
-def fetch_questions(topic: str, role: str) -> list[str]:
+def fetch_questions(topic: str, role: str,n_qst:int=3) -> list[str]:
     """
     Generates questions about a given topic from the perspective of a specified role.
 
@@ -46,10 +46,10 @@ def fetch_questions(topic: str, role: str) -> list[str]:
     list[str]: A list of questions related to the topic from the role's perspective.
     """
 
-    N_QST_PER_TOP = 3
+
 
     prompt = f"""
-        Generate {N_QST_PER_TOP} insightful questions about {topic} from the perspective of a {role}.
+        Generate {n_qst} insightful questions about {topic} from the perspective of a {role}.
         The questions should:
         1. Be specific to how a {role} would approach or think about {topic}
         2. Reflect the professional concerns and interests of a {role}

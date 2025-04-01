@@ -1,6 +1,6 @@
 import { Article, Favourite, Question, Topic, Video } from './types';
 
-const API_BASE_URL = 'http://127.0.0.1:5000'
+const API_BASE_URL = 'http://172.16.77.129:5000'
 
 export async function fetchAllData(): Promise<any> {
   const res = await fetch(`${API_BASE_URL}/all_data`)

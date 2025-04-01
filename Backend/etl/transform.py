@@ -20,12 +20,58 @@ def generate_query(title_top: str, title_qst: str) -> Tuple[str, Dict[str, List[
     rake.extract_keywords_from_text(title_qst)
     ranked_phrases = rake.get_ranked_phrases()
     top_keywords = ranked_phrases[:5]
+    
 
     return ", ".join(top_keywords), {
         "NewsAPI": f"{title_top} {'AND' if top_keywords else ''} {' OR '.join(top_keywords)}",
         "NewsDATA": f"{title_top} {'AND' if top_keywords else ''} {' OR '.join(top_keywords)}",
         "YTAPI": f"{title_top} {'|' if top_keywords else ''} {' | '.join(top_keywords)}",
     }
+
+
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lsa import LsaSummarizer
+from nltk.corpus import stopwords
+import nltk
+
+nltk.download('stopwords', quiet=True)
+
+def extract_top_keywords(text, language='english', num_keywords=5):
+    """
+    Extract top keywords from a given text
+    
+    Args:
+        text (str): Input text to extract keywords from
+        language (str): Language of the text
+        num_keywords (int): Number of keywords to extract
+    
+    Returns:
+        list: Top keywords
+    """
+    # Create a parser
+    parser = PlaintextParser.from_string(text, Tokenizer(language))
+    
+    # Initialize the LSA summarizer
+    summarizer = LsaSummarizer()
+    
+    # Get stop words
+    stop_words = set(stopwords.words('english'))
+    
+    # Extract summary sentences
+    summary_sentences = summarizer(parser.document, num_keywords)
+    
+    # Extract and filter keywords
+    keywords = []
+    for sentence in summary_sentences:
+        words = str(sentence).lower().split()
+        # Filter out stop words and non-alphabetic words
+        filtered_words = [word for word in words if word.isalpha() and word not in stop_words]
+        keywords.extend(filtered_words)
+    
+    # Remove duplicates and return top keywords
+    return list(dict.fromkeys(keywords))[:num_keywords]
+
 
 
 def newsapi_to_articles(api_article: dict) -> articles:
@@ -114,6 +160,7 @@ def generate_videos(videos_api: List[dict]) -> List[videos]:
 
 
 if __name__ == "__main__":
-    query = {"NewsAPI" : "Tech","NewsDATA": "Tech" }
-    list_article = generate_articles(fetch_articles(query=query))
-    print(get_relevant_articles(list_article=list_article,question="What is Latest tech news"))
+    question = "How do cryptocurrency market dynamics compare to traditional asset classes in terms of volatility and risk assessment?"
+    
+    print(generate_query(title_top="Climate change",title_qst=question)[0])
+    print(extract_top_keywords(text=question))

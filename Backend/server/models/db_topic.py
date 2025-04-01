@@ -19,14 +19,14 @@ class topics(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(255), nullable=False)
-    img_urls = db.Column(ARRAY(String))
+    # img_urls = db.Column(ARRAY(String))
 
     def to_dict(self):
         return {
             "id": self.id,
             "title": self.title,
             "role": self.role,
-            "img_urls": self.img_urls 
+            # "img_urls": self.img_urls
         }
 
     def set_questions(self,n_qst:int=3) -> list[questions]:
@@ -35,12 +35,15 @@ class topics(db.Model):
         return [
             questions(text=question, topic_id=self.id) for question in str_questions
         ]
+    
+    def __str__(self):
+        return f"topic = {self.title} role = {self.role}"
 
-    def set_img_urls(self):
-        self.img_urls = []
-        for i in range(3):
-            img_url = fetch_image(self.title,index=i)
-            self.img_urls = self.img_urls + [img_url]
+    # def set_img_urls(self):
+    #     self.img_urls = []
+    #     for i in range(3):
+    #         img_url = fetch_image(self.title,index=i)
+    #         self.img_urls.append(img_url)
 
 if __name__ == "__main__":
     print(backend_root)

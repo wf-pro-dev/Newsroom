@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Topic, Question, Article, Video, Favourite } from '@/utils/types'
-import NewsMain from '@/components/newsmain'
+import NewsMain from '@/components/newsMain'
 import Notification from '@/components/core/notification'
 import { HeroGlobe } from '@/components/heroglobe'
 import { fetchAllData } from '../utils/api'
@@ -43,10 +43,10 @@ const useScrollTriggers = () => {
       const isScrollingUp = currentScroll < lastScroll
 
       const triggers = [
-        { limitT: 0, limitB: 200, scrollTo: windowHeight, direction: SCROLL_DIRECTIONS.TOP_ONLY },
-        { limitT: 200, limitB: windowHeight, scrollTo: 0, direction: SCROLL_DIRECTIONS.TOP_ONLY },
-        { limitT: 0, limitB: windowHeight - 200, scrollTo: windowHeight, direction: SCROLL_DIRECTIONS.BOTTOM_ONLY },
-        { limitT: windowHeight - 200, limitB: windowHeight, scrollTo: 0, direction: SCROLL_DIRECTIONS.BOTTOM_ONLY }
+        { limitT: 0, limitB: 200, scrollTo: windowHeight, direction: SCROLL_DIRECTIONS.TOP_ONLY, smooth : true },
+        { limitT: 200, limitB: windowHeight, scrollTo: 0, direction: SCROLL_DIRECTIONS.TOP_ONLY, smooth : true },
+        { limitT: 0, limitB: windowHeight - 200, scrollTo: windowHeight, direction: SCROLL_DIRECTIONS.BOTTOM_ONLY, smooth : true },
+        { limitT: windowHeight - 200, limitB: windowHeight, scrollTo: 0, direction: SCROLL_DIRECTIONS.BOTTOM_ONLY, smooth : true }
       ]
 
       triggers.forEach(({ limitT, limitB, scrollTo, direction = SCROLL_DIRECTIONS.BOTH, smooth = true }) => {

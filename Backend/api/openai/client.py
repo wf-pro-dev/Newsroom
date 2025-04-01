@@ -8,7 +8,7 @@ from PIL import Image
 
 client = OpenAI()
 
-def fetch_open_AI(prompt: str) -> list:
+def fetch_open_ai(prompt: str) -> list:
     """
     This function sends a prompt to the OpenAI API and returns the ONLY key's value from the JSON response.
 

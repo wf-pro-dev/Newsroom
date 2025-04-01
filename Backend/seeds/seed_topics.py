@@ -11,14 +11,13 @@ from database.connection import db
 
 
 def seed_topics(list_topic:list):
-    
+    print(list_topic)
     for obj_topic in list_topic:
-        
+
         topic = topics(title=obj_topic["topic"], role=obj_topic["role"])
-        topic.set_img_urls()
+        # topic.set_img_urls()
+        print(topic)
         db.session.add(topic)
         db.session.commit()
 
         seed_questions(questions=topic.set_questions(),topic=topic)
-
-        

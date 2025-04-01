@@ -1,10 +1,10 @@
 import App from "@/components/app";
 import { GlobalStateProvider } from '@/components/context/GlobalStateContext';
 
-export default function Page({ Component, pageProps }) {
+export default function Page() {
     return (
         <GlobalStateProvider>
-            <App {...pageProps} />
+            <App />
         </GlobalStateProvider>
     );
 }

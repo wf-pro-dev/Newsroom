@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import '@/styles/HeroGlobe.css'
+import '@/styles/heroglobe.css'
 
 
 const newsData = [

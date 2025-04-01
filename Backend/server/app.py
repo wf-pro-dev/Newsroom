@@ -29,7 +29,7 @@ def create_app():
         app,
         resources={
             r"/*": {
-                "origins": ["http://localhost:3000","http://172.16.77.129:3000"],
+                "origins": "*",
                 "methods": ["GET", "POST", "DELETE", "OPTIONS"],
             }
         },

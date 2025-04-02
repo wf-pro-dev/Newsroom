@@ -1,11 +1,9 @@
 'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { Search, Menu, Bell, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import '@/styles/heroglobe.css'
 
 
@@ -108,7 +106,7 @@ export function HeroGlobe() {
     })
 
     const atmosphere = new THREE.Mesh(atm_geometry, atm_customMaterial)
-    atmosphere.scale.set(1.1, 1.1, 1.1, 1.1)
+    atmosphere.scale.set(1.1, 1.1, 1.1)
     scene.add(atmosphere)
 
     const starGeometry = new THREE.BufferGeometry()

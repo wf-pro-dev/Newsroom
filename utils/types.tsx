@@ -6,7 +6,7 @@ type Topic = {
 
 type Question = {
   id: number;
-  keywords: string;
+  keywords: string[];
   text: string;
   topic_id: number; // Changed from topic to topic_id to match the model
 };
@@ -17,6 +17,7 @@ type Video = {
   video_id: string; // Changed from number to string
   description: string;
   thumbnail: string;
+  type : "video"
 };
 
 type Article = {
@@ -30,6 +31,7 @@ type Article = {
   urlToImage: string;
   api_source: string;
   score: number;
+  type : "article"
 };
 
 type Favourite = {

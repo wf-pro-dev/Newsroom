@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Inter, Playfair_Display } from 'next/font/google'
 import "./globals.css";
 

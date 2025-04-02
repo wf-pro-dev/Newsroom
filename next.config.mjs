@@ -9,9 +9,6 @@ const nextConfig = {
       },
     ],
   },
- eslint: {
-    ignoreDuringBuilds: true,
-  },
   webpack: (config, { dev }) => {
     if (dev) {
       config.watchOptions = {

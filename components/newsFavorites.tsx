@@ -18,7 +18,7 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
     showAdd: React.Dispatch<React.SetStateAction<boolean>>
   }) {
 
-  const { newsData, setNewsData, questions, favourites, setFavourites, videos, setVideos, articles } = useGlobalState()
+  const { favourites, setFavourites, videos, setVideos, articles } = useGlobalState()
 
   
   const {favArticles,favVideos} = id_to_obj(favourites,articles,videos)
@@ -48,30 +48,27 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
           <div className=" grid gap-6 md:grid-cols-2 w-full lg:grid-cols-4 ">
 
             {mix_array.map((obj: Article | Video, index) => {
-              if (obj["type"] == "article") {
+              if (Object.keys(obj).includes("type")) {
                 return (
-                  <div key={obj.type + obj.id} >
+                  <div key={Object.keys(obj).includes("type") ? "article" : "video" + obj.id} >
                     <NewsArticle
                       key={index}
-                      article={obj}
+                      article={obj as Article}
                       favourites={favourites}
-                      showFavourites={showFavorites}
+                      showFavorites={showFavorites}
                       setFavourites={setFavourites}
                       showDelete={showDelete}
                       showAdd={showAdd}
-                      questions={questions}
-                      newsData={newsData}
-                      setNewsData={setNewsData}
                     />
                   </div>
                 )
               }
               else {
                 return (
-                  <div key={obj.type + obj.id} className="col-span-2 h-[400px]">
+                  <div key={Object.keys(obj).includes("type") ? "article" : "video" + obj.id} className="col-span-2 h-[400px]">
                     <div className="w-full h-full">
                       <NewsVideo
-                        video={obj}
+                        video={obj as Video}
                         videos={videos}
                         setVideos={setVideos}
                         favourites={favourites}

@@ -1,13 +1,10 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Topic, Question, Article, Video, Favourite } from '@/utils/types'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import NewsMain from '@/components/newsMain'
 import Notification from '@/components/core/notification'
 import { HeroGlobe } from '@/components/heroglobe'
-import { fetchAllData } from '../utils/api'
 import { Button } from '@/components/ui/button'
-import { mixArray } from '@/lib/utils'
 import '@/styles/page.css'
 import { useGlobalState } from './context/GlobalStateContext'
 
@@ -35,7 +32,7 @@ const useScrollTriggers = () => {
   }, [])
 
   const handleScroll = useCallback(
-    debounce(() => {
+    () => debounce(() => {
       if (!windowHeight) return
 
       const currentScroll = windowHeight - window.scrollY
@@ -130,7 +127,7 @@ export default function App() {
   })
 
   // DupeHero Component
-  const DupeHero = ({ isFixed, heroRef, setIsFixed }) => (
+  const DupeHero = ({ isFixed, heroRef, setIsFixed }:{isFixed:boolean,heroRef:React.Ref<HTMLDivElement>,setIsFixed:Dispatch<SetStateAction<boolean>> }) => (
     <div
       ref={heroRef}
       className="dupe-section"
@@ -204,10 +201,10 @@ export default function App() {
 }
 
 // Debounce function
-function debounce(func, wait) {
-  let timeout
-  return (...args) => {
+function debounce(func:()=>void, wait:number) {
+  let timeout:NodeJS.Timeout
+  return () => {
     clearTimeout(timeout)
-    timeout = setTimeout(() => func(...args), wait)
+    timeout = setTimeout(() => func(), wait)
   }
 }

@@ -1,9 +1,10 @@
-import { Favourite, Question, Video } from "@/utils/types";
+import { Favourite, Video } from "@/utils/types";
 import { HeartOff, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import YouTube from "react-youtube"
 import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
+import Image from "next/image";
 import { addFavourite, deleteVideobyId, removeFavourite } from "@/utils/api";
 
 type NewsVideoProps = {
@@ -17,13 +18,17 @@ type NewsVideoProps = {
     showDelete: React.Dispatch<React.SetStateAction<boolean>>,
 };
 
+type YouTubePlayerRef = {
+    setSize: (width: number, height: number) => void;
+    cueVideoById: (params: {videoId: string, suggestedQuality: string}) => void;
+};
+
 function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFavorites, showAdd, showDelete }: NewsVideoProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const playerRef = useRef<any>(null);
+    const playerRef = useRef<YouTubePlayerRef | null>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const [opts, setOpts] = useState({});
     const [isFullyLoaded, setIsFullyLoaded] = useState(false);
-    const [playerState, setPlayerState] = useState(-1);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
     const bufferingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -94,7 +99,7 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
                 clearTimeout(bufferingTimeoutRef.current);
             }
         };
-    }, [isMounted]);
+    }, [isMounted, updateDimensions]);
 
     // Update YouTube player options when dimensions change
     useEffect(() => {
@@ -120,7 +125,7 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
     }, [dimensions, isMounted]);
 
 
-    const onReady = (event: any) => {
+    const onReady = (event: {target: YouTubePlayerRef}) => {
         if (!isMounted) return;
 
         playerRef.current = event.target;
@@ -140,10 +145,8 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
         });
     }
 
-    const onStateChange = (event: any) => {
+    const onStateChange = (event: {data: number}) => {
         if (!isMounted) return;
-
-        setPlayerState(event.data);
 
         if (bufferingTimeoutRef.current) {
             clearTimeout(bufferingTimeoutRef.current);
@@ -177,11 +180,14 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
 
     const LoadingState = () => (
         <div className="absolute top-0 left-0 w-full h-full bg-stone-800 flex flex-col items-center justify-center gap-2">
-            <img
-                src={video.thumbnail}
-                alt="Video thumbnail"
-                className="absolute top-0 left-0 w-full h-full object-cover"
-            />
+            <div className="absolute top-0 left-0 w-full h-full">
+                <Image
+                    src={video.thumbnail}
+                    alt="Video thumbnail"
+                    layout="fill"
+                    objectFit="cover"
+                />
+            </div>
             <div className="absolute inset-0 bg-black bg-opacity-75 animate-pulse flex items-center justify-center">
                 <p className="text-white">Loading Video...</p>
             </div>
@@ -190,9 +196,8 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
 
     // Rest of your handlers
     async function handleFavorite() {
-
         try {
-            var favourite = favourites.find((fav: Favourite) => fav.entity_id == video.id && fav.entity_type == "video")
+            const favourite = favourites.find((fav: Favourite) => fav.entity_id == video.id && fav.entity_type == "video")
             if (favourite) {
                 if (showFavorites) setIsDeleting(true);
 
@@ -203,9 +208,7 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
 
                 showDelete(true);
                 
-
-                await removeFavourite(favourite.entity_type,favourite.entity_id);
-
+                await removeFavourite(favourite.entity_type, favourite.entity_id);
             } else {
                 // Optimistically update UI
                 setFavourites([...favourites, { entity_id: video.id, entity_type: "video" }]);
@@ -220,8 +223,8 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
             // Optionally, set an error state to inform the user
         }
     }
-    async function handleDelete() {
 
+    async function handleDelete() {
         // Optimistically update UI
         setIsDeleting(true);
 
@@ -236,8 +239,6 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
             setTimeout(() => {
                 showDelete(false);
             }, 2000);
-
-
         } catch (error) {
             console.error("Error deleting article:", error);
             // Revert optimistic update if necessary
@@ -286,7 +287,6 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
                             <X style={{ width: 18, height: 18 }} strokeWidth={2} />
                         </div>
                     </Button>
-                    
                 </div>
             )}
         </div>

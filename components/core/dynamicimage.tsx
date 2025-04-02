@@ -1,13 +1,27 @@
-import Image from 'next/image'
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
+import { ImageProps } from 'next/image';
 
-const DynamicImage = dynamic(() => import('next/image').then((mod) => {
-  return ({ folder,src, ...props }) => (
-    <mod.default
-      src={require(`@/Backend/data/${folder}/${src}`)} 
-      {...props} 
-    />
-  )
-}), { ssr: false })
+interface DynamicImageProps extends Omit<ImageProps, 'src'> {
+  folder: string;
+  src: string;
+}
 
-export default DynamicImage
+// Using named function to provide display name
+const DynamicImageComponent = dynamic(() => 
+  import('next/image').then((mod) => {
+    const Component = ({ folder, src, ...props }: DynamicImageProps) => {
+      // Using import path as string instead of require()
+      const imageSrc = `@/Backend/data/${folder}/${src}`;
+      return <mod.default src={imageSrc} {...props} />;
+    };
+    
+    Component.displayName = 'DynamicImageInner';
+    return Component;
+  }),
+  { ssr: false }
+);
+
+// Set display name for the dynamic component
+DynamicImageComponent.displayName = 'DynamicImage';
+
+export default DynamicImageComponent;

@@ -28,7 +28,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     const [topics, setTopics] = useState<Topic[]>([]);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [articles, setArticles] = useState<Article[]>([]);
-    const [videos, setVideos] = useState<any[]>([]);
+    const [videos, setVideos] = useState<Video[]>([]);
     const [favourites, setFavourites] = useState<Favourite[]>([]);
     const [newsData, setNewsData] = useState<Record<string, Record<string, Array<Video | Article>>>>({});
 

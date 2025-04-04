@@ -8,214 +8,275 @@ import { Button } from "./ui/button";
 import { Heart, RefreshCw } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import NewsVideo from "./core/newsvideo";
-import '@/styles/newsmain.css';
-import { useGlobalState } from '@/components/context/GlobalStateContext';
+import "@/styles/newsmain.css";
+import { useGlobalState } from "@/components/context/GlobalStateContext";
 import { mixArray } from "@/lib/utils";
 
 function NewsMain({
-    activeTab,
-    setActiveTab,
-    showFavorites,
-    setShowFavorites,
-    showDelete,
-    showAdd
+  activeTab,
+  setActiveTab,
+  showFavorites,
+  setShowFavorites,
+  showDelete,
+  showAdd,
 }: {
-    activeTab: string;
-    setActiveTab: (tab: string) => void;
-    showFavorites: boolean;
-    setShowFavorites: React.Dispatch<React.SetStateAction<boolean>>;
-    showDelete: React.Dispatch<React.SetStateAction<boolean>>;
-    showAdd: React.Dispatch<React.SetStateAction<boolean>>;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  showFavorites: boolean;
+  setShowFavorites: React.Dispatch<React.SetStateAction<boolean>>;
+  showDelete: React.Dispatch<React.SetStateAction<boolean>>;
+  showAdd: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-    const [isChanging, setIsChanging] = useState(false);
-    const [showHeader, setShowHeader] = useState(false);
-    const [atInnerHeight, setAtInnerHeight] = useState(false);
+  const [isChanging, setIsChanging] = useState(false);
+  const [showHeader, setShowHeader] = useState(false);
+  const [atInnerHeight, setAtInnerHeight] = useState(false);
 
-    const { newsData, setNewsData, topics, questions, articles, videos, favourites, setFavourites } = useGlobalState();
+  const {
+    newsData,
+    setNewsData,
+    topics,
+    questions,
+    articles,
+    videos,
+    favourites,
+    setFavourites,
+  } = useGlobalState();
 
-    const [Videos,setVideos] = useState(videos)
+  const [Videos, setVideos] = useState(videos);
 
-    useEffect(() => {
-        const data: Record<string, Record<string, Array<Video | Article>>> = {};
+  useEffect(() => {
+    const data: Record<string, Record<string, Array<Video | Article>>> = {};
 
-        topics.forEach((topic: Topic) => {
-            if (!data[topic.title]) {
-                data[topic.title] = {};
-            }
+    topics.forEach((topic: Topic) => {
+      if (!data[topic.title]) {
+        data[topic.title] = {};
+      }
 
-            questions
-                .filter((question: Question) => question.topic_id === topic.id)
-                .forEach((qst: Question) => {
-                    data[topic.title][qst.text] = mixArray(
-                        articles.filter((article) => article.question_id === qst.id),
-                        videos.filter((video) => video.question_id === qst.id),
-                        4
-                    );
-                });
+      questions
+        .filter((question: Question) => question.topic_id === topic.id)
+        .forEach((qst: Question) => {
+          data[topic.title][qst.text] = mixArray(
+            articles.filter((article) => article.question_id === qst.id),
+            videos.filter((video) => video.question_id === qst.id),
+            4
+          );
         });
-        setNewsData(data);
-    }, [topics, questions, articles, videos, setNewsData]);
+    });
+    setNewsData(data);
+  }, [topics, questions, articles, videos, setNewsData]);
 
-    function onValueChange(value: string) {
-        if (showFavorites) setShowFavorites(false);
-        setIsChanging(true);
+  function onValueChange(value: string) {
+    if (showFavorites) setShowFavorites(false);
+    setIsChanging(true);
 
-        setTimeout(() => {
-            setActiveTab(value);
-            window.scrollTo({ top: window.innerHeight });
-            setTimeout(() => {
-                setIsChanging(false);
-            }, 200);
-        }, 400);
+    setTimeout(() => {
+      setActiveTab(value);
+      window.scrollTo({ top: window.innerHeight });
+      setTimeout(() => {
+        setIsChanging(false);
+      }, 200);
+    }, 400);
+  }
+
+  function goUp(category: string) {
+    if (category === activeTab) {
+      window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
     }
+  }
 
-    function goUp(category: string) {
-        if (category === activeTab) {
-            window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-        }
-    }
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowHeader(window.scrollY >= window.innerHeight);
+      setAtInnerHeight(window.scrollY === window.innerHeight);
+    };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setShowHeader(window.scrollY >= window.innerHeight);
-            setAtInnerHeight(window.scrollY === window.innerHeight);
-        };
+    window.addEventListener("scroll", handleScroll);
 
-        window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    return (
-        <Tabs value={activeTab} onValueChange={onValueChange} className="tabs-container m-0 p-0">
-            <TabsList className="tabs-list group">
-                {Object.keys(newsData).map((category, index) => (
-                    <div key={index} className="tab-item">
-                        <TabsTrigger
-                            key={category}
-                            value={category}
-                            onClick={() => goUp(category)}
-                            className={`
+  return (
+    <Tabs
+      value={activeTab}
+      onValueChange={onValueChange}
+      className="tabs-container m-0 p-0"
+    >
+      <TabsList className="tabs-list group">
+        {Object.keys(newsData).map((category, index) => (
+          <div key={index} className="tab-item">
+            <TabsTrigger
+              key={category}
+              value={category}
+              onClick={() => goUp(category)}
+              className={`
                                 tab-trigger
                                 group-hover:translate-y-0
-                                ${showHeader ? "data-[state=active]:translate-y-0" : "data-[state=active]:-translate-y-20"} 
-                                ${atInnerHeight ? "translate-y-0" : "-translate-y-20"}
+                                ${
+                                  showHeader
+                                    ? "data-[state=active]:translate-y-0"
+                                    : "data-[state=active]:-translate-y-20"
+                                } 
+                                ${
+                                  atInnerHeight
+                                    ? "translate-y-0"
+                                    : "-translate-y-20"
+                                }
                             `}
-                        >
-                            <p className="2xl:text-[15px] xl:text-sm font-medium">
-                                {category}
-                            </p>
-                        </TabsTrigger>
-                    </div>
-                ))}
-            </TabsList>
+            >
+              <p className="2xl:text-[15px] xl:text-sm font-medium">
+                {category}
+              </p>
+            </TabsTrigger>
+          </div>
+        ))}
+      </TabsList>
 
-            {!showFavorites && Object.keys(newsData).map((topic, index) => (
-                topic === activeTab && (
-                    <div key={index} className="tabs-content-container xl:px-24 2xl:px-40">
-                        <TabsContent key={topic} value={topic} className={`${isChanging ? 'opacity-0' : 'opacity-100'} tabs-content`}>
-                            <Separator className="separator" />
-
-                            <NewsCarousel
-                                topic={activeTab}
-                                questions={questions.filter((question: Question) => Object.keys(newsData[activeTab]).includes(question.text))}
-                                videos={videos}
-                            />
-
-                            <Separator className="separator" />
-
-                            {Object.keys(newsData[activeTab]).map((questionText: string, qIndex) => {
-                                const questionKeywords = questions.find((qst: Question) => qst.text === questionText)?.keywords;
-                                return (
-                                    <div key={`${index}-${qIndex}`}>
-                                        <div className="w-fit h-fit xl:left-2 2xl:left-12">
-                                            <Button
-                                                variant="secondary"
-                                                className={`button ${showFavorites ? 'bg-gray-700/80' : 'bg-black/70'}`}
-                                                onClick={() => setShowFavorites(!showFavorites)}
-                                            >
-                                                <div className="button-content">
-                                                    <RefreshCw strokeWidth={2} style={{ width: 20, height: 20 }} />
-                                                </div>
-                                            </Button>
-                                        </div>
-
-                                        <div className="question-header">
-                                            <h1 className="question-title">
-                                                {questionText}
-                                            </h1>
-                                            <p className="question-keywords">
-                                                {questionKeywords}
-                                            </p>
-                                        </div>
-
-                                        <div className="news-grid">
-                                            {newsData[activeTab][questionText].map((obj: Video | Article) => {
-                                                if (Object.keys(obj).includes("type")) {
-                                                    return (
-                                                        <div key={`article-${obj.id}`}>
-                                                            <NewsArticle
-                                                                article={obj as Article}
-                                                                favourites={favourites}
-                                                                showFavorites={showFavorites}
-                                                                setFavourites={setFavourites}
-                                                                showDelete={showDelete}
-                                                                showAdd={showAdd}
-                                                            />
-                                                        </div>
-                                                    );
-                                                }
-                                                return (
-                                                    <div key={`video-${obj.id}`} className="video-container">
-                                                        <div className="video-wrapper">
-                                                            <NewsVideo
-                                                                video={obj as Video}
-                                                                videos={Videos}
-                                                                setVideos={setVideos}
-                                                                favourites={favourites}
-                                                                setFavourites={setFavourites}
-                                                                showFavorites={showFavorites}
-                                                                showDelete={showDelete}
-                                                                showAdd={showAdd}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-
-                                        <Separator className="separator" />
-                                    </div>
-                                );
-                            })}
-                        </TabsContent>
-                    </div>
-                )
-            ))}
-
-            {showFavorites && (
-                <NewsFavorites
-                    showFavorites={showFavorites}
-                    showDelete={showDelete}
-                    showAdd={showAdd}
-                />
-            )}
-
-            <div className={`button-container xl:right-2 2xl:right-12 ${showHeader ? 'translate-y-0' : 'translate-y-full'}`}>
-                <Button
-                    variant="secondary"
-                    className={`button ${showFavorites ? 'bg-gray-700/80' : 'bg-black/70'}`}
-                    onClick={() => setShowFavorites(!showFavorites)}
+      {!showFavorites &&
+        Object.keys(newsData).map(
+          (topic, index) =>
+            topic === activeTab && (
+              <div
+                key={index}
+                className="tabs-content-container xl:px-24 2xl:px-40"
+              >
+                <TabsContent
+                  key={topic}
+                  value={topic}
+                  className={`${
+                    isChanging ? "opacity-0" : "opacity-100"
+                  } tabs-content`}
                 >
-                    <div className="button-content">
-                        <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
-                    </div>
-                </Button>
-            </div>
-        </Tabs>
-    );
+                  <Separator className="separator" />
+
+                  <NewsCarousel
+                    topic={activeTab}
+                    questions={questions.filter((question: Question) =>
+                      Object.keys(newsData[activeTab]).includes(question.text)
+                    )}
+                    videos={videos}
+                  />
+
+                  <Separator className="separator" />
+
+                  {Object.keys(newsData[activeTab]).map(
+                    (questionText: string, qIndex) => {
+                      const questionKeywords = questions.find(
+                        (qst: Question) => qst.text === questionText
+                      )?.keywords;
+                      return (
+                        <div key={`${index}-${qIndex}`}>
+                          <div className="question-header">
+                            <h1 className="question-title">{questionText}</h1>
+
+                            <div className="flex flex-row items-center justify-center w-full">
+                              
+                              <div className="xl:top-0 xl:left-0 refresh-button-container">
+                                <Button
+                                  variant="secondary"
+                                  className={`button ${
+                                    showFavorites
+                                      ? "bg-gray-700/80"
+                                      : "bg-black/70"
+                                  }`}
+                                  onClick={() =>
+                                    setShowFavorites(!showFavorites)
+                                  }
+                                >
+                                  <div className="button-content p-3">
+                                    <RefreshCw
+                                      strokeWidth={2}
+                                      style={{ width: 16, height: 16 }}
+                                    />
+                                  </div>
+                                </Button>
+                              </div>
+
+                              <p className="question-keywords w-fit flex-grow">
+                                {questionKeywords}
+                              </p>
+
+                            </div>
+                          </div>
+
+                          <div className="news-grid">
+                            {newsData[activeTab][questionText].map(
+                              (obj: Video | Article) => {
+                                if (obj.type == "article") {
+                                  return (
+                                    <div key={`article-${obj.id}`}>
+                                      <NewsArticle
+                                        article={obj as Article}
+                                        favourites={favourites}
+                                        showFavorites={showFavorites}
+                                        setFavourites={setFavourites}
+                                        showDelete={showDelete}
+                                        showAdd={showAdd}
+                                      />
+                                    </div>
+                                  );
+                                }
+                                return (
+                                  <div
+                                    key={`video-${obj.id}`}
+                                    className="video-container"
+                                  >
+                                    <div className="video-wrapper">
+                                      <NewsVideo
+                                        video={obj as Video}
+                                        videos={Videos}
+                                        setVideos={setVideos}
+                                        favourites={favourites}
+                                        setFavourites={setFavourites}
+                                        showFavorites={showFavorites}
+                                        showDelete={showDelete}
+                                        showAdd={showAdd}
+                                      />
+                                    </div>
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+
+                          <Separator className="separator" />
+                        </div>
+                      );
+                    }
+                  )}
+                </TabsContent>
+              </div>
+            )
+        )}
+
+      {showFavorites && (
+        <NewsFavorites
+          showFavorites={showFavorites}
+          showDelete={showDelete}
+          showAdd={showAdd}
+        />
+      )}
+
+      <div
+        className={`button-container xl:right-2 2xl:right-12 ${
+          showHeader ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <Button
+          variant="secondary"
+          className={`button ${
+            showFavorites ? "bg-gray-700/80" : "bg-black/70"
+          }`}
+          onClick={() => setShowFavorites(!showFavorites)}
+        >
+          <div className="button-content">
+            <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
+          </div>
+        </Button>
+      </div>
+    </Tabs>
+  );
 }
 
 export default NewsMain;

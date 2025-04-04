@@ -32,7 +32,7 @@ const useScrollTriggers = () => {
   }, [])
 
   const handleScroll = useCallback(
-    () => debounce(() => {
+    debounce(() => {
       if (!windowHeight) return
 
       const currentScroll = windowHeight - window.scrollY
@@ -112,7 +112,6 @@ export default function App() {
 
   // Initialize scroll triggers
   useScrollTriggers()
-
 
 
   useEffect(() => {

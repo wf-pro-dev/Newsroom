@@ -10,7 +10,6 @@ function mixArray(articles: Article[], videos: Video[], chunkSize: number): Arra
   const result = [];
   let j = 0;
   for (let i = 0; i < articles.length || j < videos.length; i++) {
-
     if (videos[j] && ((i > 0 && i % chunkSize == 0) || i >= articles.length)) { videos[j]["type"] = "video"; result.push(videos[j]); j++ }
     if (articles[i]) { articles[i]["type"] = "article"; result.push(articles[i]); }
 
@@ -20,7 +19,6 @@ function mixArray(articles: Article[], videos: Video[], chunkSize: number): Arra
 }
 function id_to_obj(favourites:Favourite[],articles: Article[], videos: Video[]) {
   const result = { "favArticles": new Array<Article>, "favVideos": new Array<Video>};
-  console.log(articles)
   for (let i = 0; i < favourites.length; i++) {
 
     if (favourites[i].entity_type == "article") { result.favArticles.push(articles.find((art)=> art.id == favourites[i].entity_id)!); }

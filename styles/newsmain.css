@@ -34,7 +34,7 @@
 }
 
 
-/* Button Container */
+/* Button */
 .button-container {
     @apply w-fit h-fit fixed bottom-3 transition-all duration-300 ease-in-out !important;
 }
@@ -51,6 +51,13 @@
     @apply p-4 flex justify-center items-center;
 }
 
+/* Refresh Button */
+
+.refresh-·button-container {
+    @apply absolute w-fit h-fit 2xl:left-12 !important;
+}
+
+
 
 /* New meaningful classes */
 .tabs-content-container {
@@ -66,7 +73,7 @@
 } */
 
 .question-header {
-    @apply flex flex-col items-center justify-center text-lg;
+    @apply flex flex-col text-lg !important;
 }
 
 .question-title {
@@ -74,7 +81,7 @@
 }
 
 .question-keywords {
-    @apply my-6 text-gray-400;
+    @apply my-6 text-center w-fit text-gray-400;
 }
 
 .news-grid {

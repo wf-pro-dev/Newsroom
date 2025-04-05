@@ -48,7 +48,7 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
           <div className=" grid gap-6 md:grid-cols-2 w-full lg:grid-cols-4 ">
 
             {mix_array.map((obj: Article | Video, index) => {
-              if (Object.keys(obj).includes("type")) {
+              if (obj.type === "article") {
                 return (
                   <div key={Object.keys(obj).includes("type") ? "article" : "video" + obj.id} >
                     <NewsArticle

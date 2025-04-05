@@ -1,10 +1,14 @@
 'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import '@/styles/heroglobe.css'
+import { Input } from './ui/input';
+import { Label } from '@radix-ui/react-label';
 
 
 const newsData = [
@@ -36,7 +40,7 @@ export function HeroGlobe() {
     // Create globe
     const globe_geometry = new THREE.SphereGeometry(5, 64, 64)
     const globe_loader = new THREE.TextureLoader()
-    const globe_Texture = globe_loader.load('https://miro.medium.com/v2/resize:fit:1400/0*F9GANogspBRfY3sR.jpg')
+    const globe_Texture = globe_loader.load('/textures/enhanced_world_map.jpg')
     //https://static.vecteezy.com/system/resources/previews/020/596/672/non_2x/black-and-white-world-map-background-free-vector.jpg
     //https://miro.medium.com/v2/resize:fit:1400/0*F9GANogspBRfY3sR.jpg
 
@@ -76,6 +80,7 @@ export function HeroGlobe() {
     })
 
     const globe = new THREE.Mesh(globe_geometry, globe_customMaterial)
+
     scene.add(globe)
 
 
@@ -143,23 +148,43 @@ export function HeroGlobe() {
     // Add news markers
     const markerGeometry = new THREE.SphereGeometry(0.1, 16, 16)
     const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xff3366 })
+    
+    
 
-    newsData.forEach(news => {
-      const marker = new THREE.Mesh(markerGeometry, markerMaterial)
-      const phi = (90 - news.lat) * (Math.PI / 180)
-      const theta = (news.lon + 180) * (Math.PI / 180)
-      marker.position.x = -(5 * Math.sin(phi) * Math.cos(theta))
-      marker.position.z = (5 * Math.sin(phi) * Math.sin(theta))
-      marker.position.y = (5 * Math.cos(phi))
-      globe.add(marker)
-    })
+    const mtlLoader = new MTLLoader();
+    mtlLoader.setPath('/models/');
+    mtlLoader.load('marker.mtl', (materials) => {
+      materials.preload();
 
-    camera.position.z = 10
+      const objLoader = new OBJLoader();
+      objLoader.setMaterials(materials);
+      objLoader.load("/models/marker.obj", (obj) => {
+        newsData.forEach(({ lat, lon }) => {
+          const marker = obj.clone(); // Clone the marker for each point
+  
+          const phi = (90 - lat) * (Math.PI / 180);
+          const theta = (lon + 180) * (Math.PI / 180);
+  
+          marker.position.x = -(5 * Math.sin(phi) * Math.cos(theta))
+          marker.position.z = (5 * Math.sin(phi) * Math.sin(theta))
+          marker.position.y = (5 * Math.cos(phi))
+
+          
+          marker.lookAt(100, 100, 500); // Make it face the center of the globe
+          marker.scale.set(0.06, 0.06, 0.06); // Scale if needed
+          globe.add(marker);
+        });
+      });
+  });
+    camera.position.z = 11
 
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
     controls.dampingFactor = 0.25
     controls.enableZoom = false
+    controls.enablePan = false
+    controls.autoRotate = true
+    controls.autoRotateSpeed = 1.0
 
     const raycaster = new THREE.Raycaster()
     const mouse = new THREE.Vector2()
@@ -175,6 +200,7 @@ export function HeroGlobe() {
       if (intersects.length > 0) {
         const index = globe.children.indexOf(intersects[0].object)
         setSelectedNews(newsData[index])
+
       } else {
         setSelectedNews(null)
       }
@@ -196,18 +222,9 @@ export function HeroGlobe() {
     }
     animate()
 
-    const handleResize = () => {
-      if (globeRef.current) {
-        camera.aspect = globeRef.current.clientWidth / globeRef.current.clientHeight
-        camera.updateProjectionMatrix()
-        renderer.setSize(globeRef.current.clientWidth, globeRef.current.clientHeight)
-      }
-    }
-
-    window.addEventListener('resize', handleResize)
+    
 
     return () => {
-      window.removeEventListener('resize', handleResize)
       if (globeRef.current) {
         globeRef.current.removeEventListener('mousemove', onMouseMove)
         if (globeRef.current.contains(renderer.domElement)) {
@@ -247,16 +264,40 @@ export function HeroGlobe() {
             <Button className="read-more-button">Read More</Button>
           </div>
         )}
+        <div className='header-container'>
+          <div className={`header ${showHeader ? 'hidden' : 'visible'}`}>
+            <div>
+              <h1 className="header-title">
+                The NewsRoom
+              </h1>
+              <p className="header-description">
+                Explore breaking news from around the world
+              </p>
+            </div>
 
-        <div className={`header ${showHeader ? 'hidden' : 'visible'}`}>
-          <h1 className="header-title">
-            The NewsRoom
-          </h1>
-          <p className="header-description">
-            Explore breaking news from around the world
-          </p>
+            <div className='flex flex-col gap-y-4'>
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label className='text-sm' htmlFor="email">Email</Label>
+                <Input type="email" id="email" placeholder="Email" className='bg-transparent' />
+              </div>
+
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label className='text-sm'  htmlFor="Password">Password</Label>
+                <Input type='password' id="Password" placeholder="Password" className='bg-transparent' />
+              </div>
+            </div>
+
+            <Button
+            variant="outline"
+            className="form-button"
+          >
+            <p className='font-bold'>Continue</p>
+            
+          </Button>
+          </div>
         </div>
       </section>
+     
     </div>
   )
 }

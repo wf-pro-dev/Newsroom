@@ -6,10 +6,9 @@ import { useGlobalState } from "./context/GlobalStateContext";
 import { Globe, Heart, Newspaper } from "lucide-react";
 import DynamicImage from "./core/dynamicimage";
 
-export default function NewsCarousel({ topic, questions }: {
+function NewsCarousel({ topic, questions }: {
     topic: string;
     questions: Question[];
-    videos: Video[];
 }) {
     const [api, setApi] = React.useState<CarouselApi>();
     const [current,setCurrent] = React.useState(0);
@@ -94,7 +93,7 @@ export default function NewsCarousel({ topic, questions }: {
             </div>
         );
     }
-
+    console.log("questions, newsCarousel",questions)
     return (
         <div>
             <h1 className="text-2xl leading-normal text-center text-gray-300">
@@ -161,3 +160,7 @@ export default function NewsCarousel({ topic, questions }: {
         </div>
     );
 }
+
+export default React.memo(NewsCarousel,(prevProps, nextProps) => {
+    return prevProps.questions == nextProps.questions;
+});

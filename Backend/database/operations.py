@@ -28,4 +28,5 @@ def create_all_tables():
         print("All tables created.")
 
 if __name__ == "__main__":
+    drop_all_tables()
     create_all_tables()

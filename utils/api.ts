@@ -1,38 +1,65 @@
-import { Article, Favourite, Question, Topic, Video } from './types';
+import { Article, Favourite, newQuestion, Question, Topic, Video } from './types';
 
 const API_BASE_URL = 'http://192.168.86.26/api'
 
+/* GET METHODS */
+
 export async function fetchAllData(): Promise<any> {
-  const res = await fetch(`${API_BASE_URL}/all_data`)
-  return res.json()
+  const response = await fetch(`${API_BASE_URL}/all_data`)
+  return response.json()
 }
 
 export async function fetchTopics(): Promise<Topic[]> {
-  const res = await fetch(`${API_BASE_URL}/topics`)
-  return res.json()
+  const response = await fetch(`${API_BASE_URL}/topics`)
+  return response.json()
 }
 
 export async function fetchFavorites(): Promise<Favourite[]> {
-  const res = await fetch(`${API_BASE_URL}/favourites`)
-  return res.json()
+  const response = await fetch(`${API_BASE_URL}/favourites`)
+  return response.json()
 }
 
 export async function fetchQuestions(): Promise<Question[]> {
-  const res = await fetch(`${API_BASE_URL}/questions`)
-  return res.json()
+  const response = await fetch(`${API_BASE_URL}/questions`)
+  return response.json()
 }
 
 
 export async function fetchArticles(): Promise<Article[]> {
-  const res = await fetch(`${API_BASE_URL}/articles`)
-  return res.json()
+  const response = await fetch(`${API_BASE_URL}/articles`)
+  return response.json()
 }
 
 export async function fetchVideos(): Promise<Video[]> {
-  const res = await fetch(`${API_BASE_URL}/videos`)
-  return res.json()
+  const response = await fetch(`${API_BASE_URL}/videos`)
+  return response.json()
 }
 
+/* POST METHODS */
+
+export async function addQuestion(topic_id:number): Promise<newQuestion[]> {
+  try {
+      const response = await fetch(`${API_BASE_URL}/questions/${topic_id}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+
+      if (!response.ok) {
+          throw new Error(`Failed to add new question: ${response.status}`);
+      }
+
+      const data : newQuestion[] = await response.json();
+      console.log('Generated question:', data);
+      return data;
+  } catch (error) {
+      console.error('Error generating question:', error);
+  }
+
+}
+
+/* DELETE METHODS */
 
 export async function deleteNewsbyId(id: number): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/articles/${id}`, {
@@ -49,6 +76,15 @@ export async function deleteVideobyId(id: number): Promise<void> {
   });
   if (!response.ok) {
     throw new Error(`Failed to delete news item: ${response.statusText}`);
+  }
+}
+
+export async function deleteQuestionbyId(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/questions/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to delete question item: ${response.statusText}`);
   }
 }
 

@@ -4,12 +4,19 @@ type Topic = {
   role: string;
 };
 
+
+
 type Question = {
   id: number;
   keywords: string[];
   text: string;
   topic_id: number; // Changed from topic to topic_id to match the model
 };
+
+interface newQuestion extends Question {
+  articles: Article[];
+  videos: Video[];
+}
 
 type Video = {
   id: number;
@@ -42,4 +49,4 @@ type Favourite = {
 
 
 
-export type { Article, Question, Topic, Video, Favourite };
+export type { Article, Question, newQuestion, Topic, Video, Favourite };

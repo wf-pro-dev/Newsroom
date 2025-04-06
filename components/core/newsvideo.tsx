@@ -6,11 +6,10 @@ import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { addFavourite, deleteVideobyId, removeFavourite } from "@/utils/api";
+import { useGlobalState } from "../context/GlobalStateContext";
 
 type NewsVideoProps = {
     video: Video;
-    videos: Video[];
-    setVideos: React.Dispatch<React.SetStateAction<Video[]>>;
     favourites: Favourite[];
     setFavourites: React.Dispatch<React.SetStateAction<Favourite[]>>,
     showFavorites: boolean
@@ -23,7 +22,7 @@ type YouTubePlayerRef = {
     cueVideoById: (params: {videoId: string, suggestedQuality: string}) => void;
 };
 
-function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFavorites, showAdd, showDelete }: NewsVideoProps) {
+function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, showDelete }: NewsVideoProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef<YouTubePlayerRef | null>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -32,6 +31,8 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
     const [isDeleting, setIsDeleting] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
     const bufferingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const {videos, setVideos} = useGlobalState()
 
     // Set mounted state
     useEffect(() => {
@@ -54,7 +55,7 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
         setDimensions(newDimensions);
 
         // Only update player size if the player is available
-        if (playerRef.current && typeof playerRef.current.setSize === 'function') {
+        if (playerRef.current && typeof playerRef.current.setSize === 'function' && newDimensions.width && newDimensions.height ) {
             try {
                 playerRef.current.setSize(newDimensions.width, newDimensions.height);
             } catch (error) {
@@ -99,7 +100,7 @@ function NewsVideo({ video, videos, setVideos, favourites, setFavourites, showFa
                 clearTimeout(bufferingTimeoutRef.current);
             }
         };
-    }, [isMounted, updateDimensions]);
+    }, [isMounted]);
 
     // Update YouTube player options when dimensions change
     useEffect(() => {

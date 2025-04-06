@@ -11,6 +11,7 @@ import NewsVideo from "./core/newsvideo";
 import "@/styles/newsmain.css";
 import { useGlobalState } from "@/components/context/GlobalStateContext";
 import { mixArray } from "@/lib/utils";
+import { addQuestion, deleteQuestionbyId } from "@/utils/api";
 
 function NewsMain({
   activeTab,
@@ -36,13 +37,14 @@ function NewsMain({
     setNewsData,
     topics,
     questions,
+    setQuestions,
     articles,
+    setArticles,
     videos,
+    setVideos,
     favourites,
     setFavourites,
   } = useGlobalState();
-
-  const [Videos, setVideos] = useState(videos);
 
   useEffect(() => {
     const data: Record<string, Record<string, Array<Video | Article>>> = {};
@@ -63,7 +65,21 @@ function NewsMain({
         });
     });
     setNewsData(data);
-  }, [topics, questions, articles, videos, setNewsData]);
+    console.log("data",data)
+  }, [topics, questions, articles, videos]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowHeader(window.scrollY >= window.innerHeight);
+      setAtInnerHeight(window.scrollY === window.innerHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   function onValueChange(value: string) {
     if (showFavorites) setShowFavorites(false);
@@ -84,19 +100,44 @@ function NewsMain({
     }
   }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowHeader(window.scrollY >= window.innerHeight);
-      setAtInnerHeight(window.scrollY === window.innerHeight);
-    };
+  function onQuestionChange(qst:Question) {
+    const index = questions.findIndex((question)=>question == qst)
+    deleteQuestionbyId(qst.id)
+ 
+    addQuestion(qst.topic_id)
+    .then((data) => {
+      
+      const objData = data[0]
+      const qstData : Question =  
+        { 
+          id : objData.id , 
+          text : objData.text,  
+          topic_id : objData.topic_id, 
+          keywords : objData.keywords  
+        }
+      
+      console.log("vsy ma gueule marche", objData.articles, objData.videos )
+      
+      setArticles(
+        articles
+          .filter((article) => article.question_id != qst.id)
+          .concat(objData.articles)
+      )
 
-    window.addEventListener("scroll", handleScroll);
+      setVideos(
+        videos
+          .filter((video) => video.question_id != qst.id)
+          .concat(objData.videos)
+      )
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      setQuestions(
+        questions
+        .filter((question) => question != qst)
+        .toSpliced(index,0,qstData)
+      )
+    })
 
+  }
   return (
     <Tabs
       value={activeTab}
@@ -149,14 +190,20 @@ function NewsMain({
                   } tabs-content`}
                 >
                   <Separator className="separator" />
-
-                  <NewsCarousel
-                    topic={activeTab}
-                    questions={questions.filter((question: Question) =>
+                  
+                  {questions.filter((question: Question) =>
                       Object.keys(newsData[activeTab]).includes(question.text)
-                    )}
-                    videos={videos}
-                  />
+                    ).length == 3 && (
+
+                    <NewsCarousel
+                      topic={activeTab}
+                      questions={questions.filter((question: Question) =>
+                        Object.keys(newsData[activeTab]).includes(question.text)
+                      )
+                    }
+                    />
+
+                  )}
 
                   <Separator className="separator" />
 
@@ -175,14 +222,8 @@ function NewsMain({
                               <div className="xl:top-0 xl:left-0 refresh-button-container">
                                 <Button
                                   variant="secondary"
-                                  className={`button ${
-                                    showFavorites
-                                      ? "bg-gray-700/80"
-                                      : "bg-black/70"
-                                  }`}
-                                  onClick={() =>
-                                    setShowFavorites(!showFavorites)
-                                  }
+                                  className={`button`}
+                                  onClick={() => onQuestionChange(questions.find((qst: Question) => qst.text === questionText ))}
                                 >
                                   <div className="button-content p-3">
                                     <RefreshCw
@@ -225,8 +266,6 @@ function NewsMain({
                                     <div className="video-wrapper">
                                       <NewsVideo
                                         video={obj as Video}
-                                        videos={Videos}
-                                        setVideos={setVideos}
                                         favourites={favourites}
                                         setFavourites={setFavourites}
                                         showFavorites={showFavorites}

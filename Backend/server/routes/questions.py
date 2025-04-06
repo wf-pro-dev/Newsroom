@@ -15,7 +15,7 @@ questions_bp = Blueprint("questions", __name__)
 
 
 @questions_bp.route("/questions", methods=["GET"])
-def get_topics():
+def get_questions():
     list_question = questions.query.all()
     return jsonify([question.to_dict() for question in list_question])
 
@@ -39,13 +39,24 @@ def add_question(topic_id):
         list_question = topic.set_questions(n_qst=1)
         seed_questions(questions=list_question, topic=topic)
 
-        return jsonify([ question.to_dict() for question in list_question]), 201
+        response_data = []
+        for question in list_question:
+            question_dict = question.to_dict()
+            question_dict["articles"] = [
+                article.to_dict() for article in articles.query.filter_by(question_id=question.id).all()
+            ]
+            question_dict["videos"] = [
+                video.to_dict() for video in videos.query.filter_by(question_id=question.id).all()
+            ]
+            response_data.append(question_dict)
+
+        return jsonify(response_data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
 
 @questions_bp.route("/questions/<int:id>", methods=["DELETE"])
-def delete_question(id):
+def delete_question_by_id(id):
     try:
         question = questions.query.filter_by(id=id).one()
         if question:

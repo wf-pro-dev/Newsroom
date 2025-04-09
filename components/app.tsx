@@ -104,7 +104,6 @@ export default function App() {
   useEffect(() => {
     if (topics.length > 0) {
       setMounted(true)
-      console.log("topics", topics)
       setActiveTab(topics[0].title)
     }
 

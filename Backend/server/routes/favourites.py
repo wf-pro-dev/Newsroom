@@ -18,6 +18,11 @@ def get_favourites():
     list_topic = favourites.query.all()
     return jsonify([topic.to_dict() for topic in list_topic])
 
+@favourites_bp.route("/favourites/<int:id>", methods=["GET"])
+def get_favourite(id):
+    fav = favourites.query.get_or_404(id)
+    return jsonify(fav.to_dict())
+
 
 @favourites_bp.route("/favourites", methods=["POST"])
 def add_favourite():
@@ -58,7 +63,4 @@ def delete_favourites_by_entity_id_and_type(entity_id, entity_type):
         return jsonify({"error": str(e)}), 500
 
 
-@favourites_bp.route("/favourites/<int:id>", methods=["GET"])
-def get_favourite(id):
-    fav = favourites.query.get_or_404(id)
-    return jsonify(fav.to_dict())
+

@@ -11,13 +11,7 @@ def get_articles():
     return jsonify([article.to_dict() for article in list_article])
 
 
-@articles_bp.route("/articles/<int:question_id>", methods=["GET"])
-def get_article_by_qst(question_id):
-    list_article = articles.query.filter_by(question_id=question_id).all()
-    return jsonify([article.to_dict() for article in list_article])
-
-
-@articles_bp.route("/articles/<int:id>", methods=["DELETE"])
+@articles_bp.route("/articles/delete/<int:id>", methods=["DELETE"])
 def delete_article_by_id(id):
     try:
         article = articles.query.filter_by(id=id).one_or_none()
@@ -29,3 +23,9 @@ def delete_article_by_id(id):
             return jsonify({"error": "Item not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@articles_bp.route("/articles/question/<int:question_id>", methods=["GET"])
+def get_article_by_qst(question_id):
+    list_article = articles.query.filter_by(question_id=question_id).all()
+    return jsonify([article.to_dict() for article in list_article])

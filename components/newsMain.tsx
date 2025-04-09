@@ -1,17 +1,15 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import NewsArticle from "./core/newsarticle";
 import NewsCarousel from "./newsCarousel";
 import { Article, Question, Topic, Video } from "@/utils/types";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { Heart, RefreshCw } from "lucide-react";
+import { Heart } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
-import NewsVideo from "./core/newsvideo";
 import "@/styles/newsmain.css";
 import { useGlobalState } from "@/components/context/GlobalStateContext";
 import { mixArray } from "@/lib/utils";
-import { addQuestion, deleteQuestionbyId } from "@/utils/api";
+import QuestionContainer from "./questionContainer";
 
 function NewsMain({
   activeTab,
@@ -37,13 +35,8 @@ function NewsMain({
     setNewsData,
     topics,
     questions,
-    setQuestions,
     articles,
-    setArticles,
     videos,
-    setVideos,
-    favourites,
-    setFavourites,
   } = useGlobalState();
 
   useEffect(() => {
@@ -65,7 +58,6 @@ function NewsMain({
         });
     });
     setNewsData(data);
-    console.log("data",data)
   }, [topics, questions, articles, videos]);
 
   useEffect(() => {
@@ -100,44 +92,7 @@ function NewsMain({
     }
   }
 
-  function onQuestionChange(qst:Question) {
-    const index = questions.findIndex((question)=>question == qst)
-    deleteQuestionbyId(qst.id)
- 
-    addQuestion(qst.topic_id)
-    .then((data) => {
-      
-      const objData = data[0]
-      const qstData : Question =  
-        { 
-          id : objData.id , 
-          text : objData.text,  
-          topic_id : objData.topic_id, 
-          keywords : objData.keywords  
-        }
-      
-      console.log("vsy ma gueule marche", objData.articles, objData.videos )
-      
-      setArticles(
-        articles
-          .filter((article) => article.question_id != qst.id)
-          .concat(objData.articles)
-      )
 
-      setVideos(
-        videos
-          .filter((video) => video.question_id != qst.id)
-          .concat(objData.videos)
-      )
-
-      setQuestions(
-        questions
-        .filter((question) => question != qst)
-        .toSpliced(index,0,qstData)
-      )
-    })
-
-  }
   return (
     <Tabs
       value={activeTab}
@@ -152,19 +107,19 @@ function NewsMain({
               value={category}
               onClick={() => goUp(category)}
               className={`
-                                tab-trigger
-                                group-hover:translate-y-0
-                                ${
-                                  showHeader
-                                    ? "data-[state=active]:translate-y-0"
-                                    : "data-[state=active]:-translate-y-20"
-                                } 
-                                ${
-                                  atInnerHeight
-                                    ? "translate-y-0"
-                                    : "-translate-y-20"
-                                }
-                            `}
+                          tab-trigger
+                          group-hover:translate-y-0
+                          ${
+                            showHeader
+                              ? "data-[state=active]:translate-y-0"
+                              : "data-[state=active]:-translate-y-20"
+                          } 
+                          ${
+                            atInnerHeight
+                              ? "translate-y-0"
+                              : "-translate-y-20"
+                          }
+                      `}
             >
               <p className="2xl:text-[15px] xl:text-sm font-medium">
                 {category}
@@ -213,74 +168,16 @@ function NewsMain({
                         (qst: Question) => qst.text === questionText
                       )?.keywords;
                       return (
-                        <div key={`${index}-${qIndex}`}>
-                          <div className="question-header">
-                            <h1 className="question-title">{questionText}</h1>
-
-                            <div className="flex flex-row items-center justify-center w-full">
-                              
-                              <div className="xl:top-0 xl:left-0 refresh-button-container">
-                                <Button
-                                  variant="secondary"
-                                  className={`button`}
-                                  onClick={() => onQuestionChange(questions.find((qst: Question) => qst.text === questionText ))}
-                                >
-                                  <div className="button-content p-3">
-                                    <RefreshCw
-                                      strokeWidth={2}
-                                      style={{ width: 16, height: 16 }}
-                                    />
-                                  </div>
-                                </Button>
-                              </div>
-
-                              <p className="question-keywords w-fit flex-grow">
-                                {questionKeywords}
-                              </p>
-
-                            </div>
-                          </div>
-
-                          <div className="news-grid">
-                            {newsData[activeTab][questionText].map(
-                              (obj: Video | Article) => {
-                                if (obj.type == "article") {
-                                  return (
-                                    <div key={`article-${obj.id}`}>
-                                      <NewsArticle
-                                        article={obj as Article}
-                                        favourites={favourites}
-                                        showFavorites={showFavorites}
-                                        setFavourites={setFavourites}
-                                        showDelete={showDelete}
-                                        showAdd={showAdd}
-                                      />
-                                    </div>
-                                  );
-                                }
-                                return (
-                                  <div
-                                    key={`video-${obj.id}`}
-                                    className="video-container"
-                                  >
-                                    <div className="video-wrapper">
-                                      <NewsVideo
-                                        video={obj as Video}
-                                        favourites={favourites}
-                                        setFavourites={setFavourites}
-                                        showFavorites={showFavorites}
-                                        showDelete={showDelete}
-                                        showAdd={showAdd}
-                                      />
-                                    </div>
-                                  </div>
-                                );
-                              }
-                            )}
-                          </div>
-
-                          <Separator className="separator" />
-                        </div>
+                        <QuestionContainer 
+                        activeTab={activeTab}
+                        index={index}
+                        qIndex={qIndex}
+                        questionText={questionText}
+                        questionKeywords={questionKeywords}
+                        showFavorites={showFavorites}
+                        showDelete={showDelete}
+                        showAdd={showAdd}
+                        />  
                       );
                     }
                   )}

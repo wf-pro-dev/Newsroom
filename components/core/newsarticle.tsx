@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { X, Heart, HeartOff, ArrowRight, CalendarDays } from 'lucide-react'
 import { Article, Favourite } from '@/utils/types'
-import { deleteNewsbyId, addFavourite, removeFavourite } from '@/utils/api'
+import { deleteArticlebyId, addFavourite, deleteFavouritebyId } from '@/utils/api'
 import moment from 'moment'
 import { Separator } from '@radix-ui/react-separator'
 import { useGlobalState } from '@/components/context/GlobalStateContext'
@@ -38,7 +38,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
 
                 showDelete(true);
                 
-                await removeFavourite(favourite.entity_type, favourite.entity_id);
+                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id);
 
             } else {
                 // Optimistically update UI
@@ -64,7 +64,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
         }, 300);
 
         try {
-            await deleteNewsbyId(article.id);
+            await deleteArticlebyId(article.id);
             showDelete(true);
 
         } catch (error) {

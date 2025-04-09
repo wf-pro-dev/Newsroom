@@ -5,7 +5,7 @@ import YouTube from "react-youtube"
 import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
 import Image from "next/image";
-import { addFavourite, deleteVideobyId, removeFavourite } from "@/utils/api";
+import { addFavourite, deleteVideobyId, deleteFavouritebyId } from "@/utils/api";
 import { useGlobalState } from "../context/GlobalStateContext";
 
 type NewsVideoProps = {
@@ -209,7 +209,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
 
                 showDelete(true);
                 
-                await removeFavourite(favourite.entity_type, favourite.entity_id);
+                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id);
             } else {
                 // Optimistically update UI
                 setFavourites([...favourites, { entity_id: video.id, entity_type: "video" }]);

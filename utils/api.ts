@@ -9,8 +9,13 @@ export async function fetchAllData(): Promise<any> {
   return response.json()
 }
 
-export async function fetchTopics(): Promise<Topic[]> {
-  const response = await fetch(`${API_BASE_URL}/topics`)
+export async function fetchArticles(): Promise<Article[]> {
+  const response = await fetch(`${API_BASE_URL}/articles`)
+  return response.json()
+}
+
+export async function fetchVideos(): Promise<Video[]> {
+  const response = await fetch(`${API_BASE_URL}/videos`)
   return response.json()
 }
 
@@ -24,18 +29,25 @@ export async function fetchQuestions(): Promise<Question[]> {
   return response.json()
 }
 
-
-export async function fetchArticles(): Promise<Article[]> {
-  const response = await fetch(`${API_BASE_URL}/articles`)
+export async function fetchTopics(): Promise<Topic[]> {
+  const response = await fetch(`${API_BASE_URL}/topics`)
   return response.json()
 }
 
-export async function fetchVideos(): Promise<Video[]> {
-  const response = await fetch(`${API_BASE_URL}/videos`)
-  return response.json()
-}
 
 /* POST METHODS */
+
+export async function addFavourite(entity_id: number, entity_type: string): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/favourites`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ entity_id, entity_type })
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to add favourite: ${response.statusText}`);
+  }
+  return response.json();
+}
 
 export async function addQuestion(topic_id:number): Promise<newQuestion[]> {
   try {
@@ -61,8 +73,8 @@ export async function addQuestion(topic_id:number): Promise<newQuestion[]> {
 
 /* DELETE METHODS */
 
-export async function deleteNewsbyId(id: number): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/articles/${id}`, {
+export async function deleteArticlebyId(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/articles/delete/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {
@@ -71,7 +83,7 @@ export async function deleteNewsbyId(id: number): Promise<void> {
 }
 
 export async function deleteVideobyId(id: number): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/videos/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/videos/delete/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {
@@ -80,7 +92,7 @@ export async function deleteVideobyId(id: number): Promise<void> {
 }
 
 export async function deleteQuestionbyId(id: number): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/questions/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/questions/delete/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {
@@ -88,20 +100,7 @@ export async function deleteQuestionbyId(id: number): Promise<void> {
   }
 }
 
-
-export async function addFavourite(entity_id: number, entity_type: string): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/favourites`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ entity_id, entity_type })
-  });
-  if (!response.ok) {
-    throw new Error(`Failed to add favourite: ${response.statusText}`);
-  }
-  return response.json();
-}
-
-export async function removeFavourite(type:string,id: number): Promise<void> {
+export async function deleteFavouritebyId(type:string,id: number): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/favourites/${type}/${id}`, {
     method: 'DELETE',
   });
@@ -109,3 +108,7 @@ export async function removeFavourite(type:string,id: number): Promise<void> {
     throw new Error(`Failed to remove favourite: ${response.statusText}`);
   }
 }
+
+
+
+

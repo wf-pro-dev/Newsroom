@@ -28,7 +28,6 @@ function NewsCarousel({ topic, questions }: {
             setCurrent(api.selectedScrollSnap());
         });
 
-        console.log(current,count)
     }, [api]);
 
     const IconSwitcher = ({ index }: { index: number }) => {
@@ -93,7 +92,6 @@ function NewsCarousel({ topic, questions }: {
             </div>
         );
     }
-    console.log("questions, newsCarousel",questions)
     return (
         <div>
             <h1 className="text-2xl leading-normal text-center text-gray-300">

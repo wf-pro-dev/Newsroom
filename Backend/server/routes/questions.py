@@ -55,7 +55,7 @@ def add_question(topic_id):
         return jsonify({"error": str(e)}), 400
 
 
-@questions_bp.route("/questions/<int:id>", methods=["DELETE"])
+@questions_bp.route("/questions/delete/<int:id>", methods=["DELETE"])
 def delete_question_by_id(id):
     try:
         question = questions.query.filter_by(id=id).one()
@@ -66,17 +66,15 @@ def delete_question_by_id(id):
             for article in list_article:
                 db.session.delete(article)
             
-            db.session.commit()  
             
             for video in list_video:
                 db.session.delete(video)
             
-            db.session.commit() 
             
             db.session.delete(question)
             db.session.commit()
             return (
-                jsonify({"message": "Question deleted and reseeded successfully"}),
+                jsonify({"message": f"Question {id} deleted successfully"}),
                 200,
             )
         else:

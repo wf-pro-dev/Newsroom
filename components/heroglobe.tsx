@@ -297,7 +297,6 @@ const onMouseMove = (event: MouseEvent) => {
     }
 
     if (hitMarker) {
-      console.log("hit")
       setIsHoveringMarker(true);
       controls.autoRotate = false;
     } 

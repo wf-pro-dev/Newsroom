@@ -1,10 +1,12 @@
+type User = {
+  email: number
+}
+
 type Topic = {
   id: number;
   title: string;
   role: string;
 };
-
-
 
 type Question = {
   id: number;
@@ -49,4 +51,4 @@ type Favourite = {
 
 
 
-export type { Article, Question, newQuestion, Topic, Video, Favourite };
+export type { User, Article, Question, newQuestion, Topic, Video, Favourite };

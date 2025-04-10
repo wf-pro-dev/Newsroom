@@ -6,6 +6,10 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from sys import path
 import os
+from flask_jwt_extended import JWTManager, create_access_token
+
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf.csrf import CSRFProtect, generate_csrf
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, "../../"))
@@ -13,13 +17,14 @@ backend_root = project_root + "/Backend"
 path.append(backend_root)
 
 from database.connection import db
+from server.routes.auth import auth_bp
 from server.routes.articles import articles_bp
 from server.routes.videos import videos_bp
 from server.routes.topics import topics_bp
 from server.routes.questions import questions_bp
 from server.routes.favourites import favourites_bp
 from server.routes.all_data import all_data_bp
-from config.constants import DATABASE_URI
+from config.constants import DATABASE_URI, JWT_SECRET_KEY, CSRF_SECRET_KEY
 
 def create_app():
     app = Flask(__name__)
@@ -34,14 +39,35 @@ def create_app():
             }
         },
     )
+    
+    # Configure JWY and Cookies_SECURITY
+    app.config['SECRET_KEY'] = 'dev-key-123'
+    app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
+    app.config["JWT_COOKIE_SECURE"] = True 
+    app.config["JWT_COOKIE_CSRF_PROTECT"] = True 
+    app.config["WTF_CSRF_SECRET_KEY"] = CSRF_SECRET_KEY
+    
+    # Initialize extensions
+    jwt = JWTManager(app)
+    csrf = CSRFProtect(app)
+    
+    
+    # Generate CSRF token endpoint (called by frontend on page load)
+    @app.route("/csrf-token", methods=["GET"])
+    def get_csrf_token():
+        token = generate_csrf()
+        return jsonify({"csrfToken": token})
 
     # Configure SQLAlchemy
-    print(DATABASE_URI)
     app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    
     db.init_app(app)
 
-    # Register blueprints
+    # Register authentication  blueprint
+    app.register_blueprint(auth_bp)
+    
+    # Register database blueprints
     app.register_blueprint(articles_bp)
     app.register_blueprint(videos_bp)
     app.register_blueprint(topics_bp)

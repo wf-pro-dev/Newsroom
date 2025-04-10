@@ -19,6 +19,10 @@ NEWSAPI_KEY = os.getenv("NEWSAPI")
 NEWSDATA_KEY = os.getenv("NEWSDATA")
 YOUTUBE_KEY = os.getenv("YT_KEY")
 
+# secret keys
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+CSRF_SECRET_KEY = os.getenv("CSRF_SECRET_KEY")
+
 # Lint Config
 LINT_PATH = os.getenv("LINT_PATH", NEWSROOM_PATH)
 FORMAT_PATH = os.getenv("FORMAT_PATH", NEWSROOM_PATH)
@@ -74,4 +78,4 @@ COLUMNS = {
 }
 
 if __name__ == "__main__":
-    print(env, DATABASE_URI)
+    print(env, CSRF_SECRET_KEY)

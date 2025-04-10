@@ -1,11 +1,13 @@
 'use client'
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { Article, Question, Favourite, Topic, Video } from '@/utils/types';
-import { fetchAllData } from '@/utils/api';
+import { User, Article, Question, Favourite, Topic, Video } from '@/utils/types';
+import { fetchAllData, fetchUser,  } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {
+    user: User;
+    setUser: React.Dispatch<React.SetStateAction<User[]>>; 
     topics: Topic[];
     setTopics: React.Dispatch<React.SetStateAction<Topic[]>>;
     questions: Question[];
@@ -24,7 +26,7 @@ const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
 
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
 
-
+    const [user, setUser] = useState<User>()
     const [topics, setTopics] = useState<Topic[]>([]);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [articles, setArticles] = useState<Article[]>([]);
@@ -38,7 +40,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
                 fetchAllData()
             ])
             
-
+            setUser(undefined)
             setTopics(AllData["topics"])
             setQuestions(AllData["questions"])
             setArticles(AllData["articles"])

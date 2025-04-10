@@ -3,6 +3,26 @@ import { Article, Favourite, newQuestion, Question, Topic, Video } from './types
 const API_BASE_URL = 'http://192.168.86.26/api'
 
 /* GET METHODS */
+export  async function fetchCsrfToken() {
+  const response = await fetch(`${API_BASE_URL}/csrf-token`, {
+    credentials: 'include'  // Required for cookies
+  })
+  const data = await response.json()
+  return data.csrfToken
+}
+
+export  async function fetchUser(csrfToken:string) {
+  const response = await fetch(`${API_BASE_URL}/user`, {
+    method: 'GET',
+    credentials: 'include', // Sends JWT cookie automatically
+    headers: {
+      'X-CSRF-TOKEN': csrfToken!, // Manually attach CSRF token
+    },
+  });
+
+  return response.json()
+}
+
 
 export async function fetchAllData(): Promise<any> {
   const response = await fetch(`${API_BASE_URL}/all_data`)
@@ -36,6 +56,41 @@ export async function fetchTopics(): Promise<Topic[]> {
 
 
 /* POST METHODS */
+export async function register( email:string, password:string, csrfToken:string ) {
+  const response = await fetch(`${API_BASE_URL}/register`, {
+    method: 'POST',
+    credentials: 'include',  // Send cookies
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': csrfToken  // Attach CSRF token
+    },
+    body: JSON.stringify({ email, password })
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to register user: ${response.statusText}`);
+  }
+  return response.json();
+
+}
+
+export async function login( email:string, password:string, csrfToken:string ) {
+  const response = await fetch(`${API_BASE_URL}/login`, {
+    method: 'POST',
+    credentials: 'include',  // Send cookies
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': csrfToken  // Attach CSRF token
+    },
+    body: JSON.stringify({ email, password })
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to login user: ${response.statusText}`);
+  }
+  return response.json();
+
+}
 
 export async function addFavourite(entity_id: number, entity_type: string): Promise<any> {
   const response = await fetch(`${API_BASE_URL}/favourites`, {

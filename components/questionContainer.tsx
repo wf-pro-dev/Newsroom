@@ -87,7 +87,6 @@ function QuestionContainer ({
         
         deleteQuestionbyId(qst.id)
         
-        console.log("addQuestion CALL")
         addQuestion(qst.topic_id)
         .then((data) => {
           

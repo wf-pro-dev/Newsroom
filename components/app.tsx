@@ -7,6 +7,7 @@ import { HeroGlobe } from '@/components/heroglobe'
 import { Button } from '@/components/ui/button'
 import '@/styles/page.css'
 import { useGlobalState } from './context/GlobalStateContext'
+import Auth from './auth'
 
 // Constants for scroll directions
 const SCROLL_DIRECTIONS = {
@@ -168,6 +169,8 @@ export default function App() {
       >
         <HeroGlobe />
       </div>
+
+      <Auth />
 
       <div className={`news-main ${isFixed ? 'z-10' : ''}`}>
         <NewsMain

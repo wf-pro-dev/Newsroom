@@ -2,10 +2,11 @@
 This module sets up the Flask application, configures CORS, 
 and registers the necessary blueprints for the server.
 """
-from flask import Flask, jsonify
-from flask_cors import CORS
 from sys import path
 import os
+from datetime import timedelta
+from flask import Flask, jsonify
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -34,10 +35,11 @@ def create_app():
         app,
         resources={
             r"/*": {
-                "origins": "*",
+                "origins": "127.0.0.1",
                 "methods": ["GET", "POST", "DELETE", "OPTIONS"],
             }
         },
+        supports_credentials=True
     )
     
     # Configure JWY and Cookies_SECURITY
@@ -46,6 +48,15 @@ def create_app():
     app.config["JWT_COOKIE_SECURE"] = True 
     app.config["JWT_COOKIE_CSRF_PROTECT"] = True 
     app.config["WTF_CSRF_SECRET_KEY"] = CSRF_SECRET_KEY
+    
+    # Configure Cookies send/security (For jwt_token)
+    app.config.update({
+        'JWT_TOKEN_LOCATION': ['cookies'],
+        'JWT_ACCESS_COOKIE_NAME': 'access_token',  # Customize cookie name
+        'JWT_REFRESH_COOKIE_NAME': 'refresh_token',
+        'JWT_COOKIE_SECURE': False,  # Set True in production (HTTPS only)
+        'JWT_COOKIE_SAMESITE': 'Lax',
+    })
     
     # Initialize extensions
     jwt = JWTManager(app)

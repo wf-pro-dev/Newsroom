@@ -169,14 +169,15 @@ function NewsMain({
                       )?.keywords;
                       return (
                         <QuestionContainer 
-                        activeTab={activeTab}
-                        index={index}
-                        qIndex={qIndex}
-                        questionText={questionText}
-                        questionKeywords={questionKeywords}
-                        showFavorites={showFavorites}
-                        showDelete={showDelete}
-                        showAdd={showAdd}
+                          key={`question_${qIndex}`}
+                          activeTab={activeTab}
+                          index={index}
+                          qIndex={qIndex}
+                          questionText={questionText}
+                          questionKeywords={questionKeywords ? questionKeywords : ""}
+                          showFavorites={showFavorites}
+                          showDelete={showDelete}
+                          showAdd={showAdd}
                         />  
                       );
                     }

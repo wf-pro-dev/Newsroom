@@ -14,6 +14,7 @@ from database.connection import db
 class users(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)  # Never store plaintext passwords!
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

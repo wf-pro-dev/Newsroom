@@ -27,6 +27,7 @@ def get_current_user():
     user = users.query.get(current_user_id)
     return jsonify({
         "id": user.id,
+        "username" : user.username,
         "email": user.email
         # Add other user fields as needed
     }), 200
@@ -37,8 +38,9 @@ def register():
     if users.query.filter_by(email=data['email']).first():
         return jsonify({"error": "Email already exists"}), 400
     
-    user = users(email=data['email'])
-    user.set_password(data['password'])  # Hashes the password
+    user = users(username=data['username'], email=data['email'])
+    user.set_password(data['password'])  
+    # Hashes the password
     db.session.add(user)
     db.session.commit()
     

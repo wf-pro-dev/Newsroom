@@ -11,7 +11,7 @@ const DynamicImageComponent = dynamic(() =>
   import('next/image').then((mod) => {
     const Component = ({ folder, src, ...props }: DynamicImageProps) => {
       // Using import path as string instead of require()
-      const imageSrc = `/home/will/Newsroom/Backend/data/${folder}/${src}`;
+      const imageSrc = `/${folder}/${src}`;
       return <mod.default src={imageSrc} {...props} />;
     };
     

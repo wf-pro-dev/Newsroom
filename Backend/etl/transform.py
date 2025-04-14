@@ -119,13 +119,13 @@ def get_relevant_articles(list_article: List[articles], question: str) -> List[a
     def articles_filter(article: articles) -> bool:
         article_to_dict = article.to_dict()
         
-        description = (
+        requirements = (
             article_to_dict["description"]
             and article_to_dict["description"] != "[Removed]"
             and article_to_dict["urlToImage"] is not None
         )
         
-        return description and article_to_dict["title"] != "[Removed]"
+        return requirements and article_to_dict["title"] != "[Removed]"
 
     filtered_articles = list(filter(articles_filter, list_article))
     

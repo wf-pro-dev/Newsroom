@@ -18,7 +18,7 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
     showAdd: React.Dispatch<React.SetStateAction<boolean>>
   }) {
 
-  const { favourites, setFavourites, videos, setVideos, articles } = useGlobalState()
+  const { favourites, setFavourites, videos, articles } = useGlobalState()
 
   
   const {favArticles,favVideos} = id_to_obj(favourites,articles,videos)
@@ -69,8 +69,6 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
                     <div className="w-full h-full">
                       <NewsVideo
                         video={obj as Video}
-                        videos={videos}
-                        setVideos={setVideos}
                         favourites={favourites}
                         setFavourites={setFavourites}
                         showFavorites={showFavorites}

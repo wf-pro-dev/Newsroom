@@ -100,8 +100,8 @@ export default function App() {
   const [isFixed, setIsFixed] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
 
-  const { topics } = useGlobalState();
-
+  const { topics, user } = useGlobalState();
+  console.log("user",user)
   useEffect(() => {
     if (topics.length > 0) {
       setMounted(true)
@@ -132,17 +132,24 @@ export default function App() {
       className="dupe-section"
       style={getHeroStyles(isFixed)}
     >
-      <div className="dupe-content">
-        <div className="pointer-events-auto">
-          <Button
-            variant="outline"
-            className="dupe-button"
-            onClick={() => setIsFixed(true)}
-          >
-            <p>Welcome to the</p>
-            <p className='font-bold'>NewsRoom</p>
-          </Button>
-        </div>
+      <div className="dupe-content ">
+     
+      {user && (
+          <div className="pointer-events-auto" >
+            
+              <Button
+                variant="outline"
+                className="dupe-button"
+                onClick={() => setIsFixed(true)}
+              >
+                <p>{user.username}, welcome to the</p>
+                <p className='font-bold'>NewsRoom</p>
+              </Button>
+          
+          </div>
+        )}
+        
+
       </div>
     </div>
   )
@@ -155,10 +162,16 @@ export default function App() {
   return (
     <div className="app-page">
 
-      <div className="dupe-main"
-        style={{ height: isFixed ? heroRef.current?.offsetHeight : 'auto' }}>
-        {!isFixed && <DupeHero isFixed={isFixed} heroRef={heroRef} setIsFixed={setIsFixed} />}
-      </div>
+    
+        <div className="dupe-main"
+          style={{ height: isFixed ? heroRef.current?.offsetHeight : 'auto' }}>
+          
+          { !isFixed && <DupeHero isFixed={isFixed} heroRef={heroRef} setIsFixed={setIsFixed} />}
+         
+        </div>
+        
+
+     
 
       <div className="header-hero"
         style={{
@@ -170,7 +183,10 @@ export default function App() {
         <HeroGlobe />
       </div>
 
+      
       <Auth />
+
+     
 
       <div className={`news-main ${isFixed ? 'z-10' : ''}`}>
         <NewsMain

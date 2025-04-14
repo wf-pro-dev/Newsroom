@@ -1,4 +1,4 @@
-import { Article, Favourite, newQuestion, Question, Topic, Video } from './types';
+import { Article, Favourite, newQuestion, Question, Topic, User, Video } from './types';
 
 const API_BASE_URL = 'http://192.168.86.26/api'
 
@@ -11,7 +11,7 @@ export  async function fetchCsrfToken() {
   return data.csrfToken
 }
 
-export  async function fetchUser(csrfToken:string) {
+export  async function fetchUser(csrfToken:string): Promise<User | null> {
   const response = await fetch(`${API_BASE_URL}/user`, {
     method: 'GET',
     credentials: 'include', // Sends JWT cookie automatically
@@ -19,6 +19,9 @@ export  async function fetchUser(csrfToken:string) {
       'X-CSRF-TOKEN': csrfToken!, // Manually attach CSRF token
     },
   });
+  if (!response.ok) {
+    return null
+  }
 
   return response.json()
 }
@@ -56,7 +59,7 @@ export async function fetchTopics(): Promise<Topic[]> {
 
 
 /* POST METHODS */
-export async function register( email:string, password:string, csrfToken:string ) {
+export async function register( username:string,email:string, password:string, csrfToken:string ) {
   const response = await fetch(`${API_BASE_URL}/register`, {
     method: 'POST',
     credentials: 'include',  // Send cookies
@@ -64,13 +67,13 @@ export async function register( email:string, password:string, csrfToken:string 
       'Content-Type': 'application/json',
       'X-CSRF-TOKEN': csrfToken  // Attach CSRF token
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ username, email, password })
   })
 
   if (!response.ok) {
     throw new Error(`Failed to register user: ${response.statusText}`);
   }
-  return response.json();
+  return { "data": response.json(), "ok" : response.ok };
 
 }
 
@@ -101,6 +104,7 @@ export async function addFavourite(entity_id: number, entity_type: string): Prom
   if (!response.ok) {
     throw new Error(`Failed to add favourite: ${response.statusText}`);
   }
+
   return response.json();
 }
 
@@ -123,7 +127,7 @@ export async function addQuestion(topic_id:number): Promise<newQuestion[]> {
   } catch (error) {
       console.error('Error generating question:', error);
   }
-
+  return []
 }
 
 /* DELETE METHODS */

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Question, Video } from "@/utils/types";
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "./ui/carousel";
+import { Question } from "@/utils/types";
+import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useGlobalState } from "./context/GlobalStateContext";
 import { Globe, Heart, Newspaper } from "lucide-react";
@@ -10,25 +10,9 @@ function NewsCarousel({ topic, questions }: {
     topic: string;
     questions: Question[];
 }) {
-    const [api, setApi] = React.useState<CarouselApi>();
-    const [current,setCurrent] = React.useState(0);
-    const [count,setCount] = React.useState(0);
 
     const { topics } = useGlobalState();
 
-    React.useEffect(() => {
-        if (!api) {
-            return;
-        }
-
-        setCount(api.scrollSnapList().length);
-        setCurrent(api.selectedScrollSnap());
-
-        api.on("select", () => {
-            setCurrent(api.selectedScrollSnap());
-        });
-
-    }, [api]);
 
     const IconSwitcher = ({ index }: { index: number }) => {
         const [currentIconIndex, setCurrentIconIndex] = useState(index);
@@ -40,7 +24,7 @@ function NewsCarousel({ topic, questions }: {
 
         useEffect(() => {
             const intervalId = setInterval(() => {
-                setCurrentIconIndex((prevIndex) => 
+                setCurrentIconIndex((prevIndex) =>
                     (prevIndex + 1) % icons.length
                 );
             }, 100);
@@ -53,8 +37,8 @@ function NewsCarousel({ topic, questions }: {
         return (
             <div className="flex items-center justify-center mb-8 mt-16 w-full">
                 <div className="transition-all duration-300 ease-in-out transform">
-                    <Icon 
-                        strokeWidth={2} 
+                    <Icon
+                        strokeWidth={2}
                         style={{ width: 36, height: 36 }}
                         className={`${color} animate-pulse`}
                     />
@@ -63,19 +47,19 @@ function NewsCarousel({ topic, questions }: {
         );
     };
 
-    function KeywordHighlighter({ text, keywords }: { text: string; keywords: string[] }) {
+    function KeywordHighlighter({ text, keywords }: { text: string; keywords: string }) {
         const highlightKeyword = (word: string) => {
-            return keywords.includes(word.toLowerCase()) 
-                ? 'bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text' 
+            return keywords.split(" ").includes(word.toLowerCase())
+                ? 'bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text'
                 : '';
         };
-      
+
         return (
             <div className="w-full">
                 <div className="inline-block text-center whitespace-normal break-words">
                     {text.split(' ').map((word, index) => (
-                        <span 
-                            key={index} 
+                        <span
+                            key={index}
                             className={`
                                 ${highlightKeyword(word)} 
                                 text-lg font-medium text-center
@@ -111,7 +95,6 @@ function NewsCarousel({ topic, questions }: {
                         return (
                             <div key={index} className="col-span-1 overflow-hidden rounded-md overflow-hidden">
                                 <Carousel
-                                    setApi={index === 0 ? setApi : undefined}
                                     opts={{
                                         loop: true,
                                         startIndex: index,
@@ -140,6 +123,7 @@ function NewsCarousel({ topic, questions }: {
                                                             priority={true}
                                                             className="object-cover"
                                                         />
+                                                        
                                                     </div>
                                                 </CarouselItem>
                                             ))}
@@ -159,6 +143,6 @@ function NewsCarousel({ topic, questions }: {
     );
 }
 
-export default React.memo(NewsCarousel,(prevProps, nextProps) => {
+export default React.memo(NewsCarousel, (prevProps, nextProps) => {
     return prevProps.questions == nextProps.questions;
 });

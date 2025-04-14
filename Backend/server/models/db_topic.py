@@ -35,8 +35,12 @@ class topics(db.Model):
         return [
             questions(text=question, topic_id=self.id) for question in str_questions
         ]
+        
+    def set_images(self):
+        pass
+        
     
-    def __str__(self):
+    def __str__(self) -> str:
         return f"topic = {self.title} role = {self.role}"
 
     # def set_img_urls(self):

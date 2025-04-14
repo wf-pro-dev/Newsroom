@@ -2,12 +2,14 @@
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { User, Article, Question, Favourite, Topic, Video } from '@/utils/types';
-import { fetchAllData, fetchUser,  } from '@/utils/api';
+import { fetchAllData, fetchCsrfToken, fetchUser } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {
-    user: User;
-    setUser: React.Dispatch<React.SetStateAction<User[]>>; 
+    csrftoken: string;
+    setCSRFtoken: React.Dispatch<React.SetStateAction<string>>; 
+    user: User | null;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>; 
     topics: Topic[];
     setTopics: React.Dispatch<React.SetStateAction<Topic[]>>;
     questions: Question[];
@@ -26,7 +28,8 @@ const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
 
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
 
-    const [user, setUser] = useState<User>()
+    const [ csrftoken, setCSRFtoken ] = useState("")
+    const [user, setUser] = useState<User | null>(null)
     const [topics, setTopics] = useState<Topic[]>([]);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [articles, setArticles] = useState<Article[]>([]);
@@ -36,11 +39,19 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         const fetchInitialData = async () => {
-            const [AllData] = await Promise.all([
-                fetchAllData()
-            ])
             
-            setUser(undefined)
+            const [AllData, token] = await Promise.all([
+                fetchAllData(),
+                fetchCsrfToken(),
+                
+            ])
+
+            
+            setCSRFtoken(token)
+
+            const currUser = await fetchUser(csrftoken)
+            setUser(currUser)
+
             setTopics(AllData["topics"])
             setQuestions(AllData["questions"])
             setArticles(AllData["articles"])
@@ -75,7 +86,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     }, [])
 
     return (
-        <GlobalStateContext.Provider value={{ topics, setTopics, questions, setQuestions, articles, setArticles, videos, setVideos, favourites, setFavourites, newsData, setNewsData }}>
+        <GlobalStateContext.Provider value={{ csrftoken, setCSRFtoken ,user, setUser, topics, setTopics, questions, setQuestions, articles, setArticles, videos, setVideos, favourites, setFavourites, newsData, setNewsData }}>
             {children}
         </GlobalStateContext.Provider>
     );

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { LogIn,  User2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -152,8 +151,8 @@ export function HeroGlobe() {
     const createGlowMaterial = () => {
       return new THREE.ShaderMaterial({
         uniforms: {
-          glowColor: { type: "c", value: new THREE.Color(0xff3366) },
-          viewVector: { type: "v3", value: camera.position }
+          glowColor: { value: new THREE.Color(0xff3366) },
+          viewVector: { value: camera.position }
         },
         vertexShader: `
           uniform vec3 viewVector;
@@ -364,8 +363,6 @@ const onMouseMove = (event: MouseEvent) => {
             <Button className="read-more-button">Read More</Button>
           </div>
         )}
-
-       
         
       </section>
      

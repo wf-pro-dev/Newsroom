@@ -1,5 +1,6 @@
 type User = {
-  email: number
+  username:string;
+  email: string;
 }
 
 type Topic = {
@@ -10,7 +11,7 @@ type Topic = {
 
 type Question = {
   id: number;
-  keywords: string[];
+  keywords: string;
   text: string;
   topic_id: number; // Changed from topic to topic_id to match the model
 };

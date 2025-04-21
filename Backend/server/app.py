@@ -35,7 +35,7 @@ def create_app():
         app,
         resources={
             r"/*": {
-                "origins": "127.0.0.1",
+                "origins": "localhost",
                 "methods": ["GET", "POST", "DELETE", "OPTIONS"],
             }
         },

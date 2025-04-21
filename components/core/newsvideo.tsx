@@ -32,7 +32,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
     const [isMounted, setIsMounted] = useState(false);
     const bufferingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const {videos, setVideos} = useGlobalState()
+    const {csrftoken, videos, setVideos} = useGlobalState()
 
     // Set mounted state
     useEffect(() => {
@@ -209,7 +209,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
 
                 showDelete(true);
                 
-                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id);
+                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id, csrftoken);
             } else {
                 // Optimistically update UI
                 setFavourites([...favourites, { entity_id: video.id, entity_type: "video" }]);
@@ -234,7 +234,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
         }, 300)
 
         try {
-            await deleteVideobyId(video.id);
+            await deleteVideobyId(video.id, csrftoken);
             showDelete(true);
 
             setTimeout(() => {

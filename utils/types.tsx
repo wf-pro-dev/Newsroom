@@ -7,6 +7,7 @@ type Topic = {
   id: number;
   title: string;
   role: string;
+  images:string[];
 };
 
 type Question = {

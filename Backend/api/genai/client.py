@@ -1,13 +1,29 @@
+import os
+from sys import path
 import json
 from google import genai
 from google.genai import types
-from PIL import Image
 from io import BytesIO
-import base64
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, "../../../"))
+backend_root = project_root + "/Backend"
+path.append(backend_root)
+
+from api.aws.client import upload_to_s3
 
 # Create the model
 client = genai.Client(api_key="AIzaSyDJZHtPKR7HiGBVOf2e6Pnq0cADvM3ddWc")
+
+EXAMPLE = ( 'Create a semi-realistic image for a professional news website about Climate Change, focusing on the transition to renewable energy.'
+          'The scene should depict wind turbines or solar panels in a visually appealing landscape, perhaps with a city skyline in the background.'
+          'Use a dark blue color palette, incorporating navy, indigo, and deep azure tones for the sky and landscape elements.'
+          'The design should be minimalistic, clean, and modern, with a balanced and uncluttered composition'
+          '. Aim for a professional, contemporary, and sleek visual mood.'
+          'Ensure high-resolution and crisp details. The lighting should be soft and subdued to create depth,'
+          'emphasizing the scale and importance of renewable energy infrastructure.'
+          'Use smooth gradients to add subtle depth.'
+          'The image should convey a sense of hope and progress in combating climate change through sustainable solutions.' )
 
 
 def fetch_gen_ai(prompt: str) -> list:
@@ -64,8 +80,10 @@ def fetch_prompt_image_gen_ai(topic: str) -> list:
             - Technical Quality: High-resolution, crisp details
             - Lighting: Soft, subdued, creating depth
             - Texture: Smooth gradients, subtle depth'
+            - Negative Prompt: No Text,
             Focus on creating 3 detailed and clear scenes that reflects the topic and meet the requirements.
             Format: Only inclue a list of the scene in the response.
+            Example of scene : {EXAMPLE}
             """
     
     
@@ -80,51 +98,45 @@ def fetch_prompt_image_gen_ai(topic: str) -> list:
     return list_prompts
   
 
-def fetch_image_gen_ai(prompt: str,topic_id: int,index: int) -> list:
+def fetch_image_gen_ai(prompt: str,topic_id: int,index: int) -> str:
     """
-      Generates an image based on the given prompt using Gemini API and saves it to a file.
-      
-      Parameters:
-      prompt (str): The prompt describing the image to generate.
-      
-      Returns:
-      str: Path to the saved image file or None if generation failed.
-      """
-      
-    output_path=f"/home/will/Newsroom/public/topic_img/topic_{topic_id}_{index}.webp"
+    Generates an image based on the given prompt using Gemini API and upload it to a s3 bucket.
+    
+    Parameters:
+    prompt (str): The prompt describing the image to generate.
+    
+    Returns:
+    str: Path to the saved image file or None if generation failed.
+    """
+    image_url = ""  
 
-    response = client.models.generate_content(
-      model="gemini-2.0-flash-exp-image-generation",
-      contents=prompt,
-      config=types.GenerateContentConfig(
-        response_modalities=['Text', 'Image']
+    try:
+      response = client.models.generate_content(
+        model="gemini-2.0-flash-exp-image-generation",
+        contents="Only include Image in your response ."+prompt,
+        config=types.GenerateContentConfig(
+          response_modalities=["Text",'Image']
+        )
       )
-    )
-
-    for part in response.candidates[0].content.parts:
-      if part.text is not None:
-        print(part.text)
-      elif part.inline_data is not None:
-        image = Image.open(BytesIO((part.inline_data.data)))
-        image = image.convert('RGB')
-        image.save(output_path, 'webp', optimize=True, quality=80)
-
-        return output_path
+      for part in response.candidates[0].content.parts:
+        if part.text is not None:
+          print(part.text)
+        elif part.inline_data is not None:
+          image_data = BytesIO(part.inline_data.data)
+              # Upload to S3 and get UR
+          image_url = upload_to_s3(image_data, topic_id, index)
+      
+    except Exception as e:
+      print("Error fetching images :",e)
+       
+    return image_url
         
 
     
 
 if __name__ == "__main__" :
-  prompt = ( 'Create a semi-realistic image for a professional news website about Climate Change, focusing on the transition to renewable energy.'
-            'The scene should depict wind turbines or solar panels in a visually appealing landscape, perhaps with a city skyline in the background.'
-            'Use a dark blue color palette, incorporating navy, indigo, and deep azure tones for the sky and landscape elements.'
-            'The design should be minimalistic, clean, and modern, with a balanced and uncluttered composition'
-            '. Aim for a professional, contemporary, and sleek visual mood.'
-            'Ensure high-resolution and crisp details. The lighting should be soft and subdued to create depth,'
-            'emphasizing the scale and importance of renewable energy infrastructure.'
-            'Use smooth gradients to add subtle depth.'
-            'The image should convey a sense of hope and progress in combating climate change through sustainable solutions.' )
+
   
-  list_prompts = fetch_prompt_image_gen_ai("Climate Change")
+  list_prompts = fetch_prompt_image_gen_ai("Education")
   for i ,prompt in enumerate(list_prompts):
-    fetch_image_gen_ai(prompt=prompt, topic_id=1, index=i)
+    fetch_image_gen_ai(prompt=prompt, topic_id=5, index=i)

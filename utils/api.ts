@@ -1,9 +1,9 @@
 import { Article, Favourite, newQuestion, Question, Topic, User, Video } from './types';
 
-const API_BASE_URL = 'http://192.168.86.26/api'
+const API_BASE_URL = 'http://192.168.86.20/api'
 
 /* GET METHODS */
-export  async function fetchCsrfToken() {
+export async function fetchCsrfToken() {
   const response = await fetch(`${API_BASE_URL}/csrf-token`, {
     credentials: 'include'  // Required for cookies
   })
@@ -11,12 +11,12 @@ export  async function fetchCsrfToken() {
   return data.csrfToken
 }
 
-export  async function fetchUser(csrfToken:string): Promise<User | null> {
+export async function fetchUser(csrfToken: string): Promise<User | null> {
   const response = await fetch(`${API_BASE_URL}/user`, {
     method: 'GET',
     credentials: 'include', // Sends JWT cookie automatically
     headers: {
-      'X-CSRF-TOKEN': csrfToken!, // Manually attach CSRF token
+      'X-CSRF-TOKEN': csrfToken, // Manually attach CSRF token
     },
   });
   if (!response.ok) {
@@ -59,7 +59,7 @@ export async function fetchTopics(): Promise<Topic[]> {
 
 
 /* POST METHODS */
-export async function register( username:string,email:string, password:string, csrfToken:string ) {
+export async function register(username: string, email: string, password: string, csrfToken: string) {
   const response = await fetch(`${API_BASE_URL}/register`, {
     method: 'POST',
     credentials: 'include',  // Send cookies
@@ -73,11 +73,11 @@ export async function register( username:string,email:string, password:string, c
   if (!response.ok) {
     throw new Error(`Failed to register user: ${response.statusText}`);
   }
-  return { "data": response.json(), "ok" : response.ok };
+  return { "data": response.json(), "ok": response.ok };
 
 }
 
-export async function login( email:string, password:string, csrfToken:string ) {
+export async function login(email: string, password: string, csrfToken: string) {
   const response = await fetch(`${API_BASE_URL}/login`, {
     method: 'POST',
     credentials: 'include',  // Send cookies
@@ -108,66 +108,79 @@ export async function addFavourite(entity_id: number, entity_type: string): Prom
   return response.json();
 }
 
-export async function addQuestion(topic_id:number): Promise<newQuestion[]> {
+export async function addQuestion(topic_id: number, csrfToken: string): Promise<newQuestion[]> {
   try {
-      const response = await fetch(`${API_BASE_URL}/questions/${topic_id}`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
-
-      if (!response.ok) {
-          throw new Error(`Failed to add new question: ${response.status}`);
+    const response = await fetch(`${API_BASE_URL}/questions/${topic_id}`, {
+      method: 'POST',
+      credentials: 'include', // Sends JWT cookie automatically
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken, // Manually attach CSRF token
       }
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to add new question: ${response.status}`);
+    }
 
-      const data : newQuestion[] = await response.json();
-      console.log('Generated question:', data);
-      return data;
+    const data: newQuestion[] = await response.json();
+    console.log('Generated question:', data);
+    return data;
   } catch (error) {
-      console.error('Error generating question:', error);
+    console.error('Error generating question:', error);
   }
   return []
 }
 
 /* DELETE METHODS */
 
-export async function deleteArticlebyId(id: number): Promise<void> {
+export async function deleteArticlebyId(id: number, csrfToken:string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/articles/delete/${id}`, {
     method: 'DELETE',
+    credentials: 'include', // Sends JWT cookie automatically
+    headers: {
+      'X-CSRF-TOKEN': csrfToken, // Manually attach CSRF token
+    }
   });
   if (!response.ok) {
     throw new Error(`Failed to delete news item: ${response.statusText}`);
   }
 }
 
-export async function deleteVideobyId(id: number): Promise<void> {
+export async function deleteVideobyId(id: number, csrfToken:string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/videos/delete/${id}`, {
     method: 'DELETE',
+    credentials: 'include', // Sends JWT cookie automatically
+    headers: {
+      'X-CSRF-TOKEN': csrfToken, // Manually attach CSRF token
+    }
   });
   if (!response.ok) {
     throw new Error(`Failed to delete news item: ${response.statusText}`);
   }
 }
 
-export async function deleteQuestionbyId(id: number): Promise<void> {
+export async function deleteQuestionbyId(id: number, csrfToken:string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/questions/delete/${id}`, {
     method: 'DELETE',
+    credentials: 'include', // Sends JWT cookie automatically
+    headers: {
+      'X-CSRF-TOKEN': csrfToken, // Manually attach CSRF token
+    }
   });
   if (!response.ok) {
     throw new Error(`Failed to delete question item: ${response.statusText}`);
   }
 }
 
-export async function deleteFavouritebyId(type:string,id: number): Promise<void> {
+export async function deleteFavouritebyId(type: string, id: number, csrfToken:string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/favourites/${type}/${id}`, {
     method: 'DELETE',
+    credentials: 'include', // Sends JWT cookie automatically
+    headers: {
+      'X-CSRF-TOKEN': csrfToken, // Manually attach CSRF token
+    }
   });
   if (!response.ok) {
     throw new Error(`Failed to remove favourite: ${response.statusText}`);
   }
 }
-
-
-
-

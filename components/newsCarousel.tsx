@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Question } from "@/utils/types";
+import { Question, Topic } from "@/utils/types";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useGlobalState } from "./context/GlobalStateContext";
 import { Globe, Heart, Newspaper } from "lucide-react";
 import DynamicImage from "./core/dynamicimage";
+import Image from "next/image";
 
-function NewsCarousel({ topic, questions }: {
-    topic: string;
+function NewsCarousel({ topic_title, questions }: {
+    topic_title: string;
     questions: Question[];
 }) {
 
@@ -81,7 +82,7 @@ function NewsCarousel({ topic, questions }: {
             <h1 className="text-2xl leading-normal text-center text-gray-300">
                 Today&apos;s Question about
                 <p className="text-4xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
-                    {topic}
+                    {topic_title}
                 </p>
             </h1>
 
@@ -90,8 +91,7 @@ function NewsCarousel({ topic, questions }: {
             <div className="flex overflow-hidden">
                 <div className="flex-1 grid grid-cols-3 gap-2">
                     {[1, 2, 3].map((_, index) => {
-                        const topicId = topics.find((tpc) => tpc.title === topic)?.id;
-
+                        const topic : Topic = topics.find((tpc) => tpc.title === topic_title);
                         return (
                             <div key={index} className="col-span-1 overflow-hidden rounded-md overflow-hidden">
                                 <Carousel
@@ -109,13 +109,14 @@ function NewsCarousel({ topic, questions }: {
                                 >
                                     <div className="flex-column overflow-hidden h-full">
                                         <CarouselContent className="m-0 max-w-fit h-full">
-                                            {[1, 2, 3].map((_, idx) => (
+                                            {topic.images.map((url, idx) => { 
+                                                console.log(url)
+                                                return (
                                                 <CarouselItem key={idx} className="flex-none 2xl:h-[315px] xl:h-[275px] aspect-video pl-0 overflow-hidden">
                                                     <div className="flex-none w-full h-full aspect-video">
-                                                        <DynamicImage
-                                                            src={`topic_${topicId}_${idx}.webp`}
-                                                            folder="topic_img"
-                                                            alt={`Illustration for topic_${topicId}_${idx}.webp`}
+                                                        <Image
+                                                            src={url}
+                                                            alt={`Illustration for topic_${topic.id}_${idx}.webp`}
                                                             width={300}
                                                             height={315}
                                                             style={{ height: "100%", width: "100%" }}
@@ -123,10 +124,10 @@ function NewsCarousel({ topic, questions }: {
                                                             priority={true}
                                                             className="object-cover"
                                                         />
-                                                        
+                                                                                  
                                                     </div>
-                                                </CarouselItem>
-                                            ))}
+                                                </CarouselItem>)}
+                                            )}
                                         </CarouselContent>
                                         <div className="w-full grid-col-1 justify-items-center px-4">
                                             <IconSwitcher index={index} />

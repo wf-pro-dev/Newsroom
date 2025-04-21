@@ -151,7 +151,7 @@ function NewsMain({
                     ).length == 3 && (
 
                     <NewsCarousel
-                      topic={activeTab}
+                      topic_title={activeTab}
                       questions={questions.filter((question: Question) =>
                         Object.keys(newsData[activeTab]).includes(question.text)
                       )

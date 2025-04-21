@@ -38,6 +38,7 @@ function QuestionContainer({
 }) {
 
     const {
+        csrftoken,
         newsData,
         questions,
         setQuestions,
@@ -117,11 +118,11 @@ function QuestionContainer({
 
         const index = questions.findIndex((question) => question == qst)
 
-        deleteQuestionbyId(qst.id)
+        deleteQuestionbyId(qst.id, csrftoken)
             .then(() => setIsExpanded(false))
 
 
-        addQuestion(qst.topic_id)
+        addQuestion(qst.topic_id, csrftoken)
             .then((data) => {
 
                 const objData = data[0]

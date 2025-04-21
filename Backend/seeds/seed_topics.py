@@ -15,9 +15,13 @@ def seed_topics(list_topic:list):
     for obj_topic in list_topic:
 
         topic = topics(title=obj_topic["topic"], role=obj_topic["role"])
-        # topic.set_img_urls()
+        
+        
         print(topic)
         db.session.add(topic)
+        db.session.commit()
+        
+        topic.set_images()
         db.session.commit()
 
         seed_questions(questions=topic.set_questions(),topic=topic)

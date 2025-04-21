@@ -58,18 +58,25 @@ def add_question(topic_id):
 @questions_bp.route("/questions/delete/<int:id>", methods=["DELETE"])
 def delete_question_by_id(id):
     try:
+        
         question = questions.query.filter_by(id=id).one()
         if question:
             list_article = articles.query.filter_by(question_id=id).all()
             list_video = videos.query.filter_by(question_id=id).all()
-            
+            print(list_article)
+            print(list_video)
+       
             for article in list_article:
                 db.session.delete(article)
+                db.session.commit()
             
             
             for video in list_video:
                 db.session.delete(video)
+                db.session.commit()
             
+
+           
             
             db.session.delete(question)
             db.session.commit()
@@ -81,7 +88,6 @@ def delete_question_by_id(id):
             return jsonify({"error": "Item not found"}), 404
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 404
+        print(str(e))
+        return jsonify({"error": str(e)}), 400
 
-
-# Add more routes as needed (PUT, DELETE, etc.)

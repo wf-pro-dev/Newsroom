@@ -23,7 +23,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
 
     const [isDeleting, setIsDeleting] = useState(false);
     const article_date = new Date(article.publishedAt)
-    const { articles, setArticles } = useGlobalState()
+    const { csrftoken, articles, setArticles } = useGlobalState()
 
     async function handleFavorite() {
         try {
@@ -38,7 +38,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
 
                 showDelete(true);
                 
-                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id);
+                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id, csrftoken);
 
             } else {
                 // Optimistically update UI
@@ -64,7 +64,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
         }, 300);
 
         try {
-            await deleteArticlebyId(article.id);
+            await deleteArticlebyId(article.id,csrftoken);
             showDelete(true);
 
         } catch (error) {

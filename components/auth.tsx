@@ -57,7 +57,7 @@ export default function Auth() {
 
   useEffect(() => {
     setIsValidUsernameState(username.length > 2);
-  }, [email]);
+  }, [username]);
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

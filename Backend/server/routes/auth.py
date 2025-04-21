@@ -52,9 +52,9 @@ def login():
     email = request.json.get('email')
     password = request.json.get('password')
     user = users.query.filter_by(email=email).first()
-    
+        
     if not user or not check_password_hash(user.password_hash, password):
-        return jsonify({"error": "Invalid credentials"}), 401
+        return jsonify({"error": "Email and/or password invalid"}), 401
 
     # 2. Create tokens
     access_token = create_access_token(identity=str(user.id))

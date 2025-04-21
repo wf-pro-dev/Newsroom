@@ -18,6 +18,7 @@ load_dotenv()
 NEWSAPI_KEY = os.getenv("NEWSAPI")
 NEWSDATA_KEY = os.getenv("NEWSDATA")
 YOUTUBE_KEY = os.getenv("YT_KEY")
+GEMINI_KEY = os.getenv("GEMINI_KEY")
 
 # secret keys
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")

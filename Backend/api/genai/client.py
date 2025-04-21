@@ -11,9 +11,10 @@ backend_root = project_root + "/Backend"
 path.append(backend_root)
 
 from api.aws.client import upload_to_s3
+from config.constants import GEMINI_KEY
 
 # Create the model
-client = genai.Client(api_key="AIzaSyDJZHtPKR7HiGBVOf2e6Pnq0cADvM3ddWc")
+client = genai.Client(api_key=GEMINI_KEY)
 
 EXAMPLE = ( 'Create a semi-realistic image for a professional news website about Climate Change, focusing on the transition to renewable energy.'
           'The scene should depict wind turbines or solar panels in a visually appealing landscape, perhaps with a city skyline in the background.'

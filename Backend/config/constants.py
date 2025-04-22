@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 
 # Define the path to the Newsroom backend
-NEWSROOM_PATH = "/home/will/Newsroom/Backend/"
+NEWSROOM_PATH = "/var/www/newsroom/Backend/"
 
 # Determine the environment (default to 'development')
 env = os.getenv("FLASK_ENV", "development")

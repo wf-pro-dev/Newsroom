@@ -27,6 +27,8 @@ from server.routes.favourites import favourites_bp
 from server.routes.all_data import all_data_bp
 from config.constants import DATABASE_URI, JWT_SECRET_KEY, CSRF_SECRET_KEY
 
+print(DATABASE_URI)
+
 def create_app():
     app = Flask(__name__)
 

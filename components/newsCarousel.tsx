@@ -4,7 +4,6 @@ import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useGlobalState } from "./context/GlobalStateContext";
 import { Globe, Heart, Newspaper } from "lucide-react";
-import DynamicImage from "./core/dynamicimage";
 import Image from "next/image";
 
 function NewsCarousel({ topic_title, questions }: {
@@ -91,7 +90,7 @@ function NewsCarousel({ topic_title, questions }: {
             <div className="flex overflow-hidden">
                 <div className="flex-1 grid grid-cols-3 gap-2">
                     {[1, 2, 3].map((_, index) => {
-                        const topic : Topic = topics.find((tpc) => tpc.title === topic_title);
+                        const topic : Topic | undefined = topics.find((tpc) => tpc.title === topic_title);
                         return (
                             <div key={index} className="col-span-1 overflow-hidden rounded-md overflow-hidden">
                                 <Carousel
@@ -109,14 +108,14 @@ function NewsCarousel({ topic_title, questions }: {
                                 >
                                     <div className="flex-column overflow-hidden h-full">
                                         <CarouselContent className="m-0 max-w-fit h-full">
-                                            {topic.images.map((url, idx) => { 
+                                            {topic!.images.map((url, idx) => { 
                                                 console.log(url)
                                                 return (
                                                 <CarouselItem key={idx} className="flex-none 2xl:h-[315px] xl:h-[275px] aspect-video pl-0 overflow-hidden">
                                                     <div className="flex-none w-full h-full aspect-video">
                                                         <Image
                                                             src={url}
-                                                            alt={`Illustration for topic_${topic.id}_${idx}.webp`}
+                                                            alt={`Illustration for topic_${topic!.id}_${idx}.webp`}
                                                             width={300}
                                                             height={315}
                                                             style={{ height: "100%", width: "100%" }}

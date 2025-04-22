@@ -46,7 +46,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
                 
             ])
 
-            
+            console.log("token",token)
             setCSRFtoken(token)
 
             const currUser = await fetchUser(csrftoken)

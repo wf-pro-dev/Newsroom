@@ -1,6 +1,6 @@
 import { Article, Favourite, newQuestion, Question, Topic, User, Video } from './types';
 
-const API_BASE_URL = 'http://52.14.169.156/api'
+const API_BASE_URL = 'https://newsroom.dedyn.io/api'
 
 /* GET METHODS */
 export async function fetchCsrfToken() {

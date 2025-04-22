@@ -5,7 +5,7 @@ and registers the necessary blueprints for the server.
 from sys import path
 import os
 from datetime import timedelta
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token
 
@@ -87,6 +87,12 @@ def create_app():
     app.register_blueprint(questions_bp)
     app.register_blueprint(favourites_bp)
     app.register_blueprint(all_data_bp)
+
+    @app.before_request
+    def before_request():
+        scheme = request.headers.get('X-Forwarded-Proto')
+        if scheme and scheme == 'https':
+            request.environ['wsgi.url_scheme'] = scheme
 
     # Error handlers
     @app.errorhandler(Exception)

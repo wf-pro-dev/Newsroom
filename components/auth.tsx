@@ -9,7 +9,7 @@ import { Button } from './ui/button';
 import { LogIn, User2, DotIcon } from 'lucide-react';
 
 //API
-import { fetchUser, login, register } from '@/utils/api';
+import { fetchCsrfToken, fetchUser, login, register } from '@/utils/api';
 
 //STYLES
 import '@/styles/heroglobe.css'
@@ -79,12 +79,19 @@ export default function Auth() {
     }
   }
 
+  useEffect(() => {
+    const getToken = async () => {
+      const token = await fetchCsrfToken()
+      setCSRFtoken(token!)
+    }
+    getToken()
+  }, [])
+
   const onLogin = async () => {
     login(email, password, csrftoken)
-      .then((response) => {
-        setCSRFtoken(response.csrf_token)
+      .then(() => {
 
-        fetchUser(response.csrf_token)
+        fetchUser()
           .then((user) => {
             setUser(user)
             setVisible(false)
@@ -211,7 +218,7 @@ export default function Auth() {
             disabled={!(isValidEmailState && isValidPasswordState) && isLogin}
             variant={"secondary"}
             className="flex-1"
-            onClick={ isLogin ? onLogin : ()=>{setisLogin(true)}}
+            onClick={isLogin ? onLogin : () => { setisLogin(true) }}
           >
             <p className='font-medium'>LOG IN</p>  < LogIn />
           </Button>

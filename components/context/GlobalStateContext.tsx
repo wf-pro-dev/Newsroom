@@ -2,7 +2,7 @@
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { User, Article, Question, Favourite, Topic, Video } from '@/utils/types';
-import { fetchAllData, fetchCsrfToken, fetchUser } from '@/utils/api';
+import { fetchAllData } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {
@@ -40,17 +40,9 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const fetchInitialData = async () => {
             
-            const [AllData, token] = await Promise.all([
-                fetchAllData(),
-                fetchCsrfToken(),
-                
+            const [AllData] = await Promise.all([
+                fetchAllData()
             ])
-
-            console.log("token",token)
-            setCSRFtoken(token)
-
-            const currUser = await fetchUser(csrftoken)
-            setUser(currUser)
 
             setTopics(AllData["topics"])
             setQuestions(AllData["questions"])
@@ -83,7 +75,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
         })
 
         setNewsData(data)
-    }, [])
+    }, [articles,videos,questions,topics])
 
     return (
         <GlobalStateContext.Provider value={{ csrftoken, setCSRFtoken ,user, setUser, topics, setTopics, questions, setQuestions, articles, setArticles, videos, setVideos, favourites, setFavourites, newsData, setNewsData }}>

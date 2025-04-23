@@ -2,28 +2,36 @@ import { Article, Favourite, newQuestion, Question, Topic, User, Video } from '.
 
 const API_BASE_URL = 'https://newsroom.dedyn.io/api'
 
+let csrfTokenCache: string | null = null;
+
 /* GET METHODS */
 export async function fetchCsrfToken() {
-  const response = await fetch(`${API_BASE_URL}/csrf-token`, {
-    credentials: 'include'  // Required for cookies
-  })
-  const data = await response.json()
-  return data.csrfToken
-}
-
-export async function fetchUser(csrfToken: string): Promise<User | null> {
-  const response = await fetch(`${API_BASE_URL}/user`, {
-    method: 'GET',
-    credentials: 'include', // Sends JWT cookie automatically
-    headers: {
-      'X-CSRF-TOKEN': csrfToken, // Manually attach CSRF token
-    },
-  });
-  if (!response.ok) {
-    return null
+  // Return cached token if available
+  if (csrfTokenCache) {
+    return csrfTokenCache;
   }
 
-  return response.json()
+  const response = await fetch(`${API_BASE_URL}/csrf-token`, {
+    credentials: 'include'
+  });
+  const data = await response.json();
+  
+  // Cache the token
+  csrfTokenCache = data.csrfToken;
+  return csrfTokenCache;
+}
+
+export async function fetchUser(): Promise<User | null> {
+  const response = await fetch(`${API_BASE_URL}/user`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Unauthorized or failed to fetch user: ${response.statusText}`);
+  }
+
+  return response.json();
 }
 
 
@@ -60,6 +68,7 @@ export async function fetchTopics(): Promise<Topic[]> {
 
 /* POST METHODS */
 export async function register(username: string, email: string, password: string, csrfToken: string) {
+
   const response = await fetch(`${API_BASE_URL}/register`, {
     method: 'POST',
     credentials: 'include',  // Send cookies
@@ -73,11 +82,15 @@ export async function register(username: string, email: string, password: string
   if (!response.ok) {
     throw new Error(`Failed to register user: ${response.statusText}`);
   }
-  return { "data": response.json(), "ok": response.ok };
+  
+  const data = await response.json();
+  return { data, ok: response.ok };
 
 }
 
-export async function login(email: string, password: string, csrfToken: string) {
+export async function login(email: string, password: string, csrfToken:string) {
+  console.log('Using CSRF token for login:', csrfToken)
+
   const response = await fetch(`${API_BASE_URL}/login`, {
     method: 'POST',
     credentials: 'include',  // Send cookies

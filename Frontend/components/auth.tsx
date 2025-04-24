@@ -15,8 +15,7 @@ import { fetchCsrfToken, fetchUser, login, register } from '@/utils/api';
 import '@/styles/heroglobe.css'
 
 export default function Auth() {
-  const { user } = useGlobalState()
-  const [isVisible, setVisible] = useState(!user)
+  const [isVisible, setVisible] = useState(false)
   const [isLogin, setisLogin] = useState(true)
 
   const [username, setUsername] = useState("")
@@ -32,7 +31,7 @@ export default function Auth() {
   const [isError, setisError] = useState(false)
   const [error, setError] = useState("An account is already registered with that email")
 
-  const { csrftoken, setCSRFtoken, setUser } = useGlobalState()
+  const { csrftoken, setCSRFtoken, user,setUser } = useGlobalState()
 
   // Use useEffect to validate password whenever it changes
   useEffect(() => {
@@ -63,6 +62,10 @@ export default function Auth() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmailState(emailRegex.test(email));
   }, [email]);
+
+  useEffect(()=>{
+    setVisible(!user)
+  },[user])
 
   const onRegister = async () => {
     if (isLogin) {

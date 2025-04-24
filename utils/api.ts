@@ -21,7 +21,7 @@ export async function fetchCsrfToken() {
   return csrfTokenCache;
 }
 
-export async function fetchUser(): Promise<User> {
+export async function fetchUser(): User | null {
   const response = await fetch(`${API_BASE_URL}/user`, {
     method: 'GET',
     credentials: 'include',
@@ -31,8 +31,8 @@ export async function fetchUser(): Promise<User> {
     throw new Error(`Unauthorized or failed to fetch user: ${response.statusText}`);
   }
 
-  const data = await response.json()
-  return data ;
+  const data = await response.json();
+  return data
 }
 
 

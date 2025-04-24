@@ -2,7 +2,7 @@
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { User, Article, Question, Favourite, Topic, Video } from '@/utils/types';
-import { fetchAllData } from '@/utils/api';
+import { fetchAllData, fetchUser } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {
@@ -41,9 +41,14 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
         const fetchInitialData = async () => {
             
             const [AllData] = await Promise.all([
-                fetchAllData()
+                fetchAllData(),
             ])
-
+            
+            fetchUser()
+                .then((user) => {
+                    setUser(user || null)
+                })
+                
             setTopics(AllData["topics"])
             setQuestions(AllData["questions"])
             setArticles(AllData["articles"])

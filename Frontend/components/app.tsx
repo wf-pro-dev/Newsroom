@@ -101,7 +101,6 @@ export default function App() {
   const heroRef = useRef<HTMLDivElement>(null)
 
   const { topics, user } = useGlobalState();
-  console.log("user",user)
   useEffect(() => {
     if (topics.length > 0) {
       setMounted(true)

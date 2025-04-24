@@ -4,6 +4,7 @@ import json
 from google import genai
 from google.genai import types
 from io import BytesIO
+import ast
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, "../../../"))
@@ -71,20 +72,30 @@ def fetch_prompt_image_gen_ai(topic: str) -> list:
     """
     
     prompt = f"""
-            Generate prompts for image generation models that follows those requirements :
-            'Professional news website image for {topic}:
-            - Style: Semi-realistic 
-            - Color Palette: Dark blue tones (navy, indigo, deep azure)
-            - Design Approach: Minimalistic, clean, modern aesthetic
-            - Composition: Balanced, uncluttered 
-            - Visual Mood: Professional, contemporary, sleek
-            - Technical Quality: High-resolution, crisp details
-            - Lighting: Soft, subdued, creating depth
-            - Texture: Smooth gradients, subtle depth'
-            - Negative Prompt: No Text,
-            Focus on creating 3 detailed and clear scenes that reflects the topic and meet the requirements.
-            Format: Only inclue a list of the scene in the response.
-            Example of scene : {EXAMPLE}
+            TASK: Generate 3 high-quality image generation prompts suitable for use in a professional news website, based on the topic: {topic}.
+
+            REQUIREMENTS for Each Prompt:
+                • Style: Semi-realistic
+                • Color Palette: Dark blue tones (navy, indigo, deep azure)
+                • Design Approach: Minimalistic, clean, modern aesthetic
+                • Composition: Balanced and uncluttered
+                • Mood: Professional, contemporary, sleek
+                • Technical Quality: High-resolution, crisp details
+                • Lighting: Soft, subdued, with natural depth
+                • Texture: Smooth gradients with subtle depth
+                • Negative Prompt: Avoid any text, logos, or written elements in the image.
+
+            OUTPUT FORMAT:
+            Return ONLY a valid Python list of 3 strings. Each string must describe a unique, detailed scene. 
+            Do not include any introductory sentence, markdown formatting, or code block. 
+            The output should begin with `[` and end with `]`.
+
+            EXAMPLE OUTPUT:
+            [
+                "A semi-realistic aerial view of...",
+                "A semi-realistic depiction of...",
+                "A semi-realistic underwater scene..."
+            ]
             """
     
     
@@ -92,11 +103,12 @@ def fetch_prompt_image_gen_ai(topic: str) -> list:
         model="gemini-2.0-flash",
         contents=prompt
     )
-
     
-    list_prompts = list(filter(lambda x : x != '',response.text.split('\n')))
+    cleaned = response.text.strip().removeprefix("```python").removesuffix("```").strip()
 
-    return list_prompts
+    # Convert to Python list
+    prompts = ast.literal_eval(cleaned) 
+    return prompts
   
 
 def fetch_image_gen_ai(prompt: str,topic_id: int,index: int) -> str:
@@ -136,8 +148,7 @@ def fetch_image_gen_ai(prompt: str,topic_id: int,index: int) -> str:
     
 
 if __name__ == "__main__" :
-
-  
-  list_prompts = fetch_prompt_image_gen_ai("Education")
-  for i ,prompt in enumerate(list_prompts):
-    fetch_image_gen_ai(prompt=prompt, topic_id=5, index=i)
+    
+    list_prompts = fetch_prompt_image_gen_ai("Climate Change")
+    for i ,prompt in enumerate(list_prompts):
+        fetch_image_gen_ai(prompt=prompt, topic_id=1, index=i)

@@ -10,21 +10,13 @@ project_root = os.path.abspath(os.path.join(current_dir, "../../../"))
 backend_root = project_root + "/Backend"
 path.append(backend_root)
 
-from config.constants import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN
+# from config.constants import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN
 
 
 
 def upload_to_s3(image_data, topic_id, index):
     """Upload image to AWS S3 and return public URL"""
     
-    print("SECRET",AWS_ACCESS_KEY_ID)
-    
-    # AWS credentials - use environment variables in production
-    session = boto3.Session(
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        aws_session_token=AWS_SESSION_TOKEN  
-    )
     
     s3_config = Config(
         signature_version='s3v4',
@@ -32,7 +24,7 @@ def upload_to_s3(image_data, topic_id, index):
     )
     
     
-    s3_client = session.client('s3',config=s3_config)
+    s3_client = boto3.client('s3',config=s3_config)
 
     
     bucket_name = 'newsroom.bucket'

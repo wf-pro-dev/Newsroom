@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 
 # Define the path to the Newsroom backend
-NEWSROOM_PATH = "/home/will/Newsroom/Backend/"
+NEWSROOM_PATH = "/var/www/newsroom/Backend/"
 
 # Determine the environment (default to 'development')
 env = os.getenv("FLASK_ENV", "development")
@@ -18,6 +18,16 @@ load_dotenv()
 NEWSAPI_KEY = os.getenv("NEWSAPI")
 NEWSDATA_KEY = os.getenv("NEWSDATA")
 YOUTUBE_KEY = os.getenv("YT_KEY")
+GEMINI_KEY = os.getenv("GEMINI_KEY")
+
+# secret keys
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+CSRF_SECRET_KEY = os.getenv("CSRF_SECRET_KEY")
+
+# AWS config
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_SESSION_TOKEN = os.getenv("AWS_SESSION_TOKEN")
 
 # Lint Config
 LINT_PATH = os.getenv("LINT_PATH", NEWSROOM_PATH)
@@ -74,4 +84,4 @@ COLUMNS = {
 }
 
 if __name__ == "__main__":
-    print(env, DATABASE_URI)
+    print(env, CSRF_SECRET_KEY)

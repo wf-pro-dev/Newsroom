@@ -27,5 +27,4 @@ def seed_articles(articles:list[articles],question):
             "-" * 20,
             sep="\n",
         )
-
         

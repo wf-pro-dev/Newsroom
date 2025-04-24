@@ -2,22 +2,24 @@
 
 # .Dir
 /Backend/.*
+# env files
+/Backend/.env*
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
-.yarn/install-state.gz
+/Frontend/node_modules
+/Frontend/.pnp
+/Frontend/.pnp.js
+/Frontend/.yarn/install-state.gz
 
 # testing
 /coverage
 
 # next.js
-/.next/
-/out/
+/Frontend/.next/
+/Frontend/out/
 
 # production
-/build
+/Frontend/build
 
 # misc
 .DS_Store
@@ -32,22 +34,22 @@ yarn-error.log*
 .env*.local
 
 # vercel
-.vercel
+/Frontend/.vercel
 
 # typescript
-*.tsbuildinfo
-next-env.d.ts
+/Frontend/*.tsbuildinfo
+/Frontend/next-env.d.ts
 
 # next-video
-videos/*
-!videos/*.json
-!videos/*.js
-!videos/*.ts
-public/_next-video
+/Frontend/videos/*
+/Frontend/!videos/*.json
+/Frontend/!videos/*.js
+/Frontend/!videos/*.ts
+/Frontend/public/_next-video
 
 # python
-*.pyc
-__pycache__/
-*.pyo
-*.pyd
-.Python
+/Backend*/**/*.pyc
+/Backend*/**/__pycache__/
+/Backend*/**/*.pyo
+/Backend*/**/*.pyd
+/Backend*/**/.Python

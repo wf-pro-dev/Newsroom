@@ -37,7 +37,7 @@ import nltk
 
 nltk.download('stopwords', quiet=True)
 nltk.download('punkt', quiet=True)
-
+nltk.download('punkt_tab', quiet=True)
 def extract_top_keywords(text, language='english', num_keywords=5):
     """
     Extract top keywords from a given text

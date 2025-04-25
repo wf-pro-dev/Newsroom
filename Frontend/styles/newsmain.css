@@ -73,7 +73,7 @@
 } */
 
 .question-header {
-    @apply flex flex-col text-lg !important;
+    @apply flex flex-col w-fit items-center justify-self-center text-lg !important;
 }
 
 .question-title {
@@ -81,7 +81,7 @@
 }
 
 .question-keywords {
-    @apply my-6 text-center w-fit text-gray-400;
+    @apply text-center w-fit text-gray-400;
 }
 
 .news-grid {
@@ -97,5 +97,5 @@
 }
 
 .separator {
-    @apply my-12 bg-gray-600/50 !important;
+    @apply my-12 bg-gray-600/70 !important;
 }

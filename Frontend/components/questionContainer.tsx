@@ -1,4 +1,4 @@
-//React
+/* REACT */
 import React, { useEffect, useRef, useState } from "react";
 
 /* COMPONENTS */
@@ -11,6 +11,9 @@ import { Separator } from "@/components/ui/separator";
 /* FUNCTIONS */
 import { addQuestion, deleteQuestionbyId } from "@/utils/api";
 import { useGlobalState } from "./context/GlobalStateContext";
+
+/* STYLES */
+import "../styles/newsmain.css";
 
 /* TYPES */
 import { Article, Question, Video } from "@/utils/types";
@@ -88,14 +91,14 @@ function QuestionContainer({
         };
 
         return (
-            <div className="w-full flex justify-center">
+            <div className="justify-center ">
                 <div className="inline-block text-center whitespace-normal break-words">
                     <p>
                         {text.split(' ').map((word, index) => (
                             <span
                                 key={index}
                                 className={`
-                                ${highlightKeyword(word)} 
+                                ${highlightKeyword(word)}
                                 question-title
                                 mr-1
                                 inline-block
@@ -172,31 +175,37 @@ function QuestionContainer({
             <div className="question-header">
                 {/* <h1 className="question-title">{questionText}</h1> */}
 
-                <KeywordHighlighter text={questionText} keywords={questionKeywords} />
-
-
-                <div className="flex flex-row items-center justify-center w-full">
-
-                    <div className="xl:top-0 xl:left-0 refresh-button-container">
-                        <Button
-                            variant="ghost"
-                            className={`button`}
-                            onClick={() => onQuestionChange(questions.find((qst: Question) => qst.text === questionText)!)}
-                        >
-                            <div className="button-content p-3">
-                                <RefreshCcw
-                                    strokeWidth={2}
-                                    style={{ width: 16, height: 16 }}
-                                />
-                            </div>
-                        </Button>
-                    </div>
-
-                    <p className="question-keywords w-fit flex-grow">
-                        {questionKeywords}
-                    </p>
-
+                <div className="w-fit">
+                    <KeywordHighlighter text={questionText} keywords={questionKeywords} />
                 </div>
+
+                <div>
+                    <div className="flex flex-row items-center justify-center w-fit mt-6 px-20">
+                        <p className="relative question-keywords ">
+                            <div className="absolute xl:-top-1/4 xl:-left-14 refresh-button-containe">
+                                <Button
+                                    variant="ghost"
+                                    className={`button`}
+                                    onClick={() => onQuestionChange(questions.find((qst: Question) => qst.text === questionText)!)}
+                                >
+                                    <div className="button-content p-3 ">
+                                        <RefreshCcw
+                                            strokeWidth={2}
+                                            style={{ width: 16, height: 16 }}
+                                        />
+                                    </div>
+                                </Button>
+                            </div>
+
+
+                            {questionKeywords || "No keywords"}
+
+                        </p>
+
+                    </div>
+                    <Separator className="bg-gray-600 my-6" />
+                </div>
+
             </div>
 
             <div className="news-grid">

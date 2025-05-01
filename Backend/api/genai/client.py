@@ -100,7 +100,7 @@ def fetch_prompt_image_gen_ai(topic: str) -> list:
     
     
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-2.0-flash-lite",
         contents=prompt
     )
     

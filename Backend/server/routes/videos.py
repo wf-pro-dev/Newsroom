@@ -5,7 +5,7 @@ from database.connection import db
 videos_bp = Blueprint("videos", __name__)
 
 
-@videos_bp.route("/videos", methods=["GET"])
+@videos_bp.route("/videos/all", methods=["GET"])
 def get_videos():
     list_video = videos.query.all()
     return jsonify([video.to_dict() for video in list_video])

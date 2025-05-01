@@ -5,7 +5,7 @@ from database.connection import db
 articles_bp = Blueprint("articles", __name__)
 
 
-@articles_bp.route("/articles", methods=["GET"])
+@articles_bp.route("/articles/all", methods=["GET"])
 def get_articles():
     list_article = articles.query.all()
     return jsonify([article.to_dict() for article in list_article])

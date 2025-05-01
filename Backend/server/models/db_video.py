@@ -16,6 +16,11 @@ class videos(db.Model):
     description = db.Column(db.String(255), nullable=True)
     thumbnail = db.Column(db.String(255), nullable=True)
 
+    # Relationship with hidden_videos table
+    hidden_for_users = db.relationship("hidden_videos",
+                                    backref=db.backref("video", lazy=True),
+                                    cascade="all, delete-orphan")
+
     def to_dict(self):
         return {
             "id": self.id,
@@ -24,3 +29,7 @@ class videos(db.Model):
             "description": self.description,
             "thumbnail": self.thumbnail,
         }
+
+    def is_hidden_for_user(self, user_id):
+        """Check if this video is hidden for a specific user"""
+        return any(hidden.user_id == user_id for hidden in self.hidden_for_users)

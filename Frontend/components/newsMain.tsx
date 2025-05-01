@@ -41,26 +41,26 @@ function NewsMain({
     videos,
   } = useGlobalState();
 
-  useEffect(() => {
-    const data: Record<string, Record<string, Array<Video | Article>>> = {};
+  // useEffect(() => {
+  //   const data: Record<string, Record<string, Array<Video | Article>>> = {};
 
-    topics.forEach((topic: Topic) => {
-      if (!data[topic.title]) {
-        data[topic.title] = {};
-      }
+  //   topics.forEach((topic: Topic) => {
+  //     if (!data[topic.title]) {
+  //       data[topic.title] = {};
+  //     }
 
-      questions
-        .filter((question: Question) => question.topic_id === topic.id)
-        .forEach((qst: Question) => {
-          data[topic.title][qst.text] = mixArray(
-            articles.filter((article) => article.question_id === qst.id),
-            videos.filter((video) => video.question_id === qst.id),
-            4
-          );
-        });
-    });
-    setNewsData(data);
-  }, [topics, questions, articles, videos]);
+  //     questions
+  //       .filter((question: Question) => question.topic_id === topic.id)
+  //       .forEach((qst: Question) => {
+  //         data[topic.title][qst.text] = mixArray(
+  //           articles.filter((article) => article.question_id === qst.id),
+  //           videos.filter((video) => video.question_id === qst.id),
+  //           4
+  //         );
+  //       });
+  //   });
+  //   setNewsData(data);
+  // }, [topics, questions, articles, videos]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -205,34 +205,22 @@ function NewsMain({
         }`} >
 
 
-        <div
-          className={`button-container`}
+      <div
+        className={`button-container xl:right-2 2xl:right-12 ${
+          showHeader ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <Button
+          variant="secondary"
+          className={`button ${
+            showFavorites ? "bg-gray-700/80" : "bg-black/70"
+          }`}
+          onClick={() => setShowFavorites(!showFavorites)}
         >
-          <Button
-            variant="secondary"
-            className={`button ${showFavorites ? "bg-gray-700/80" : "bg-black/70"
-              }`}
-            onClick={() => setShowFavorites(!showFavorites)}
-          >
-            <div className="button-content">
-              <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
-            </div>
-          </Button>
-        </div>
-        <div
-          className={`button-container`}
-        >
-          <Button
-            variant="secondary"
-            className={`button ${showFavorites ? "bg-gray-700/80" : "bg-black/70"
-              }`}
-            onClick={onLogOut}
-          >
-            <div className="button-content">
-              <LogOut strokeWidth={2} style={{ width: 28, height: 28 }} />
-            </div>
-          </Button>
-        </div>
+          <div className="button-content">
+            <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
+          </div>
+        </Button>
       </div>
     </Tabs>
   );

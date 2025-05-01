@@ -1,6 +1,6 @@
 'use client'
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, use, useCallback, useEffect, useRef, useState } from 'react'
 import NewsMain from '@/components/newsMain'
 import Notification from '@/components/core/notification'
 import { HeroGlobe } from '@/components/heroglobe'
@@ -101,6 +101,7 @@ export default function App() {
   const heroRef = useRef<HTMLDivElement>(null)
 
   const { topics, user } = useGlobalState();
+
   useEffect(() => {
     if (topics.length > 0) {
       setMounted(true)
@@ -124,8 +125,15 @@ export default function App() {
     ...(isFixed ? {} : { opacity: 1, transform: 'scale(1)' })
   })
 
+  useEffect(()=>{
+
+    if (user != null) setIsFixed(false)
+    
+  },[user])
+
   // DupeHero Component
-  const DupeHero = ({ isFixed, heroRef, setIsFixed }:{isFixed:boolean,heroRef:React.Ref<HTMLDivElement>,setIsFixed:Dispatch<SetStateAction<boolean>> }) => (
+  const DupeHero = useCallback(
+    ({ isFixed, heroRef, setIsFixed }:{isFixed:boolean,heroRef:React.Ref<HTMLDivElement>,setIsFixed:Dispatch<SetStateAction<boolean>> }) => (
     <div
       ref={heroRef}
       className="dupe-section"
@@ -151,7 +159,7 @@ export default function App() {
 
       </div>
     </div>
-  )
+  ),[user])
 
 
   if (!mounted) {

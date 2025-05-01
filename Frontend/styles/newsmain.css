@@ -33,10 +33,14 @@
     @apply bg-gray-700 text-white !important;
 }
 
+/* Footer */
+.footer {
+    @apply flex flex-col gap-3 fixed bottom-3 xl:right-5 2xl:right-12 !important;
+}
 
 /* Button */
 .button-container {
-    @apply w-fit h-fit fixed bottom-3 transition-all duration-300 ease-in-out !important;
+    @apply w-fit h-fit  transition-all duration-300 ease-in-out !important;
 }
 
 .button {

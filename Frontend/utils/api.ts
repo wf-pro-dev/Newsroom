@@ -90,7 +90,6 @@ export async function register(username: string, email: string, password: string
 }
 
 export async function login(email: string, password: string, csrfToken:string) {
-  console.log('Using CSRF token for login:', csrfToken)
 
   const response = await fetch(`${API_BASE_URL}/login`, {
     method: 'POST',
@@ -107,6 +106,27 @@ export async function login(email: string, password: string, csrfToken:string) {
   }
   return response.json();
 
+}
+
+export async function logout() {
+  
+  const response = await fetch(`${API_BASE_URL}/logout`, {
+    method: 'POST',
+    credentials: 'include',  // Send cookies
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    console.error('Logout error details:', errorData); // More detailed error logging
+    throw new Error(`Failed to logout user: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  console.log(data.message);
+  return data;
 }
 
 export async function addFavourite(entity_id: number, entity_type: string): Promise<any> {

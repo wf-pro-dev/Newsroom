@@ -209,7 +209,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
 
                 showDelete(true);
                 
-                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id, csrftoken);
+                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id, csrftoken!);
             } else {
                 // Optimistically update UI
                 setFavourites([...favourites, { entity_id: video.id, entity_type: "video" }]);
@@ -234,7 +234,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
         }, 300)
 
         try {
-            await deleteVideobyId(video.id, csrftoken);
+            await deleteVideobyId(video.id, csrftoken!);
             showDelete(true);
 
             setTimeout(() => {

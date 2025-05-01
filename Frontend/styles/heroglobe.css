@@ -57,9 +57,20 @@
   @apply opacity-100;
 }
 
+/* .header-title {
+  @apply text-4xl font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text bg-[length:200%_200%];
+} */
+
 .header-title {
-  @apply text-4xl font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text;
+  @apply text-4xl font-bold;
+  background: linear-gradient(90deg, #3b82f6, #ec4899, #3b82f6);
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: animate-gradient 6s ease infinite;
 }
+
 
 .header-description {
   @apply text-gray-300;

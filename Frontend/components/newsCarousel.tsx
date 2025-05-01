@@ -78,9 +78,11 @@ function NewsCarousel({ topic_title, questions }: {
     }
     return (
         <div>
-            <h1 className="text-2xl leading-normal text-center text-gray-300">
+            <h1 className="text-2xl leading-normal text-center  font-medium
+            
+            text-gray-300">
                 Today&apos;s Question about
-                <p className="text-4xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
+                <p className="text-5xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
                     {topic_title}
                 </p>
             </h1>
@@ -109,7 +111,6 @@ function NewsCarousel({ topic_title, questions }: {
                                     <div className="flex-column overflow-hidden h-full">
                                         <CarouselContent className="m-0 max-w-fit h-full">
                                             {topic!.images.map((url, idx) => { 
-                                                console.log(url)
                                                 return (
                                                 <CarouselItem key={idx} className="flex-none 2xl:h-[315px] xl:h-[275px] aspect-video pl-0 overflow-hidden">
                                                     <div className="flex-none w-full h-full aspect-video">

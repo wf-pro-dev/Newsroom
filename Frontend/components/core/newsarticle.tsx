@@ -38,7 +38,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
 
                 showDelete(true);
                 
-                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id, csrftoken);
+                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id, csrftoken!);
 
             } else {
                 // Optimistically update UI
@@ -64,7 +64,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
         }, 300);
 
         try {
-            await deleteArticlebyId(article.id,csrftoken);
+            await deleteArticlebyId(article.id,csrftoken!);
             showDelete(true);
 
         } catch (error) {

@@ -41,26 +41,26 @@ function NewsMain({
     videos,
   } = useGlobalState();
 
-  useEffect(() => {
-    const data: Record<string, Record<string, Array<Video | Article>>> = {};
+  // useEffect(() => {
+  //   const data: Record<string, Record<string, Array<Video | Article>>> = {};
 
-    topics.forEach((topic: Topic) => {
-      if (!data[topic.title]) {
-        data[topic.title] = {};
-      }
+  //   topics.forEach((topic: Topic) => {
+  //     if (!data[topic.title]) {
+  //       data[topic.title] = {};
+  //     }
 
-      questions
-        .filter((question: Question) => question.topic_id === topic.id)
-        .forEach((qst: Question) => {
-          data[topic.title][qst.text] = mixArray(
-            articles.filter((article) => article.question_id === qst.id),
-            videos.filter((video) => video.question_id === qst.id),
-            4
-          );
-        });
-    });
-    setNewsData(data);
-  }, [topics, questions, articles, videos]);
+  //     questions
+  //       .filter((question: Question) => question.topic_id === topic.id)
+  //       .forEach((qst: Question) => {
+  //         data[topic.title][qst.text] = mixArray(
+  //           articles.filter((article) => article.question_id === qst.id),
+  //           videos.filter((video) => video.question_id === qst.id),
+  //           4
+  //         );
+  //       });
+  //   });
+  //   setNewsData(data);
+  // }, [topics, questions, articles, videos]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -215,7 +215,7 @@ function NewsMain({
             onClick={() => setShowFavorites(!showFavorites)}
           >
             <div className="button-content">
-              <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
+              <Heart strokeWidth={2} style={{ width: 24, height: 24 }} />
             </div>
           </Button>
         </div>
@@ -229,7 +229,7 @@ function NewsMain({
             onClick={onLogOut}
           >
             <div className="button-content">
-              <LogOut strokeWidth={2} style={{ width: 28, height: 28 }} />
+              <LogOut strokeWidth={2} style={{ width: 24, height: 24 }} />
             </div>
           </Button>
         </div>

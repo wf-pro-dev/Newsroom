@@ -5,6 +5,7 @@ const API_BASE_URL = 'https://newsroom.dedyn.io/api'
 let csrfTokenCache: string | null = null;
 
 /* GET METHODS */
+
 export async function fetchCsrfToken() {
   // Return cached token if available
   if (csrfTokenCache) {
@@ -35,20 +36,31 @@ export async function fetchUser(): Promise<User> {
   return data ;
 }
 
-
 export async function fetchAllData(): Promise<any> {
   const response = await fetch(`${API_BASE_URL}/all_data`)
   return response.json()
 }
 
 export async function fetchArticles(): Promise<Article[]> {
-  const response = await fetch(`${API_BASE_URL}/articles`)
-  return response.json()
+  const response = await fetch(`${API_BASE_URL}/articles`,{credentials:"include"})
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch user articles : ${response.statusText}`);
+  }
+
+  const data = await response.json()
+  return data["articles"]
 }
 
 export async function fetchVideos(): Promise<Video[]> {
-  const response = await fetch(`${API_BASE_URL}/videos`)
-  return response.json()
+  const response = await fetch(`${API_BASE_URL}/videos`,{credentials:"include"})
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch user videos : ${response.statusText}`);
+  }
+
+  const data = await response.json()
+  return data["videos"]
 }
 
 export async function fetchFavorites(): Promise<Favourite[]> {
@@ -68,6 +80,7 @@ export async function fetchTopics(): Promise<Topic[]> {
 
 
 /* POST METHODS */
+
 export async function register(username: string, email: string, password: string, csrfToken: string) {
 
   const response = await fetch(`${API_BASE_URL}/register`, {
@@ -163,6 +176,21 @@ export async function addQuestion(topic_id: number, csrfToken: string): Promise<
     console.error('Error generating question:', error);
   }
   return []
+}
+
+export async function hideContent(content_id: number, content_type: string): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/content/${content_type}/${content_id}/hide`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials:"include",
+    body: JSON.stringify({ content_id, content_type })
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to hide ${content_type} ${content_id}: ${response.statusText}`);
+  }
+
+  const data = await response.json()
+  return data;
 }
 
 /* DELETE METHODS */

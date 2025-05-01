@@ -8,11 +8,13 @@ from flask_jwt_extended import (
 )
 from flask_wtf.csrf import validate_csrf
 
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, "../../../"))
 backend_root = project_root + "/Backend"
 path.append(backend_root)
 
+from server.extensions import csrf
 from server.models.db_users import users
 from database.connection import db
 
@@ -107,8 +109,10 @@ def login():
             return jsonify({"error": "Email and password are required"}), 400
             
         user = users.query.filter_by(email=email).first()
-        
-        if not user or not check_password_hash(user.password_hash, password):
+        valid_pwd = check_password_hash(user.password_hash, password)
+        current_app.logger.info(f"Valid password: {valid_pwd}")
+
+        if not user or not valid_pwd: 
             return jsonify({"error": "Invalid email or password"}), 401
         
         # Create response with JWT token in cookies
@@ -118,8 +122,36 @@ def login():
         access_token = create_access_token(identity=str(user.id))
         set_access_cookies(response, access_token)
         
-        # Don't generate a new CSRF token here - use the existing one from /csrf-token endpoint
         return response
     except Exception as e:
         current_app.logger.error(f"Login error: {str(e)}")
         return jsonify({"error": "Login failed due to server error"}), 500
+
+@auth_bp.route('/logout', methods=['POST'])
+@jwt_required()
+@csrf.exempt
+def logout():
+    response = jsonify({"message": "Logout successful"})
+
+    # Mirror exactly how set_access_cookies() configures cookies
+    response.delete_cookie(
+        'access_token_cookie',
+        path='/',
+        domain=None,
+        secure=True,
+        httponly=True,
+        samesite='None'
+    )
+
+    # Also clear the CSRF token cookie with matching params
+    response.delete_cookie(
+        'csrf_token',
+        path='/',
+        domain=None,
+        secure=True,
+        httponly=False,
+        samesite='None'
+    )
+
+    current_app.logger.info("Cookies cleared with matching parameters")
+    return response

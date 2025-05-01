@@ -1,5 +1,7 @@
-// React Hooks
+// React 
 import { useState, useEffect } from 'react';
+
+/* Hooks */
 import { useGlobalState } from './context/GlobalStateContext';
 
 // Components
@@ -9,7 +11,7 @@ import { Button } from './ui/button';
 import { LogIn, User2, DotIcon } from 'lucide-react';
 
 //API
-import { fetchCsrfToken, fetchUser, login, register } from '@/utils/api';
+import { fetchUser, login, register } from '@/utils/api';
 
 //STYLES
 import '@/styles/heroglobe.css'
@@ -31,7 +33,7 @@ export default function Auth() {
   const [isError, setisError] = useState(false)
   const [error, setError] = useState("An account is already registered with that email")
 
-  const { csrftoken, setCSRFtoken, user,setUser } = useGlobalState()
+  const { csrftoken, user,setUser } = useGlobalState()
 
   // Use useEffect to validate password whenever it changes
   useEffect(() => {
@@ -72,7 +74,7 @@ export default function Auth() {
       setisLogin(false);
     } else {
       try {
-        const response = await register(username, email, password, csrftoken);
+        const response = await register(username, email, password, csrftoken!);
         if (response.ok) onLogin();
       } catch {
         setisError(true);
@@ -82,16 +84,8 @@ export default function Auth() {
     }
   }
 
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await fetchCsrfToken()
-      setCSRFtoken(token!)
-    }
-    getToken()
-  }, [])
-
   const onLogin = async () => {
-    login(email, password, csrftoken)
+    login(email, password, csrftoken!)
       .then(() => {
 
         fetchUser()
@@ -124,9 +118,10 @@ export default function Auth() {
         transition: 'scale 0.4s ease-in-out, opacity 0.4s ease-in-out',
       }}
     >
-      <div className={`header`}>
+      <div  className={`header`}>
         <div>
-          <h1 className="header-title">
+          <h1 className="header-title"
+          >
             The NewsRoom
           </h1>
           <p className="header-description">
@@ -139,10 +134,10 @@ export default function Auth() {
           <div
             className="grid w-full max-w-sm items-center gap-1.5"
             style={{
+              zIndex:0,
               height: isLogin ? `0px` : '100%',
               opacity: isLogin ? 0 : 1,
               transition: 'height 0.6s ease-in-out, opacity 0.6s ease-in-out',
-              overflow: 'hidden'
             }}
           >
             <Label className='text-sm' htmlFor="username">Username</Label>
@@ -155,7 +150,7 @@ export default function Auth() {
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
+          <div className="z-10 grid w-full max-w-sm items-center gap-1.5">
             <Label className='text-sm' htmlFor="email">Email</Label>
             <Input
               type="email"

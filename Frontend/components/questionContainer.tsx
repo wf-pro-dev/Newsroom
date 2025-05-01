@@ -121,11 +121,11 @@ function QuestionContainer({
 
         const index = questions.findIndex((question) => question == qst)
 
-        deleteQuestionbyId(qst.id, csrftoken)
+        deleteQuestionbyId(qst.id, csrftoken!)
             .then(() => setIsExpanded(false))
 
 
-        addQuestion(qst.topic_id, csrftoken)
+        addQuestion(qst.topic_id, csrftoken!)
             .then((data) => {
 
                 const objData = data[0]

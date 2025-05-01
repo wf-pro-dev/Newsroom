@@ -4,12 +4,13 @@ import NewsCarousel from "./newsCarousel";
 import { Article, Question, Topic, Video } from "@/utils/types";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { Heart } from "lucide-react";
+import { Heart, LogOut } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import "@/styles/newsmain.css";
 import { useGlobalState } from "@/components/context/GlobalStateContext";
 import { mixArray } from "@/lib/utils";
 import QuestionContainer from "./questionContainer";
+import { logout } from "@/utils/api";
 
 function NewsMain({
   activeTab,
@@ -31,6 +32,7 @@ function NewsMain({
   const [atInnerHeight, setAtInnerHeight] = useState(false);
 
   const {
+    setUser,
     newsData,
     setNewsData,
     topics,
@@ -79,7 +81,7 @@ function NewsMain({
 
     setTimeout(() => {
       setActiveTab(value);
-      window.scrollTo({ top: window.innerHeight });
+      window.scrollTo({ top: window.innerHeight, behavior:"instant" });
       setTimeout(() => {
         setIsChanging(false);
       }, 200);
@@ -90,6 +92,13 @@ function NewsMain({
     if (category === activeTab) {
       window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
     }
+  }
+
+  const onLogOut = async () => {
+    window.scrollTo({ top: 0, behavior:"smooth" });
+    setTimeout(async () => {
+      await logout().then(()=>{setUser(null)})
+    }, 400);
   }
 
 
@@ -109,16 +118,14 @@ function NewsMain({
               className={`
                           tab-trigger
                           group-hover:translate-y-0
-                          ${
-                            showHeader
-                              ? "data-[state=active]:translate-y-0"
-                              : "data-[state=active]:-translate-y-20"
-                          } 
-                          ${
-                            atInnerHeight
-                              ? "translate-y-0"
-                              : "-translate-y-20"
-                          }
+                          ${showHeader
+                  ? "data-[state=active]:translate-y-0"
+                  : "data-[state=active]:-translate-y-20"
+                } 
+                          ${atInnerHeight
+                  ? "translate-y-0"
+                  : "-translate-y-20"
+                }
                       `}
             >
               <p className="2xl:text-[15px] xl:text-sm font-medium">
@@ -140,25 +147,24 @@ function NewsMain({
                 <TabsContent
                   key={topic}
                   value={topic}
-                  className={`${
-                    isChanging ? "opacity-0" : "opacity-100"
-                  } tabs-content`}
+                  className={`${isChanging ? "opacity-0" : "opacity-100"
+                    } tabs-content`}
                 >
                   <Separator className="separator" />
-                  
+
                   {questions.filter((question: Question) =>
-                      Object.keys(newsData[activeTab]).includes(question.text)
-                    ).length == 3 && (
+                    Object.keys(newsData[activeTab]).includes(question.text)
+                  ).length == 3 && (
 
-                    <NewsCarousel
-                      topic_title={activeTab}
-                      questions={questions.filter((question: Question) =>
-                        Object.keys(newsData[activeTab]).includes(question.text)
-                      )
-                    }
-                    />
+                      <NewsCarousel
+                        topic_title={activeTab}
+                        questions={questions.filter((question: Question) =>
+                          Object.keys(newsData[activeTab]).includes(question.text)
+                        )
+                        }
+                      />
 
-                  )}
+                    )}
 
                   <Separator className="separator" />
 
@@ -168,7 +174,7 @@ function NewsMain({
                         (qst: Question) => qst.text === questionText
                       )?.keywords;
                       return (
-                        <QuestionContainer 
+                        <QuestionContainer
                           key={`question_${qIndex}`}
                           activeTab={activeTab}
                           index={index}
@@ -178,7 +184,7 @@ function NewsMain({
                           showFavorites={showFavorites}
                           showDelete={showDelete}
                           showAdd={showAdd}
-                        />  
+                        />
                       );
                     }
                   )}
@@ -195,22 +201,38 @@ function NewsMain({
         />
       )}
 
-      <div
-        className={`button-container xl:right-2 2xl:right-12 ${
-          showHeader ? "translate-y-0" : "translate-y-full"
-        }`}
-      >
-        <Button
-          variant="secondary"
-          className={`button ${
-            showFavorites ? "bg-gray-700/80" : "bg-black/70"
-          }`}
-          onClick={() => setShowFavorites(!showFavorites)}
+      <div className={`footer  ${showHeader ? "translate-y-0" : "translate-y-full"
+        }`} >
+
+
+        <div
+          className={`button-container`}
         >
-          <div className="button-content">
-            <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
-          </div>
-        </Button>
+          <Button
+            variant="secondary"
+            className={`button ${showFavorites ? "bg-gray-700/80" : "bg-black/70"
+              }`}
+            onClick={() => setShowFavorites(!showFavorites)}
+          >
+            <div className="button-content">
+              <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
+            </div>
+          </Button>
+        </div>
+        <div
+          className={`button-container`}
+        >
+          <Button
+            variant="secondary"
+            className={`button ${showFavorites ? "bg-gray-700/80" : "bg-black/70"
+              }`}
+            onClick={onLogOut}
+          >
+            <div className="button-content">
+              <LogOut strokeWidth={2} style={{ width: 28, height: 28 }} />
+            </div>
+          </Button>
+        </div>
       </div>
     </Tabs>
   );

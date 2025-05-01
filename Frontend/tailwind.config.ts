@@ -101,7 +101,12 @@ const config: Config = {
           to: {
             opacity: '1',
             transform: 'translateY(0)',
-          }
+          },
+        },
+        'animate-gradient': {
+          '0%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' },
+          '100%': { 'background-position': '0% 50%' },
         }
       },
       animation: {
@@ -110,6 +115,7 @@ const config: Config = {
         marquee: 'marquee 10s linear infinite',
         'bounce-subtle': 'bounce-subtle 0.3s ease-in-out',
         'fade-in-up': 'fadeInUp 0.3s ease-out',
+        'animate-gradient': 'animate-gradient 6s ease infinite'
       },
     },
   },

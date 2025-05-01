@@ -11,7 +11,7 @@ from flask_jwt_extended import JWTManager
 import secrets
 
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_wtf.csrf import CSRFProtect, generate_csrf
+from flask_wtf.csrf import generate_csrf
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, "../../"))
@@ -19,6 +19,7 @@ backend_root = project_root + "/Backend"
 path.append(backend_root)
 
 from database.connection import db
+from server.extensions import csrf
 from server.routes.auth import auth_bp
 from server.routes.articles import articles_bp
 from server.routes.videos import videos_bp
@@ -34,7 +35,7 @@ def create_app():
     
     # Initialize extensions
     jwt = JWTManager(app)
-    csrf = CSRFProtect(app)
+    csrf.init_app(app)
 
     # Configure CORS
     CORS(
@@ -70,7 +71,7 @@ def create_app():
         'JWT_SECRET_KEY': JWT_SECRET_KEY,
         'JWT_COOKIE_SECURE': True,       # Set to True in production
         'JWT_COOKIE_SAMESITE': 'None',     # For cross-origin, change to 'None' with HTTPS
-        'JWT_COOKIE_CSRF_PROTECT': True,  # Enable CSRF for JWT
+        'JWT_COOKIE_CSRF_PROTECT': False,  # Enable CSRF for JWT
         'JWT_TOKEN_LOCATION': ['cookies'],
         'JWT_ACCESS_TOKEN_EXPIRES': timedelta(hours=1)
     })

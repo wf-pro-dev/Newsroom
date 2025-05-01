@@ -1,14 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import NewsCarousel from "./newsCarousel";
-import { Article, Question, Topic, Video } from "@/utils/types";
+import { Question } from "@/utils/types";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Heart, LogOut } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import "@/styles/newsmain.css";
 import { useGlobalState } from "@/components/context/GlobalStateContext";
-import { mixArray } from "@/lib/utils";
 import QuestionContainer from "./questionContainer";
 import { logout } from "@/utils/api";
 
@@ -34,11 +33,7 @@ function NewsMain({
   const {
     setUser,
     newsData,
-    setNewsData,
-    topics,
     questions,
-    articles,
-    videos,
   } = useGlobalState();
 
   // useEffect(() => {
@@ -205,22 +200,34 @@ function NewsMain({
         }`} >
 
 
-      <div
-        className={`button-container xl:right-2 2xl:right-12 ${
-          showHeader ? "translate-y-0" : "translate-y-full"
-        }`}
-      >
-        <Button
-          variant="secondary"
-          className={`button ${
-            showFavorites ? "bg-gray-700/80" : "bg-black/70"
-          }`}
-          onClick={() => setShowFavorites(!showFavorites)}
+        <div
+          className={`button-container`}
         >
-          <div className="button-content">
-            <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
-          </div>
-        </Button>
+          <Button
+            variant="secondary"
+            className={`button ${showFavorites ? "bg-gray-700/80" : "bg-black/70"
+              }`}
+            onClick={() => setShowFavorites(!showFavorites)}
+          >
+            <div className="button-content">
+              <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
+            </div>
+          </Button>
+        </div>
+        <div
+          className={`button-container`}
+        >
+          <Button
+            variant="secondary"
+            className={`button ${showFavorites ? "bg-gray-700/80" : "bg-black/70"
+              }`}
+            onClick={onLogOut}
+          >
+            <div className="button-content">
+              <LogOut strokeWidth={2} style={{ width: 28, height: 28 }} />
+            </div>
+          </Button>
+        </div>
       </div>
     </Tabs>
   );

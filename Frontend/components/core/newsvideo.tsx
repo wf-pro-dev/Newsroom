@@ -5,7 +5,7 @@ import YouTube from "react-youtube"
 import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
 import Image from "next/image";
-import { addFavourite, deleteVideobyId, deleteFavouritebyId, hideContent } from "@/utils/api";
+import { addFavourite, deleteFavouritebyId, hideContent } from "@/utils/api";
 import { useGlobalState } from "../context/GlobalStateContext";
 
 type NewsVideoProps = {
@@ -234,7 +234,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
         }, 300)
 
         try {
-            await deleteVideobyId(video.id, csrftoken);
+            await hideContent(video.id, "video");
             showDelete(true);
 
             setTimeout(() => {

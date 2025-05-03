@@ -11,47 +11,48 @@ import moment from 'moment'
 import { Separator } from '@radix-ui/react-separator'
 import { useGlobalState } from '@/components/context/GlobalStateContext'
 
-function NewsArticle({ article, favourites, showFavorites, setFavourites, showDelete, showAdd  }:
+function NewsArticle({ article, showFavorites, showDelete, showAdd }:
     {
         article: Article,
-        favourites: Favourite[],
         showFavorites: boolean,
-        setFavourites: React.Dispatch<React.SetStateAction<Favourite[]>>,
         showDelete: React.Dispatch<React.SetStateAction<boolean>>,
         showAdd: React.Dispatch<React.SetStateAction<boolean>>,
     }) {
 
     const [isDeleting, setIsDeleting] = useState(false);
     const article_date = new Date(article.publishedAt)
-    const { csrftoken, articles, setArticles } = useGlobalState()
+    const { articles, setArticles, favourites, setFavourites } = useGlobalState()
 
+    const favorite = favourites.find((fav) =>  fav.type == "article" && fav.article_id == article.id  ) ||
+        favourites.find((fav: Favourite) => fav == article )
+    
     async function handleFavorite() {
         try {
-            const favourite = favourites.find((fav: Favourite) => fav.entity_id == article.id && fav.entity_type == "article")
-            if (favourite) {
+
+            if (favorite) {
+
                 if (showFavorites) setIsDeleting(true);
 
                 // Optimistically update UI
                 setTimeout(() => {
-                    setFavourites(favourites.filter((fav: Favourite) => fav.entity_id !== article.id || fav.entity_type !== "article"));
+                    setFavourites(favourites.filter((fav: Favourite) => fav.id != favorite.id));
                 }, 300)
 
                 showDelete(true);
-                
-                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id, csrftoken!);
+                await deleteFavouritebyId(favorite.id, favorite.type);
 
             } else {
-                // Optimistically update UI
-                setFavourites([...favourites, { entity_id: article.id, entity_type: "article" }]);
+
                 showAdd(true);
 
-                await addFavourite(article.id, "article");
+                const newFavorite  = await addFavourite(article.id, article.type) ;
+                
+
+                // Optimistically update UI
+                setFavourites([...favourites, newFavorite]);
             }
         } catch (error) {
             console.error("Error handling favorite:", error);
-            // Revert optimistic updates if necessary
-
-            // Optionally, set an error state to inform the user
         }
     }
 
@@ -64,7 +65,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
         }, 300);
 
         try {
-            await hideContent(article.id,"article");
+            await hideContent(article.id, "article");
             showDelete(true);
 
         } catch (error) {
@@ -104,7 +105,7 @@ function NewsArticle({ article, favourites, showFavorites, setFavourites, showDe
                         className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                         onClick={handleFavorite}>
                         <div className='p-2 flex justify-center items-center'>
-                            {favourites.length > 0 && favourites.find((fav: Favourite) => fav.entity_id == article.id && fav.entity_type == "article") ?
+                            {favourites.length > 0 &&  favorite ?
                                 <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} />
                                 :
                                 <Heart style={{ width: 18, height: 18 }} strokeWidth={2} />

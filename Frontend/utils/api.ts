@@ -1,3 +1,4 @@
+import { mixArray } from '@/lib/utils';
 import { Article, Favourite, newQuestion, Question, Topic, User, Video } from './types';
 
 const API_BASE_URL = 'https://newsroom.dedyn.io/api'
@@ -16,7 +17,7 @@ export async function fetchCsrfToken() {
     credentials: 'include'
   });
   const data = await response.json();
-  
+
   // Cache the token
   csrfTokenCache = data.csrfToken;
   return csrfTokenCache;
@@ -33,7 +34,7 @@ export async function fetchUser(): Promise<User> {
   }
 
   const data = await response.json()
-  return data ;
+  return data;
 }
 
 export async function fetchAllData(): Promise<any> {
@@ -42,7 +43,7 @@ export async function fetchAllData(): Promise<any> {
 }
 
 export async function fetchArticles(): Promise<Article[]> {
-  const response = await fetch(`${API_BASE_URL}/articles`,{credentials:"include"})
+  const response = await fetch(`${API_BASE_URL}/articles`, { credentials: "include" })
 
   if (!response.ok) {
     throw new Error(`Failed to fetch user articles : ${response.statusText}`);
@@ -53,8 +54,8 @@ export async function fetchArticles(): Promise<Article[]> {
 }
 
 export async function fetchVideos(): Promise<Video[]> {
-  const response = await fetch(`${API_BASE_URL}/videos`,{credentials:"include"})
-  
+  const response = await fetch(`${API_BASE_URL}/videos`, { credentials: "include" })
+
   if (!response.ok) {
     throw new Error(`Failed to fetch user videos : ${response.statusText}`);
   }
@@ -64,9 +65,25 @@ export async function fetchVideos(): Promise<Video[]> {
 }
 
 export async function fetchFavorites(): Promise<Favourite[]> {
-  const response = await fetch(`${API_BASE_URL}/favourites`)
-  return response.json()
+
+  let articles = []
+  let videos = []
+
+  try {
+    const resp_articles = await fetch(`${API_BASE_URL}/favorites/articles`, { credentials: "include" })
+    articles = await resp_articles.json()
+
+    const resp_videos = await fetch(`${API_BASE_URL}/favorites/videos`, { credentials: "include" })
+    videos = await resp_videos.json()
+  }
+  catch (error) {
+    throw new Error(`failed to fetch favorite ${error}`)
+  }
+
+  return mixArray(articles, videos, 4) as Favourite[]
 }
+
+
 
 export async function fetchQuestions(): Promise<Question[]> {
   const response = await fetch(`${API_BASE_URL}/questions`)
@@ -96,13 +113,13 @@ export async function register(username: string, email: string, password: string
   if (!response.ok) {
     throw new Error(`Failed to register user: ${response.statusText}`);
   }
-  
+
   const data = await response.json();
   return { data, ok: response.ok };
 
 }
 
-export async function login(email: string, password: string, csrfToken:string) {
+export async function login(email: string, password: string, csrfToken: string) {
 
   const response = await fetch(`${API_BASE_URL}/login`, {
     method: 'POST',
@@ -122,13 +139,11 @@ export async function login(email: string, password: string, csrfToken:string) {
 }
 
 export async function logout() {
-  
+
   const response = await fetch(`${API_BASE_URL}/logout`, {
     method: 'POST',
     credentials: 'include',  // Send cookies
-    headers: {
-      'Content-Type': 'application/json',
-    }
+    headers: { 'Content-Type': 'application/json' }
   });
 
   if (!response.ok) {
@@ -138,21 +153,26 @@ export async function logout() {
   }
 
   const data = await response.json();
-  console.log(data.message);
   return data;
 }
 
-export async function addFavourite(entity_id: number, entity_type: string): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/favourites`, {
+export async function addFavourite(content_id: number, content_type: "article" | "video"): Promise<Favourite> {
+  
+  const body = content_type === "article" ? { article_id: content_id } : { video_id: content_id }
+  
+  const response = await fetch(`${API_BASE_URL}/favorites/add/${content_type}`, {
     method: 'POST',
+    credentials: "include",
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ entity_id, entity_type })
+    body: JSON.stringify(body)
   });
+  
   if (!response.ok) {
     throw new Error(`Failed to add favourite: ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json()
+  return { ...data["favorite"], type: content_type };
 }
 
 export async function addQuestion(topic_id: number, csrfToken: string): Promise<newQuestion[]> {
@@ -182,7 +202,7 @@ export async function hideContent(content_id: number, content_type: string): Pro
   const response = await fetch(`${API_BASE_URL}/content/${content_type}/${content_id}/hide`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    credentials:"include",
+    credentials: "include",
     body: JSON.stringify({ content_id, content_type })
   });
   if (!response.ok) {
@@ -195,7 +215,7 @@ export async function hideContent(content_id: number, content_type: string): Pro
 
 /* DELETE METHODS */
 
-export async function deleteArticlebyId(id: number, csrfToken:string): Promise<void> {
+export async function deleteArticlebyId(id: number, csrfToken: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/articles/delete/${id}`, {
     method: 'DELETE',
     credentials: 'include', // Sends JWT cookie automatically
@@ -208,7 +228,7 @@ export async function deleteArticlebyId(id: number, csrfToken:string): Promise<v
   }
 }
 
-export async function deleteVideobyId(id: number, csrfToken:string): Promise<void> {
+export async function deleteVideobyId(id: number, csrfToken: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/videos/delete/${id}`, {
     method: 'DELETE',
     credentials: 'include', // Sends JWT cookie automatically
@@ -221,7 +241,7 @@ export async function deleteVideobyId(id: number, csrfToken:string): Promise<voi
   }
 }
 
-export async function deleteQuestionbyId(id: number, csrfToken:string): Promise<void> {
+export async function deleteQuestionbyId(id: number, csrfToken: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/questions/delete/${id}`, {
     method: 'DELETE',
     credentials: 'include', // Sends JWT cookie automatically
@@ -234,13 +254,12 @@ export async function deleteQuestionbyId(id: number, csrfToken:string): Promise<
   }
 }
 
-export async function deleteFavouritebyId(type: string, id: number, csrfToken:string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/favourites/${type}/${id}`, {
+export async function deleteFavouritebyId(fav_id: number,content_type: string): Promise<void> {
+
+  console.log("Delete fav",fav_id, content_type)
+  const response = await fetch(`${API_BASE_URL}/favorites/delete/${content_type}/${fav_id}`, {
     method: 'DELETE',
     credentials: 'include', // Sends JWT cookie automatically
-    headers: {
-      'X-CSRF-TOKEN': csrfToken, // Manually attach CSRF token
-    }
   });
   if (!response.ok) {
     throw new Error(`Failed to remove favourite: ${response.statusText}`);

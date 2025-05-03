@@ -49,8 +49,6 @@ function QuestionContainer({
         setArticles,
         videos,
         setVideos,
-        favourites,
-        setFavourites,
     } = useGlobalState();
 
     const [isExpanded, setIsExpanded] = useState(true);
@@ -216,9 +214,7 @@ function QuestionContainer({
                                 <div key={`article-${obj.id}`}>
                                     <NewsArticle
                                         article={obj as Article}
-                                        favourites={favourites}
                                         showFavorites={showFavorites}
-                                        setFavourites={setFavourites}
                                         showDelete={showDelete}
                                         showAdd={showAdd}
                                     />
@@ -233,8 +229,6 @@ function QuestionContainer({
                                 <div className="video-wrapper">
                                     <NewsVideo
                                         video={obj as Video}
-                                        favourites={favourites}
-                                        setFavourites={setFavourites}
                                         showFavorites={showFavorites}
                                         showDelete={showDelete}
                                         showAdd={showAdd}

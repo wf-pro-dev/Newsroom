@@ -25,10 +25,11 @@ interface newQuestion extends Question {
 type Video = {
   id: number;
   question_id: number;
-  video_id: string; // Changed from number to string
+  youtube_id: string; // Changed from number to string
   description: string;
   thumbnail: string;
   type : "video"
+
 };
 
 type Article = {
@@ -42,14 +43,13 @@ type Article = {
   urlToImage: string;
   api_source: string;
   score: number;
-  type : "article"
+  type : "article";
 };
 
-type Favourite = {
-  id?: number;
-  entity_id: number;
-  entity_type: 'article' | 'video';
-};
+
+type Favourite =
+  | (Article & { article_id: number })
+  | (Video & { video_id: number });
 
 
 

@@ -1,14 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import NewsCarousel from "./newsCarousel";
-import { Article, Question, Topic, Video } from "@/utils/types";
+import { Question } from "@/utils/types";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Heart, LogOut } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import "@/styles/newsmain.css";
 import { useGlobalState } from "@/components/context/GlobalStateContext";
-import { mixArray } from "@/lib/utils";
 import QuestionContainer from "./questionContainer";
 import { logout } from "@/utils/api";
 
@@ -34,33 +33,29 @@ function NewsMain({
   const {
     setUser,
     newsData,
-    setNewsData,
-    topics,
     questions,
-    articles,
-    videos,
   } = useGlobalState();
 
-  useEffect(() => {
-    const data: Record<string, Record<string, Array<Video | Article>>> = {};
+  // useEffect(() => {
+  //   const data: Record<string, Record<string, Array<Video | Article>>> = {};
 
-    topics.forEach((topic: Topic) => {
-      if (!data[topic.title]) {
-        data[topic.title] = {};
-      }
+  //   topics.forEach((topic: Topic) => {
+  //     if (!data[topic.title]) {
+  //       data[topic.title] = {};
+  //     }
 
-      questions
-        .filter((question: Question) => question.topic_id === topic.id)
-        .forEach((qst: Question) => {
-          data[topic.title][qst.text] = mixArray(
-            articles.filter((article) => article.question_id === qst.id),
-            videos.filter((video) => video.question_id === qst.id),
-            4
-          );
-        });
-    });
-    setNewsData(data);
-  }, [topics, questions, articles, videos]);
+  //     questions
+  //       .filter((question: Question) => question.topic_id === topic.id)
+  //       .forEach((qst: Question) => {
+  //         data[topic.title][qst.text] = mixArray(
+  //           articles.filter((article) => article.question_id === qst.id),
+  //           videos.filter((video) => video.question_id === qst.id),
+  //           4
+  //         );
+  //       });
+  //   });
+  //   setNewsData(data);
+  // }, [topics, questions, articles, videos]);
 
   useEffect(() => {
     const handleScroll = () => {

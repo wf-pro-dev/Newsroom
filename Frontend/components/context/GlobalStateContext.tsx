@@ -2,7 +2,7 @@
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { User, Article, Question, Favourite, Topic, Video } from '@/utils/types';
-import { fetchAllData, fetchCsrfToken, fetchUser } from '@/utils/api';
+import { fetchAllData, fetchArticles, fetchCsrfToken, fetchUser, fetchVideos } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {
@@ -42,26 +42,52 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
 
             const [AllData] = await Promise.all([
                 fetchAllData(),
-                fetchCsrfToken()
             ])
             
-
-            fetchUser().then((user) => setUser(user || null) )
-            fetchCsrfToken().then((token) => setCSRFtoken(token || null) )
-
+            fetchUser()
+                .then((user) => {
+                    setUser(user || null)
+                })
+                
             setTopics(AllData["topics"])
             setQuestions(AllData["questions"])
             setArticles(AllData["articles"])
             setVideos(AllData["videos"])
             setFavourites(AllData["favourites"])
+
+            fetchCsrfToken().then((token) => setCSRFtoken(token || null))
+
+            fetchUser().then((user) => { 
+                setUser(user);
+                setTopics(AllData["topics"])
+                setQuestions(AllData["questions"])
+            })
+
         }
 
         fetchInitialData()
 
     }, [])
 
+    useEffect(() => {
+        if (user) {
+            
+            fetchArticles()
+                .then((articles) => setArticles(articles))
+                .catch((error) => console.log(error))
+
+            fetchVideos()
+                .then((videos) => setVideos(videos))
+                .catch((error) => console.log(error))
+
+        }
+
+    }, [user])
+
 
     useEffect(() => {
+        if (!user || !articles || !videos ) return
+ 
         const data: Record<string, Record<string, Array<Video | Article>>> = {}
 
 

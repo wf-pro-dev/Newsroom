@@ -18,8 +18,8 @@ class articles(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
     content = db.Column(db.Text, nullable=True)
-    url = db.Column(db.String(500), nullable=True)
-    urlToImage = db.Column(db.String(500), nullable=True)
+    url = db.Column(db.Text, nullable=True)
+    urlToImage = db.Column(db.Text, nullable=True)
     publishedAt = db.Column(db.DateTime, nullable=True)
     
     # Relationship with hidden_articles table

@@ -63,8 +63,6 @@ def delete_question_by_id(id):
         if question:
             list_article = articles.query.filter_by(question_id=id).all()
             list_video = videos.query.filter_by(question_id=id).all()
-            print(list_article)
-            print(list_video)
        
             for article in list_article:
                 db.session.delete(article)
@@ -74,8 +72,6 @@ def delete_question_by_id(id):
             for video in list_video:
                 db.session.delete(video)
                 db.session.commit()
-            
-
            
             
             db.session.delete(question)

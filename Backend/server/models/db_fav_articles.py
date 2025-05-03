@@ -8,7 +8,6 @@ backend_root = project_root + "/Backend"
 path.append(backend_root)
 
 from database.connection import db
-from .db_article import articles
 
 class fav_articles(db.Model):
     __tablename__ = 'fav_articles'
@@ -23,16 +22,22 @@ class fav_articles(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
     content = db.Column(db.Text, nullable=True)
-    url = db.Column(db.String(500), nullable=True)
-    urlToImage = db.Column(db.String(500), nullable=True)
+    url = db.Column(db.Text, nullable=True)
+    urlToImage = db.Column(db.Text, nullable=True)
     publishedAt = db.Column(db.DateTime, nullable=True)
+   
+    # Reference to article (with ondelete="SET NULL" to keep favorite when article is deleted)
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id', ondelete="SET NULL"), nullable=True)
     
+    article = db.relationship("articles", foreign_keys=[article_id], backref=db.backref("fav_articles", lazy=True))
+
     # Favorite-specific fields
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False) 
     
     def to_dict(self):
         return {
             "id": self.id,
+            "article_id": self.article_id,
             "score": self.score,
             "question_id": self.question_id,
             "title": self.title,

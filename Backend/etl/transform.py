@@ -152,7 +152,7 @@ def generate_videos(videos_api: List[dict]) -> List[videos]:
         if video["id"] and "videoId" in video["id"] and video["snippet"]["description"]:
             video_objects.append(
                 videos(
-                    video_id=video["id"]["videoId"],
+                    youtube_id=video["id"]["videoId"],
                     description=video["snippet"]["description"],
                     thumbnail=video["snippet"]["thumbnails"]["high"]["url"],
                 )

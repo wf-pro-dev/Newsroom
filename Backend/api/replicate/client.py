@@ -28,15 +28,10 @@ def generate_image_replicate(prompt: str,topic_id: int,index: int) -> str:
 
         input = {
             "prompt": prompt,
-            "guidance": 3.5,
-            "negative_prompt": "cartoon, painting, blurry, low contrast, vintage, grainy",
-            "width": 1024,
-            "height": 576,  # 16:9 aspect ratio
+            "aspect_ratio": "16:9",
+            "output_format": "webp",
+            "output_quality": 100,
             "num_inference_steps": 4,  # More steps = better quality
-            "guidance_scale": 9.0,  # Strict prompt adherence
-            "scheduler": "K_DPMPP_2M",  # Best for technical details
-            "high_noise_frac": 0.8,  # Better for dark gradients
-            "apply_watermark": False,
             "disable_safety_checker": True  # For corporate use
         }
 

@@ -62,54 +62,70 @@ def fetch_gen_ai(prompt: str) -> list:
 
 def fetch_prompt_image_gen_ai(topic: str) -> list:
     """
-    This function sends a prompt to the GenAI API and returns the ONLY key's value from the JSON response.
-
-    Parameters:
-    prompt (str): The prompt to be sent to the GenAI API for generating a response.
-
-    Returns:
-    list: The value of the ONLY key from the JSON response.
+    Generates space-themed professional image prompts aligned with news website aesthetics.
+    Returns 3 prompt strings optimized against abstraction and educational style.
     """
     
     prompt = f"""
-            TASK: Generate 3 high-quality image generation prompts suitable for use in a professional news website, based on the topic: {topic}.
+    Create 3 image prompts for '{topic}' news articles with these requirements:
 
-            REQUIREMENTS for Each Prompt:
-                • Style: Semi-realistic
-                • Color Palette: Dark blue tones (navy, indigo, deep azure)
-                • Design Approach: Minimalistic, clean, modern aesthetic
-                • Composition: Balanced and uncluttered
-                • Mood: Professional, contemporary, sleek
-                • Technical Quality: High-resolution, crisp details
-                • Lighting: Soft, subdued, with natural depth
-                • Texture: Smooth gradients with subtle depth
-                • Negative Prompt: Avoid any text, logos, or written elements in the image.
+1. **Core Elements**:
+   - Identify 3 literal, symbolic objects from the topic (prioritize recognizable real-world items)
+   - Render as ultra-detailed 3D models with one of: 
+     * Holographic edges
+     * Metallic nano-textures
+     * Glass-diffraction surfaces
+   - Forbidden: Abstract shapes, cartoon elements, vague symbolism
 
-            OUTPUT FORMAT:
-            Return ONLY a valid Python list of 3 strings. Each string must describe a unique, detailed scene. 
-            Do not include any introductory sentence, markdown formatting, or code block. 
-            The output should begin with `[` and end with `]`.
+2. **Cyber-Cosmic Palette**:
+   - Base (70%): Void_black (#000000), Obsidian (#0A0B21), Starship_gray (#232538)
+   - Accent (25%): Pulsing gradients of Quantum_blue (#00F7FF) to Void_teal (#003A40)
+   - Glow (5%): Neon_cyan (#00FFE5) rim lighting
 
-            EXAMPLE OUTPUT:
-            [
-                "A semi-realistic aerial view of...",
-                "A semi-realistic depiction of...",
-                "A semi-realistic underwater scene..."
-            ]
-            """
-    
+3. **Technical Composition**:
+   - Aspect Ratio: 16:9 (website header optimized)
+   - Depth: Shallow depth of field (f/2.8 equivalent)
+   - Lighting: Three-point system with volumetric nebula accents
+   - Lens Style: Wide-angle (24mm) with subtle anamorphic flare
+   - Focus Stacking: Sharp foreground elements, soft bokeh data patterns
+
+4. **Scene Requirements**:
+   - Primary Object: Centered, occupying 40% frame height
+   - Secondary Elements: Floating holographic UI elements related to topic
+   - Background: Hexagonal grid pattern with low-opacity circuit board textures
+   - Ground: Reflective black marble surface with accent color glitches
+
+    **Output Format**:
+    [
+        "Ultra-detailed [object1] with [holographic/metallic/glass] finish, integrated with [topic-related element]. [Foreground action] under [specific lighting type]. Background: [technical pattern] with [lens effect] -- Aspect Ratio: 16:9, Focus: f/2.8, Lighting: Tri-point neonsphere, Lens: 24mm anamorphic",
+        ...
+    ]
+
+    **Example for "AI Ethics"**:
+    ````python
+    [
+        "Crystalline brain neural network with quantum_blue data streams, ethical guardrails forming hexagonal forcefield. Cyber-rain falling in midground under nebula backlighting -- Aspect Ratio: 16:9, Focus: Sharp neurons with bokeh droplets, Lighting: Bio-luminescent UI glow, Lens: Cinematic wide-angle",
+        "Futuristic courtroom scene with floating holographic gavel judging circuit board defendant. Neon-red tension sparks vs quantum_blue justice beams -- Aspect Ratio: 16:9, Focus: Depth-stacked courtroom, Lighting: Dramatic noir-cyberpunk, Lens: Forensic detail macro",
+        "Titanium scale balancing data cubes vs human heart monitor. Background: Binary rain falling on obsidian columns -- Aspect Ratio: 16:9, Focus: Foreground balance, Lighting: Clinical UV highlights, Lens: Surveillance cam aesthetic"
+    ]
+    ```
+    """
     
     response = client.models.generate_content(
         model="gemini-2.0-flash-lite",
         contents=prompt
     )
-    
-    cleaned = response.text.strip().removeprefix("```python").removesuffix("```").strip()
 
-    # Convert to Python list
-    prompts = ast.literal_eval(cleaned) 
-    return prompts
-  
+
+    # Clean and parse response
+    cleaned = response.text.strip() \
+        .removeprefix("```python") \
+        .removesuffix("```") \
+        .strip()
+
+
+    return ast.literal_eval(cleaned)
+
 
 def fetch_image_gen_ai(prompt: str,topic_id: int,index: int) -> str:
     """
@@ -133,11 +149,11 @@ def fetch_image_gen_ai(prompt: str,topic_id: int,index: int) -> str:
       )
       for part in response.candidates[0].content.parts:
         if part.text is not None:
-          print(part.text)
+         # print(part.text)
+         pass
         elif part.inline_data is not None:
-          image_data = BytesIO(part.inline_data.data)
-              # Upload to S3 and get UR
-          image_url = upload_to_s3(image_data, topic_id, index)
+          image_data = BytesIO(part.inline_data.data)            
+          image_url = upload_to_s3(image_data, topic_id, index, prompt)  # Upload to S3 and get UR
       
     except Exception as e:
       print("Error fetching images :",e)
@@ -149,6 +165,6 @@ def fetch_image_gen_ai(prompt: str,topic_id: int,index: int) -> str:
 
 if __name__ == "__main__" :
     
-    list_prompts = fetch_prompt_image_gen_ai("Climate Change")
+    list_prompts = fetch_prompt_image_gen_ai("Education")
     for i ,prompt in enumerate(list_prompts):
-        fetch_image_gen_ai(prompt=prompt, topic_id=1, index=i)
+        fetch_image_gen_ai(prompt=prompt, topic_id=6, index=i)

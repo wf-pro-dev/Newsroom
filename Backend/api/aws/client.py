@@ -10,11 +10,9 @@ project_root = os.path.abspath(os.path.join(current_dir, "../../../"))
 backend_root = project_root + "/Backend"
 path.append(backend_root)
 
-# from config.constants import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN
+from config.constants import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
-
-
-def upload_to_s3(image_data, topic_id, index):
+def upload_to_s3(image_data, topic_id, index, prompt):
     """Upload image to AWS S3 and return public URL"""
     
     
@@ -24,7 +22,12 @@ def upload_to_s3(image_data, topic_id, index):
     )
     
     
-    s3_client = boto3.client('s3',config=s3_config)
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        config=s3_config
+     )
 
     
     bucket_name = 'newsroom.bucket'
@@ -37,7 +40,7 @@ def upload_to_s3(image_data, topic_id, index):
             image_data, 
             bucket_name, 
             object_name, 
-            ExtraArgs={'ContentType': 'image/webp'}
+            ExtraArgs={'ContentType': 'image/webp','Metadata': {'prompt':prompt} }
         )
         
          # Generate a presigned URL that expires in 7 days

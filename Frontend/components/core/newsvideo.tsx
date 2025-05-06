@@ -10,8 +10,6 @@ import { useGlobalState } from "../context/GlobalStateContext";
 
 type NewsVideoProps = {
     video: Video;
-    favourites: Favourite[];
-    setFavourites: React.Dispatch<React.SetStateAction<Favourite[]>>,
     showFavorites: boolean
     showAdd: React.Dispatch<React.SetStateAction<boolean>>,
     showDelete: React.Dispatch<React.SetStateAction<boolean>>,
@@ -22,7 +20,7 @@ type YouTubePlayerRef = {
     cueVideoById: (params: {videoId: string, suggestedQuality: string}) => void;
 };
 
-function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, showDelete }: NewsVideoProps) {
+function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef<YouTubePlayerRef | null>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -32,8 +30,12 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
     const [isMounted, setIsMounted] = useState(false);
     const bufferingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const {csrftoken, videos, setVideos} = useGlobalState()
+    const { videos, setVideos, favourites, setFavourites } = useGlobalState()
 
+    const favorite = favourites.find((fav) => fav.type == "video" && fav.video_id == video.id ) ||
+        favourites.find((fav: Favourite) => fav == video )
+
+    console.log("favorite",favorite)
     // Set mounted state
     useEffect(() => {
         setIsMounted(true);
@@ -141,7 +143,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
         }
 
         event.target.cueVideoById({
-            videoId: video.video_id,
+            videoId: video.youtube_id,
             suggestedQuality: 'medium'
         });
     }
@@ -198,30 +200,29 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
     // Rest of your handlers
     async function handleFavorite() {
         try {
-            const favourite = favourites.find((fav: Favourite) => fav.entity_id == video.id && fav.entity_type == "video")
-            if (favourite) {
+
+            if (favorite) {
+
                 if (showFavorites) setIsDeleting(true);
 
                 // Optimistically update UI
                 setTimeout(() => {
-                    setFavourites(favourites.filter((fav: Favourite) => fav.entity_id !== video.id || fav.entity_type !== "video"));
+                    setFavourites(favourites.filter((fav: Favourite) => fav.id != favorite.id));
                 }, 300)
 
                 showDelete(true);
-                
-                await deleteFavouritebyId(favourite.entity_type, favourite.entity_id, csrftoken!);
+                await deleteFavouritebyId(favorite.id, favorite.type);
+
             } else {
-                // Optimistically update UI
-                setFavourites([...favourites, { entity_id: video.id, entity_type: "video" }]);
+
                 showAdd(true);
 
-                await addFavourite(video.id, "video");
+                const newFavourite = await addFavourite(video.id, video.type);
+                // Optimistically update UI
+                setFavourites([...favourites, newFavourite]);
             }
         } catch (error) {
             console.error("Error handling favorite:", error);
-            // Revert optimistic updates if necessary
-
-            // Optionally, set an error state to inform the user
         }
     }
 
@@ -249,12 +250,11 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
     }
 
     if (!isMounted) return null;
-
     return (
         <div ref={containerRef} className={`${isDeleting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} w-full h-full rounded-md overflow-hidden relative transition-all duration-300 ease-in-out`}>
             {dimensions.width > 0 && dimensions.height > 0 && (
                 <YouTube
-                    videoId={video.video_id}
+                    videoId={video.youtube_id}
                     opts={opts}
                     onReady={onReady}
                     onStateChange={onStateChange}
@@ -272,7 +272,7 @@ function NewsVideo({ video, favourites, setFavourites, showFavorites, showAdd, s
                         className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
                         onClick={handleFavorite}>
                         <div className='p-2 flex justify-center items-center'>
-                            {favourites.length > 0 && favourites.find((fav: Favourite) => fav.entity_id == video.id && fav.entity_type == "video") ?
+                            {favourites.length > 0 && favorite ?
                                 <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} />
                                 :
                                 <Heart style={{ width: 18, height: 18 }} strokeWidth={2} />

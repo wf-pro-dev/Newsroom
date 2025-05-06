@@ -2,7 +2,7 @@
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { User, Article, Question, Favourite, Topic, Video } from '@/utils/types';
-import { fetchAllData, fetchArticles, fetchCsrfToken, fetchUser, fetchVideos } from '@/utils/api';
+import { fetchAllData, fetchArticles, fetchCsrfToken, fetchFavorites, fetchUser, fetchVideos } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {
@@ -53,7 +53,6 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
             setQuestions(AllData["questions"])
             setArticles(AllData["articles"])
             setVideos(AllData["videos"])
-            setFavourites(AllData["favourites"])
 
             fetchCsrfToken().then((token) => setCSRFtoken(token || null))
 
@@ -80,6 +79,9 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
                 .then((videos) => setVideos(videos))
                 .catch((error) => console.log(error))
 
+            fetchFavorites()
+                .then((favourites)=> setFavourites(favourites))
+                .catch((error) => console.log(error) )
         }
 
     }, [user])

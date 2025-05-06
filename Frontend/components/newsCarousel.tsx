@@ -89,12 +89,12 @@ function NewsCarousel({ topic_title, questions }: {
 
             <div className="h-[1px] justify-self-center min-w-[20em] bg-gray-700 mt-6 mb-12" />
 
-            <div className="flex overflow-hidden">
+            <div className="flex ">
                 <div className="flex-1 grid grid-cols-3 gap-2">
                     {[1, 2, 3].map((_, index) => {
                         const topic : Topic | undefined = topics.find((tpc) => tpc.title === topic_title);
                         return (
-                            <div key={index} className="col-span-1 overflow-hidden rounded-md overflow-hidden">
+                            <div key={index} className="col-span-1 rounded-md">
                                 <Carousel
                                     opts={{
                                         loop: true,
@@ -108,21 +108,20 @@ function NewsCarousel({ topic_title, questions }: {
                                         }),
                                     ]}
                                 >
-                                    <div className="flex-column overflow-hidden h-full">
-                                        <CarouselContent className="m-0 max-w-fit h-full">
+                                    <div className="flex-column">
+                                        <CarouselContent className="m-0">
                                             {topic!.images.map((url, idx) => { 
                                                 return (
-                                                <CarouselItem key={idx} className="flex-none 2xl:h-[315px] xl:h-[275px] aspect-video pl-0 overflow-hidden">
-                                                    <div className="flex-none w-full h-full aspect-video">
+                                                <CarouselItem key={idx} className="pl-0 aspect-video border border-gray-700">
+                                                    <div className="w-full h-full">
                                                         <Image
                                                             src={url}
                                                             alt={`Illustration for topic_${topic!.id}_${idx}.webp`}
-                                                            width={300}
-                                                            height={315}
-                                                            style={{ height: "100%", width: "100%" }}
+                                                            width={100}
+                                                            height={100}
+                                                            style={{ width: "100%", height:"100%" }}
                                                             quality={100}
                                                             priority={true}
-                                                            className="object-cover"
                                                         />
                                                                                   
                                                     </div>

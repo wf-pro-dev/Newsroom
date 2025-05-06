@@ -35,7 +35,7 @@
 
 /* Footer */
 .footer {
-    @apply flex flex-col gap-3 fixed bottom-3 xl:right-5 2xl:right-12 !important;
+    @apply flex flex-col space-y-4 py-4 px-2 fixed bottom-4 border border-gray-400 rounded-2xl xl:right-6 2xl:right-12 !important;
 }
 
 /* Button */
@@ -52,7 +52,7 @@
 }
 
 .button-content {
-    @apply p-4 flex justify-center items-center;
+    @apply p-2 flex justify-center items-center;
 }
 
 /* Refresh Button */

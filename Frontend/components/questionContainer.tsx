@@ -1,5 +1,5 @@
 /* REACT */
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 
 /* COMPONENTS */
 import { Button } from "./ui/button";
@@ -50,36 +50,7 @@ function QuestionContainer({
         videos,
         setVideos,
     } = useGlobalState();
-
-    const [isExpanded, setIsExpanded] = useState(true);
-    const [contentHeight, setContentHeight] = useState(0);
-    const contentRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        // Measure the scrollHeight of the content to get its full height
-        if (contentRef.current) {
-            setContentHeight(contentRef.current.scrollHeight);
-        }
-
-        // Update the height measurement if content changes
-        const resizeObserver = new ResizeObserver(entries => {
-            for (const entry of entries) {
-                if (entry.target === contentRef.current) {
-                    setContentHeight(entry.target.scrollHeight);
-                }
-            }
-        });
-
-        if (contentRef.current) {
-            resizeObserver.observe(contentRef.current);
-        }
-
-        return () => {
-            if (contentRef.current) {
-                resizeObserver.unobserve(contentRef.current);
-            }
-        };
-    }, []);
+   
 
     function KeywordHighlighter({ text, keywords }: { text: string; keywords: string }) {
         const highlightKeyword = (word: string) => {
@@ -120,7 +91,6 @@ function QuestionContainer({
         const index = questions.findIndex((question) => question == qst)
 
         deleteQuestionbyId(qst.id, csrftoken!)
-            .then(() => setIsExpanded(false))
 
 
         addQuestion(qst.topic_id, csrftoken!)
@@ -153,23 +123,12 @@ function QuestionContainer({
                         .toSpliced(index, 0, qstData)
                 )
 
-
-                setIsExpanded(true)
-
             })
 
     }
 
     return (
-        <div key={`${index}-${qIndex}`}
-            ref={contentRef}
-            style={{
-                height: isExpanded ? `${contentHeight}px` : '1px',
-                opacity: isExpanded ? 1 : 0,
-                transition: 'height 0.6s ease-in-out, opacity 0.6s ease-in-out',
-                overflow: 'hidden'
-            }}
-        >
+        <div key={`${index}-${qIndex}`}>
             <div className="question-header">
                 {/* <h1 className="question-title">{questionText}</h1> */}
 

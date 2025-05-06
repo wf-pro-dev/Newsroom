@@ -35,7 +35,6 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
     const favorite = favourites.find((fav) => fav.type == "video" && fav.video_id == video.id ) ||
         favourites.find((fav: Favourite) => fav == video )
 
-    console.log("favorite",favorite)
     // Set mounted state
     useEffect(() => {
         setIsMounted(true);

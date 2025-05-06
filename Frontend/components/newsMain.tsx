@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import NewsCarousel from "./newsCarousel";
 import { Question } from "@/utils/types";
-import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Heart, LogOut } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
@@ -33,29 +33,9 @@ function NewsMain({
   const {
     setUser,
     newsData,
-    questions,
+    questions
   } = useGlobalState();
 
-  // useEffect(() => {
-  //   const data: Record<string, Record<string, Array<Video | Article>>> = {};
-
-  //   topics.forEach((topic: Topic) => {
-  //     if (!data[topic.title]) {
-  //       data[topic.title] = {};
-  //     }
-
-  //     questions
-  //       .filter((question: Question) => question.topic_id === topic.id)
-  //       .forEach((qst: Question) => {
-  //         data[topic.title][qst.text] = mixArray(
-  //           articles.filter((article) => article.question_id === qst.id),
-  //           videos.filter((video) => video.question_id === qst.id),
-  //           4
-  //         );
-  //       });
-  //   });
-  //   setNewsData(data);
-  // }, [topics, questions, articles, videos]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,7 +56,7 @@ function NewsMain({
 
     setTimeout(() => {
       setActiveTab(value);
-      window.scrollTo({ top: window.innerHeight, behavior:"instant" });
+      window.scrollTo({ top: window.innerHeight, behavior: "instant" });
       setTimeout(() => {
         setIsChanging(false);
       }, 200);
@@ -90,9 +70,9 @@ function NewsMain({
   }
 
   const onLogOut = async () => {
-    window.scrollTo({ top: 0, behavior:"smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(async () => {
-      await logout().then(()=>{setUser(null)})
+      await logout().then(() => { setUser(null) })
     }, 400);
   }
 
@@ -163,29 +143,38 @@ function NewsMain({
 
                   <Separator className="separator" />
 
-                  {Object.keys(newsData[activeTab]).map(
-                    (questionText: string, qIndex) => {
-                      const questionKeywords = questions.find(
-                        (qst: Question) => qst.text === questionText
-                      )?.keywords;
-                      return (
-                        <QuestionContainer
-                          key={`question_${qIndex}`}
-                          activeTab={activeTab}
-                          index={index}
-                          qIndex={qIndex}
-                          questionText={questionText}
-                          questionKeywords={questionKeywords ? questionKeywords : ""}
-                          showFavorites={showFavorites}
-                          showDelete={showDelete}
-                          showAdd={showAdd}
-                        />
-                      );
-                    }
-                  )}
+                  <div
+                    key={activeTab}
+                  >
+
+                    {Object.keys(newsData[activeTab]).map(
+                      (questionText: string, qIndex) => {
+                        const questionKeywords = questions.find(
+                          (qst: Question) => qst.text === questionText
+                        )?.keywords;
+                        return (
+                          <QuestionContainer
+                            key={`question_${qIndex}`}
+                            activeTab={activeTab}
+                            index={index}
+                            qIndex={qIndex}
+                            questionText={questionText}
+                            questionKeywords={questionKeywords ? questionKeywords : ""}
+                            showFavorites={showFavorites}
+                            showDelete={showDelete}
+                            showAdd={showAdd}
+                          />
+
+                        );
+                      }
+
+                    )}
+                  </div>
+
                 </TabsContent>
               </div>
             )
+
         )}
 
       {showFavorites && (
@@ -199,7 +188,6 @@ function NewsMain({
       <div className={`footer  ${showHeader ? "translate-y-0" : "translate-y-full"
         }`} >
 
-
         <div
           className={`button-container`}
         >
@@ -210,10 +198,11 @@ function NewsMain({
             onClick={() => setShowFavorites(!showFavorites)}
           >
             <div className="button-content">
-              <Heart strokeWidth={2} style={{ width: 28, height: 28 }} />
+              <Heart strokeWidth={1.5} style={{ width: 20, height: 20 }} />
             </div>
           </Button>
         </div>
+        
         <div
           className={`button-container`}
         >
@@ -224,10 +213,11 @@ function NewsMain({
             onClick={onLogOut}
           >
             <div className="button-content">
-              <LogOut strokeWidth={2} style={{ width: 28, height: 28 }} />
+              <LogOut strokeWidth={1.5} style={{ width: 20, height: 20 }} />
             </div>
           </Button>
         </div>
+
       </div>
     </Tabs>
   );

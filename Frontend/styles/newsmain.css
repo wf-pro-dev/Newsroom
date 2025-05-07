@@ -2,13 +2,32 @@
 
 /* Tabs Container */
 .tabs-container {
-    @apply w-screen overflow-hidden !important;
+    @apply w-screen overflow-hidden m-0 p-0 !important;
 }
 
 /* Tabs List */
 .tabs-list {
-    @apply fixed h-fit bg-transparent py-6 xl:px-24 2xl:px-40 top-0 left-0 right-0 grid grid-cols-2 grid-cols-5  z-50 transition-all duration-300 ease-in-out !important;
+    @apply 
+    h-fit 
+
+    bg-transparent
+
+    py-6 
+    fixed
+
+    xl:px-24 2xl:px-40 top-0 left-0 right-0 
+    grid grid-cols-5  z-50
+
+    transition-all duration-300 ease-in-out 
+    !important;
 }
+
+.tabs-list:hover {
+    @apply
+    bg-gray-700/50
+    backdrop-blur-sm
+}
+
 
 .tabs-list.visible {
     @apply opacity-100 ;
@@ -35,7 +54,29 @@
 
 /* Footer */
 .footer {
-    @apply flex flex-col space-y-4 py-4 px-2 fixed bottom-4 border border-gray-400 rounded-2xl xl:right-6 2xl:right-12 !important;
+    @apply 
+    flex 
+    flex-row 
+   
+    space-x-8
+    py-2.5 px-5
+
+    fixed 
+    right-1/2
+
+    translate-x-1/2
+
+    bg-gray-700/50 backdrop-blur-sm
+    
+    rounded-2xl 
+    
+    transition-all duration-300 ease-in-out
+    !important;
+}
+
+.footer:hover {
+    @apply
+    bottom-4
 }
 
 /* Button */
@@ -44,7 +85,7 @@
 }
 
 .button {
-    @apply p-0 w-fit h-fit rounded-full text-gray-300 transition-all duration-300 ease-in-out !important;
+    @apply p-0.5 w-fit h-fit rounded-xl bg-transparent text-gray-300 transition-all duration-300 ease-in-out !important;
 }
 
 .button:hover {

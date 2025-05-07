@@ -10,6 +10,8 @@ interface GlobalState {
     setCSRFtoken: React.Dispatch<React.SetStateAction<string | null>>;
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    isLoadingUser: boolean;
+    setIsLoadingUser: React.Dispatch<React.SetStateAction<boolean>>;
     topics: Topic[];
     setTopics: React.Dispatch<React.SetStateAction<Topic[]>>;
     questions: Question[];
@@ -36,18 +38,20 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     const [videos, setVideos] = useState<Video[]>([]);
     const [favourites, setFavourites] = useState<Favourite[]>([]);
     const [newsData, setNewsData] = useState<Record<string, Record<string, Array<Video | Article>>>>({});
+    const [ isLoadingUser, setIsLoadingUser] = useState(true);
 
     useEffect(() => {
         const fetchInitialData = async () => {
-
+            
+            
             const [AllData] = await Promise.all([
                 fetchAllData(),
             ])
             
+            setIsLoadingUser(true); 
             fetchUser()
-                .then((user) => {
-                    setUser(user || null)
-                })
+                .then((user) => setUser(user || null))
+                .finally(()=> { console.log("user Loaded") ; setIsLoadingUser(false)})
                 
             setTopics(AllData["topics"])
             setQuestions(AllData["questions"])
@@ -110,8 +114,22 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
         setNewsData(data)
     }, [articles, videos, questions, topics])
 
+    if (isLoadingUser) return null;
+
     return (
-        <GlobalStateContext.Provider value={{ csrftoken, setCSRFtoken, user, setUser, topics, setTopics, questions, setQuestions, articles, setArticles, videos, setVideos, favourites, setFavourites, newsData, setNewsData }}>
+        <GlobalStateContext.Provider 
+            value={{ 
+                csrftoken, setCSRFtoken,
+                user, setUser,
+                isLoadingUser ,setIsLoadingUser,
+                topics, setTopics,
+                questions, setQuestions,
+                articles, setArticles,
+                videos, setVideos,
+                favourites, setFavourites,
+                newsData, setNewsData 
+            }}
+        >
             {children}
         </GlobalStateContext.Provider>
     );

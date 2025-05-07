@@ -18,7 +18,7 @@ import '@/styles/heroglobe.css'
 
 export default function Auth() {
 
-  const { csrftoken, user,setUser } = useGlobalState()
+  const { csrftoken, user, setUser, isLoadingUser } = useGlobalState()
 
   const [isVisible, setVisible] = useState(false)
   const [isLogin, setisLogin] = useState(true)
@@ -67,12 +67,15 @@ export default function Auth() {
     setIsValidEmailState(emailRegex.test(email));
   }, [email]);
 
-  useEffect(()=>{
-    setTimeout(() => {
-      setVisible(!user)
-    },600)
-    
-  },[user])
+
+
+  useEffect(() => {
+    console.log("isLoadingUser :",isLoadingUser)
+    // Only update visibility after initial auth check
+    if (!isLoadingUser || user ) {
+      setVisible(!user);
+    }
+  }, [user, isLoadingUser]);
 
 
   const onRegister = async () => {
@@ -116,6 +119,8 @@ export default function Auth() {
     )
   }
 
+  if (isLoadingUser) return null;
+
   return (
     <div className='header-container pointer-events-auto z-50'
       style={{
@@ -124,7 +129,7 @@ export default function Auth() {
         transition: 'scale 0.4s ease-in-out, opacity 0.4s ease-in-out',
       }}
     >
-      <div  className={`header`}>
+      <div className={`header`}>
         <div>
           <h1 className="header-title"
           >
@@ -140,7 +145,7 @@ export default function Auth() {
           <div
             className="grid w-full max-w-sm items-center gap-1.5"
             style={{
-              zIndex:0,
+              zIndex: 0,
               height: isLogin ? `0px` : '100%',
               opacity: isLogin ? 0 : 1,
               transition: 'height 0.6s ease-in-out, opacity 0.6s ease-in-out',

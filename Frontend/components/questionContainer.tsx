@@ -53,8 +53,10 @@ function QuestionContainer({
    
 
     function KeywordHighlighter({ text, keywords }: { text: string; keywords: string }) {
+
         const highlightKeyword = (word: string) => {
-            return keywords.split(" ").includes(word.toLowerCase())
+            word = word.replace(/[^a-zA-Z0-9]/g, '')
+            return keywords.includes(word)
                 ? 'bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text'
                 : '';
         };

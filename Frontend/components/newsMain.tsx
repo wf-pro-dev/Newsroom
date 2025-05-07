@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import NewsCarousel from "./newsCarousel";
 import { Question } from "@/utils/types";
 import { Button } from "./ui/button";
-import { Heart, LogOut } from "lucide-react";
+import { Heart, LogOut, User } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import "@/styles/newsmain.css";
 import { useGlobalState } from "@/components/context/GlobalStateContext";
@@ -185,37 +185,60 @@ function NewsMain({
         />
       )}
 
-      <div className={`footer  ${showHeader ? "translate-y-0" : "translate-y-full"
+      <div className={`footer  ${showHeader ? "translate-y-0 -bottom-7" : "translate-y-full bottom-0"
         }`} >
 
-        <div
-          className={`button-container`}
-        >
-          <Button
-            variant="secondary"
-            className={`button ${showFavorites ? "bg-gray-700/80" : "bg-black/70"
-              }`}
-            onClick={() => setShowFavorites(!showFavorites)}
+        <div className="flex flex-col items-center space-y-2" >
+          <div
+            className={`button-container`}
           >
-            <div className="button-content">
-              <Heart strokeWidth={1.5} style={{ width: 20, height: 20 }} />
-            </div>
-          </Button>
+            <Button
+              variant="secondary"
+              className={`button`}
+              onClick={onLogOut}
+            >
+              <div className="button-content">
+                <User strokeWidth={2} style={{ width: 20, height: 20 }} />
+              </div>
+            </Button>
+          </div>
+          <p className="text-xs text-center font-medium">Profile</p>
         </div>
-        
-        <div
-          className={`button-container`}
-        >
-          <Button
-            variant="secondary"
-            className={`button ${showFavorites ? "bg-gray-700/80" : "bg-black/70"
-              }`}
-            onClick={onLogOut}
+
+        <div className="flex flex-col items-center space-y-1.5" >
+          <div
+            className={`button-container`}
           >
-            <div className="button-content">
-              <LogOut strokeWidth={1.5} style={{ width: 20, height: 20 }} />
-            </div>
-          </Button>
+            <Button
+              variant="secondary"
+              className={`button`}
+              onClick={() => setShowFavorites(!showFavorites)}
+            >
+              <div className="button-content">
+                <Heart strokeWidth={2} style={{ width: 20, height: 20 }} />
+              </div>
+            </Button>
+          </div>
+
+          <p className="text-xs text-center font-medium"> Likes</p>
+        </div>
+
+
+        <div className="flex flex-col items-center space-y-2" >
+          <div
+            className={`button-container`}
+          >
+            <Button
+              variant="secondary"
+              className={`button`}
+              onClick={onLogOut}
+            >
+              <div className="button-content">
+                <LogOut strokeWidth={2} style={{ width: 20, height: 20 }} />
+              </div>
+            </Button>
+          </div>
+          <p className="text-xs text-center font-medium"> Log Out</p>
         </div>
 
       </div>

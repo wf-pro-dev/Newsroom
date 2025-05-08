@@ -1,4 +1,5 @@
 from sys import path
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 
@@ -7,18 +8,15 @@ from server.models.db_question import questions
 from server.models.db_topic import topics
 from server.models.db_article import articles
 from server.models.db_video import videos
+from server.models.db_users import users
+from server.models.db_hidden_articles import hidden_articles
+from server.models.db_hidden_videos import hidden_videos
+from server.models.db_hidden_questions import hidden_questions
 from seeds.seed_questions import seed_questions
 from database.connection import db
 
 # Create Blueprint for questions routes
 questions_bp = Blueprint("questions", __name__)
-
-
-@questions_bp.route("/questions", methods=["GET"])
-def get_questions():
-    list_question = questions.query.all()
-    return jsonify([question.to_dict() for question in list_question])
-
 
 @questions_bp.route("/questions/<int:id>", methods=["GET"])
 def get_question(id):
@@ -29,30 +27,6 @@ def get_question(id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 404
-
-
-@questions_bp.route("/questions/<int:topic_id>", methods=["POST"])
-def add_question(topic_id):
-    try:
-
-        topic = topics.query.filter_by(id=topic_id).one()
-        list_question = topic.set_questions(n_qst=1)
-        seed_questions(questions=list_question, topic=topic)
-
-        response_data = []
-        for question in list_question:
-            question_dict = question.to_dict()
-            question_dict["articles"] = [
-                article.to_dict() for article in articles.query.filter_by(question_id=question.id).all()
-            ]
-            question_dict["videos"] = [
-                video.to_dict() for video in videos.query.filter_by(question_id=question.id).all()
-            ]
-            response_data.append(question_dict)
-
-        return jsonify(response_data), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
 
 
 @questions_bp.route("/questions/delete/<int:id>", methods=["DELETE"])

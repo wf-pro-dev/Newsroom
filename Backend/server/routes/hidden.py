@@ -14,8 +14,11 @@ path.append(backend_root)
 from database.connection import db
 from server.models.db_article import articles
 from server.models.db_video import videos
+from server.models.db_question import questions 
 from server.models.db_hidden_articles import hidden_articles
 from server.models.db_hidden_videos import hidden_videos
+from server.models.db_hidden_questions import hidden_questions
+from server.models.db_refresh import refresh
 
 # Create a blueprint for content visibility routes
 hidden_bp = Blueprint('hidden', __name__)
@@ -150,6 +153,43 @@ def unhide_content(content_type, content_id):
         current_app.logger.error(f"Error unhiding content: {str(e)}")
         return jsonify({'error': 'An error occurred'}), 500
 
+# ============= HIDE/UNHIDE QUESTION ============= #
+
+@hidden_bp.route('/question/<int:question_id>/hide', methods=['POST'])
+@jwt_required()
+def hide_question_content(question_id):
+    """
+    Unhide all articles and videos related to a specific question for the current user
+
+    URL Params:
+    - question_id: ID of the question whose content should be unhidden
+
+    Returns:
+    - JSON confirmation message with counts of unhidden items
+    """
+    try:
+        
+        # Get the current user's ID from the JWT token
+        current_user_id = get_jwt_identity()
+
+        new_hidden = hidden_questions(
+            question_id=question_id,
+            user_id=current_user_id
+        )
+        
+        db.session.add(new_hidden)
+        db.session.commit()
+        
+        return jsonify({'message': f'Question {question_id}  hidden successfully'}), 200
+        
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f"Database error: {str(e)}")
+        return jsonify({'error': 'Database error occurred'}), 500
+    except Exception as e:
+        current_app.logger.error(f"Error hiding question content: {str(e)}")
+        return jsonify({'error': 'An error occurred'}), 500
+
 # ============= GET VISIBLE CONTENT ============= #
 
 @hidden_bp.route('/articles', methods=['GET'])
@@ -244,5 +284,56 @@ def get_visible_videos():
         return jsonify({'error': 'Database error occurred'}), 500
     except Exception as e:
         current_app.logger.error(f"Error getting videos: {str(e)}")
+        return jsonify({'error': 'An error occurred'}), 500
+
+
+@hidden_bp.route('/questions', methods=['GET'])
+@jwt_required()
+def get_visible_questions():
+    """
+    Get all question that are not hidden for the current user
+    
+    Query params:
+    - question_id: Optional filter by question ID
+    
+    Returns:
+    - JSON list of visible articles
+    """
+    try:
+        # Get the current user's ID from the JWT token
+        current_user_id = get_jwt_identity()
+        
+        # Get optional question_id filter
+        question_id = request.args.get('question_id', type=int)
+        
+        # Base query
+        query = questions.query 
+        
+        # Exclude questions that are hidden for this user
+        hidden_question_ids = db.session.query(hidden_questions.question_id).filter(
+            hidden_questions.user_id == current_user_id
+        )
+        query = query.filter(not_(questions.id.in_(hidden_question_ids)))
+
+        # Exclude questions that come from other users refresh
+        refresh_questions_ids = db.session.query(refresh.question_id).filter(
+            refresh.user_id != current_user_id
+        )
+        
+        query = query.filter(not_(questions.id.in_(refresh_questions_ids)))
+
+        # Execute query and get all visible articles
+        visible_questions = query.all()
+        
+        # Convert to dictionary format
+        result = [question.to_dict() for question in visible_questions]
+        
+        return jsonify({'questions': result}), 200
+
+    except SQLAlchemyError as e:
+        current_app.logger.error(f"Database error: {str(e)}")
+        return jsonify({'error': 'Database error occurred'}), 500
+    except Exception as e:
+        current_app.logger.error(f"Error getting questions: {str(e)}")
         return jsonify({'error': 'An error occurred'}), 500
 

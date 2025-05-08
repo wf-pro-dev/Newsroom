@@ -33,7 +33,7 @@ function NewsMain({
   const {
     setUser,
     newsData,
-    questions
+    questions,
   } = useGlobalState();
 
 
@@ -76,12 +76,11 @@ function NewsMain({
     }, 400);
   }
 
-
   return (
     <Tabs
       value={activeTab}
       onValueChange={onValueChange}
-      className="tabs-container m-0 p-0"
+      className="tabs-container"
     >
       <TabsList className="tabs-list group">
         {Object.keys(newsData).map((category, index) => (

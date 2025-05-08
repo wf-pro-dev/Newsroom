@@ -9,7 +9,7 @@ import NewsVideo from "./core/newsvideo";
 import { Separator } from "@/components/ui/separator";
 
 /* FUNCTIONS */
-import { addQuestion, deleteQuestionbyId } from "@/utils/api";
+import { refreshQuestion } from "@/utils/api";
 import { useGlobalState } from "./context/GlobalStateContext";
 
 /* STYLES */
@@ -92,31 +92,28 @@ function QuestionContainer({
 
         const index = questions.findIndex((question) => question == qst)
 
-        deleteQuestionbyId(qst.id, csrftoken!)
-
-
-        addQuestion(qst.topic_id, csrftoken!)
+        refreshQuestion(qst.id, csrftoken!)
             .then((data) => {
 
-                const objData = data[0]
+               
                 const qstData: Question =
                 {
-                    id: objData.id,
-                    text: objData.text,
-                    topic_id: objData.topic_id,
-                    keywords: objData.keywords
+                    id: data.id,
+                    text: data.text,
+                    topic_id: data.topic_id,
+                    keywords: data.keywords
                 }
 
                 setArticles(
                     articles
                         .filter((article) => article.question_id != qst.id)
-                        .concat(objData.articles)
+                        .concat(data.articles)
                 )
 
                 setVideos(
                     videos
                         .filter((video) => video.question_id != qst.id)
-                        .concat(objData.videos)
+                        .concat(data.videos)
                 )
 
                 setQuestions(

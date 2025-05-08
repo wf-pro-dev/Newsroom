@@ -2,7 +2,7 @@
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { User, Article, Question, Favourite, Topic, Video } from '@/utils/types';
-import { fetchAllData, fetchArticles, fetchCsrfToken, fetchFavorites, fetchUser, fetchVideos } from '@/utils/api';
+import { fetchAllData, fetchArticles, fetchCsrfToken, fetchFavorites, fetchQuestions, fetchUser, fetchVideos } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {
@@ -48,23 +48,14 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
                 fetchAllData(),
             ])
             
-            setIsLoadingUser(true); 
+            setIsLoadingUser(true) 
             fetchUser()
                 .then((user) => setUser(user || null))
-                .finally(()=> { console.log("user Loaded") ; setIsLoadingUser(false)})
+                .finally(()=>  setIsLoadingUser(false))
                 
             setTopics(AllData["topics"])
-            setQuestions(AllData["questions"])
-            setArticles(AllData["articles"])
-            setVideos(AllData["videos"])
 
             fetchCsrfToken().then((token) => setCSRFtoken(token || null))
-
-            fetchUser().then((user) => { 
-                setUser(user);
-                setTopics(AllData["topics"])
-                setQuestions(AllData["questions"])
-            })
 
         }
 
@@ -74,6 +65,10 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         if (user) {
+
+            fetchQuestions()
+                .then((questions)=> setQuestions(questions))
+                .catch((error) => console.log(error) )
             
             fetchArticles()
                 .then((articles) => setArticles(articles))
@@ -86,13 +81,16 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
             fetchFavorites()
                 .then((favourites)=> setFavourites(favourites))
                 .catch((error) => console.log(error) )
+            
         }
 
     }, [user])
 
 
     useEffect(() => {
-        if (!user || !articles || !videos ) return
+        if (!user || !questions || !articles || !videos ) return
+
+       
  
         const data: Record<string, Record<string, Array<Video | Article>>> = {}
 
@@ -106,13 +104,13 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
             questions
                 .filter((question: Question) => question.topic_id == topic.id)
                 .forEach((qst: Question) => {
-                    // Now you can safely set the property
+                    
                     data[topic.title][qst.text] = mixArray(articles.filter((article) => article.question_id == qst.id), videos.filter((video) => video.question_id == qst.id), 4)
                 })
         })
 
         setNewsData(data)
-    }, [articles, videos, questions, topics])
+    }, [user, topics, questions, articles, videos ])
 
     if (isLoadingUser) return null;
 

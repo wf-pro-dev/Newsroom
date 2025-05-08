@@ -29,6 +29,7 @@ from server.routes.hidden import hidden_bp
 from server.routes.favourites import favourites_bp
 from server.routes.fav_articles import fav_articles_bp
 from server.routes.fav_videos import fav_videos_bp
+from server.routes.refresh import refresh_bp
 
 from server.routes.all_data import all_data_bp
 from config.constants import DATABASE_URI, JWT_SECRET_KEY, CSRF_SECRET_KEY
@@ -121,6 +122,7 @@ def create_app():
     app.register_blueprint(fav_videos_bp)
     app.register_blueprint(hidden_bp)
     app.register_blueprint(all_data_bp)
+    app.register_blueprint(refresh_bp)
 
     @app.before_request
     def before_request():

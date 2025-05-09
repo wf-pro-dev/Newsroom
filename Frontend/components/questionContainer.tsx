@@ -1,5 +1,5 @@
 /* REACT */
-import React from "react";
+import React, { useState } from "react";
 
 /* COMPONENTS */
 import { Button } from "./ui/button";
@@ -50,6 +50,8 @@ function QuestionContainer({
         videos,
         setVideos,
     } = useGlobalState();
+
+    const [isCollapsed, setIsCollapsed] = useState(false);
    
 
     function KeywordHighlighter({ text, keywords }: { text: string; keywords: string }) {
@@ -90,6 +92,8 @@ function QuestionContainer({
 
     function onQuestionChange(qst: Question) {
 
+        setIsCollapsed(true); 
+
         const index = questions.findIndex((question) => question == qst)
 
         refreshQuestion(qst.id, csrftoken!)
@@ -123,11 +127,18 @@ function QuestionContainer({
                 )
 
             })
+            .finally(() => {
+                setIsCollapsed(false);  // Expand after API completes
+            });
 
     }
 
     return (
-        <div key={`${index}-${qIndex}`}>
+        <div key={`${index}-${qIndex}`} className={`transition-all duration-700 ease-in-out ${
+            isCollapsed 
+                ? "max-h-0 opacity-0 overflow-hidden" 
+                : "max-h-[5000px] opacity-100"
+        }`}>
             <div className="question-header">
                 {/* <h1 className="question-title">{questionText}</h1> */}
 

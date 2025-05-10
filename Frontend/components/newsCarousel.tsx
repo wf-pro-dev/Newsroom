@@ -6,13 +6,15 @@ import { useGlobalState } from "./context/GlobalStateContext";
 import { Globe, Heart, Newspaper } from "lucide-react";
 import Image from "next/image";
 
+/* STYLES */
+import "../styles/newsmain.css";
+
 function NewsCarousel({ topic_title, questions }: {
     topic_title: string;
     questions: Question[];
 }) {
 
     const { topics } = useGlobalState();
-
 
     const IconSwitcher = ({ index }: { index: number }) => {
         const [currentIconIndex, setCurrentIconIndex] = useState(index);
@@ -49,10 +51,11 @@ function NewsCarousel({ topic_title, questions }: {
 
     function KeywordHighlighter({ text, keywords }: { text: string; keywords: string }) {
         const highlightKeyword = (word: string) => {
-            return keywords.split(" ").includes(word.toLowerCase())
-                ? 'bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text'
-                : '';
-        };
+            word = word.replace(/[^a-zA-Z0-9]/g, '');
+            return keywords.includes(word)
+              ? 'bg-gradient-to-l from-blue-300 to-blue-600 text-transparent bg-clip-text animated-gradient'
+              : '';
+          };
 
         return (
             <div className="w-full">
@@ -76,13 +79,14 @@ function NewsCarousel({ topic_title, questions }: {
             </div>
         );
     }
+
     return (
         <div>
-            <h1 className="text-2xl leading-normal text-center  font-medium
+            <h1 className="text-3xl leading-normal text-center  font-medium
             
             text-gray-300">
                 Today&apos;s Question about
-                <p className="text-5xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
+                <p className="text-5xl leading-normal text-center font-semibold bg-gradient-to-l from-blue-300 to-blue-600 text-transparent bg-clip-text animated-title-gradient">
                     {topic_title}
                 </p>
             </h1>
@@ -144,5 +148,8 @@ function NewsCarousel({ topic_title, questions }: {
 }
 
 export default React.memo(NewsCarousel, (prevProps, nextProps) => {
-    return prevProps.questions == nextProps.questions;
-});
+    return (
+      prevProps.topic_title === nextProps.topic_title &&
+      prevProps.questions === nextProps.questions
+    );
+})

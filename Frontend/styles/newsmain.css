@@ -2,7 +2,13 @@
 
 /* Tabs Container */
 .tabs-container {
-    @apply w-screen overflow-hidden m-0 p-0 !important;
+
+
+    @apply 
+    w-screen 
+    overflow-hidden 
+    m-0 p-0 
+    !important;
 }
 
 /* Tabs List */
@@ -59,14 +65,14 @@
     flex-row 
    
     space-x-8
-    py-2.5 px-5
+    p-4
 
     fixed 
     right-1/2
 
     translate-x-1/2
 
-    bg-gray-700/50 backdrop-blur-sm
+    bg-gray-700/80 backdrop-blur-sm
     
     rounded-2xl 
     
@@ -85,11 +91,22 @@
 }
 
 .button {
-    @apply p-0.5 w-fit h-fit rounded-xl bg-transparent text-gray-300 transition-all duration-300 ease-in-out !important;
+    @apply 
+    w-fit h-fit 
+
+    p-0.5 
+
+    bg-gray-500/50
+
+    text-gray-300
+
+    rounded-xl 
+    
+    transition-all duration-300 ease-in-out !important;
 }
 
 .button:hover {
-    @apply animate-bounce-subtle bg-gray-700/80 !important
+    @apply animate-bounce-subtle !important
 }
 
 .button-content {
@@ -106,7 +123,7 @@
 
 /* New meaningful classes */
 .tabs-content-container {
-    @apply  pt-12 pb-1 bg-black/60 backdrop-blur-sm backdrop-contrast-125 !important;
+    @apply  pt-12 pb-1 bg-black/50 backdrop-blur-sm backdrop-contrast-125 !important;
 }
 
 .tabs-content {
@@ -143,4 +160,28 @@
 
 .separator {
     @apply my-12 bg-gray-600/70 !important;
+}
+
+
+@keyframes gradientSlide {
+    from { background-position: 200% center; }
+
+    to { background-position: 0% center; }
+}
+
+.animated-gradient {
+  background-size: 200% auto;
+  animation: gradientSlide 3.5s linear infinite;
+}
+
+
+@keyframes gradientTitleSlide {
+    from { background-position: 200% center; }
+
+    to { background-position: 0% center; }
+}
+
+.animated-title-gradient {
+  background-size: 200% auto;
+  animation: gradientTitleSlide 8s linear infinite;
 }

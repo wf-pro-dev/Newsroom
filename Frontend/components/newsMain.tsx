@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import NewsCarousel from "./newsCarousel";
@@ -29,6 +29,8 @@ function NewsMain({
   const [isChanging, setIsChanging] = useState(false);
   const [showHeader, setShowHeader] = useState(false);
   const [atInnerHeight, setAtInnerHeight] = useState(false);
+  const showHeaderRef = useRef(false);
+  const atInnerHeightRef = useRef(false); 
 
   const {
     setUser,
@@ -37,18 +39,23 @@ function NewsMain({
   } = useGlobalState();
 
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowHeader(window.scrollY >= window.innerHeight);
-      setAtInnerHeight(window.scrollY === window.innerHeight);
-    };
+useEffect(() => {
+  const handleScroll = () => {
+    const showHeader = window.scrollY >= window.innerHeight;
+    const atInnerHeight = window.scrollY === window.innerHeight;
+    
+    // Only update state if values actually changed
+    if (showHeader !== showHeaderRef.current || atInnerHeight !== atInnerHeightRef.current) {
+      setShowHeader(showHeader);
+      setAtInnerHeight(atInnerHeight);
+      showHeaderRef.current = showHeader;
+      atInnerHeightRef.current = atInnerHeight;
+    }
+  };
 
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   function onValueChange(value: string) {
     if (showFavorites) setShowFavorites(false);
@@ -75,6 +82,14 @@ function NewsMain({
       await logout().then(() => { setUser(null) })
     }, 400);
   }
+
+  // Inside NewsMain component
+const topic_questions = useMemo(() => 
+  questions.filter((question: Question) =>
+    Object.keys(newsData[activeTab]).includes(question.text)
+  ), 
+  [questions, newsData, activeTab] // Recompute only when these change
+);
 
   return (
     <Tabs
@@ -113,6 +128,8 @@ function NewsMain({
       {!showFavorites &&
         Object.keys(newsData).map(
           (topic, index) =>
+          { 
+            return (
             topic === activeTab && (
               <div
                 key={index}
@@ -132,10 +149,7 @@ function NewsMain({
 
                       <NewsCarousel
                         topic_title={activeTab}
-                        questions={questions.filter((question: Question) =>
-                          Object.keys(newsData[activeTab]).includes(question.text)
-                        )
-                        }
+                        questions={topic_questions}
                       />
 
                     )}
@@ -173,6 +187,8 @@ function NewsMain({
                 </TabsContent>
               </div>
             )
+          )
+          }
 
         )}
 
@@ -184,7 +200,7 @@ function NewsMain({
         />
       )}
 
-      <div className={`footer  ${showHeader ? "translate-y-0 -bottom-7" : "translate-y-full bottom-0"
+      <div className={`footer  ${showHeader ? "translate-y-0 -bottom-8" : "translate-y-full bottom-0"
         }`} >
 
         <div className="flex flex-col items-center space-y-2" >
@@ -201,10 +217,10 @@ function NewsMain({
               </div>
             </Button>
           </div>
-          <p className="text-xs text-center font-medium">Profile</p>
+          <p className="text-xs text-center font-semibold ">Profile</p>
         </div>
 
-        <div className="flex flex-col items-center space-y-1.5" >
+        <div className="flex flex-col items-center space-y-2" >
           <div
             className={`button-container`}
           >
@@ -219,7 +235,7 @@ function NewsMain({
             </Button>
           </div>
 
-          <p className="text-xs text-center font-medium"> Likes</p>
+          <p className="text-xs text-center font-semibold"> Likes</p>
         </div>
 
 
@@ -237,7 +253,7 @@ function NewsMain({
               </div>
             </Button>
           </div>
-          <p className="text-xs text-center font-medium"> Log Out</p>
+          <p className="text-xs text-center font-semibold"> Log Out</p>
         </div>
 
       </div>

@@ -55,38 +55,37 @@ function QuestionContainer({
    
 
     function KeywordHighlighter({ text, keywords }: { text: string; keywords: string }) {
-
         const highlightKeyword = (word: string) => {
-            word = word.replace(/[^a-zA-Z0-9]/g, '')
-            return keywords.includes(word)
-                ? 'bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text'
-                : '';
+          word = word.replace(/[^a-zA-Z0-9]/g, '');
+          return keywords.includes(word)
+            ? 'bg-gradient-to-l from-blue-300 to-blue-600 text-transparent bg-clip-text animated-gradient'
+            : '';
         };
-
+      
         return (
-            <div className="justify-center ">
-                <div className="inline-block text-center whitespace-normal break-words">
-                    <p>
-                        {text.split(' ').map((word, index) => (
-                            <span
-                                key={index}
-                                className={`
-                                ${highlightKeyword(word)}
-                                question-title
-                                mr-1
-                                inline-block
-                                break-words 
-                                overflow-wrap-normal
-                            `}
-                            >
-                                {word}
-                            </span>
-                        ))}
-                    </p>
-                </div>
+          <div className="w-4/5">
+            <div className="inline-block text-center whitespace-normal break-words">
+              <p>
+                {text.split(' ').map((word, index) => (
+                  <span
+                    key={index}
+                    className={`
+                      ${highlightKeyword(word)}
+                      question-title
+                      mr-1
+                      inline-block
+                      break-words 
+                      overflow-wrap-normal
+                    `}
+                  >
+                    {word}
+                  </span>
+                ))}
+              </p>
             </div>
+          </div>
         );
-    }
+      }
 
 
 
@@ -142,7 +141,7 @@ function QuestionContainer({
             <div className="question-header">
                 {/* <h1 className="question-title">{questionText}</h1> */}
 
-                <div className="w-fit">
+                <div className="flex flex-col w-full items-center">
                     <KeywordHighlighter text={questionText} keywords={questionKeywords} />
                 </div>
 
@@ -155,7 +154,7 @@ function QuestionContainer({
                                     className={`button`}
                                     onClick={() => onQuestionChange(questions.find((qst: Question) => qst.text === questionText)!)}
                                 >
-                                    <div className="button-content p-3 ">
+                                    <div className="button-content p-2">
                                         <RefreshCcw
                                             strokeWidth={2}
                                             style={{ width: 16, height: 16 }}

@@ -15,6 +15,7 @@ type Question = {
   keywords: string;
   text: string;
   topic_id: number; // Changed from topic to topic_id to match the model
+  order:number
 };
 
 interface newQuestion extends Question {

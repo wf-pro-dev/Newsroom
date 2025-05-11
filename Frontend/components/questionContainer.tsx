@@ -104,7 +104,8 @@ function QuestionContainer({
                     id: data.id,
                     text: data.text,
                     topic_id: data.topic_id,
-                    keywords: data.keywords
+                    keywords: data.keywords,
+                    order: data.order
                 }
 
                 setArticles(

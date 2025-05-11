@@ -85,12 +85,14 @@ useEffect(() => {
 
   // Inside NewsMain component
 const topic_questions = useMemo(() => 
-  questions.filter((question: Question) =>
+  questions
+  .filter((question: Question) =>
     Object.keys(newsData[activeTab]).includes(question.text)
-  ), 
+  )
+  .sort((a, b) => a.order - b.order), 
   [questions, newsData, activeTab] // Recompute only when these change
 );
-
+console.log("topic_question",topic_questions)
   return (
     <Tabs
       value={activeTab}
@@ -160,19 +162,17 @@ const topic_questions = useMemo(() =>
                     key={activeTab}
                   >
 
-                    {Object.keys(newsData[activeTab]).map(
-                      (questionText: string, qIndex) => {
-                        const questionKeywords = questions.find(
-                          (qst: Question) => qst.text === questionText
-                        )?.keywords;
+                    {topic_questions.map(
+                      (question: Question, qIndex) => {
+                        
                         return (
                           <QuestionContainer
                             key={`question_${qIndex}`}
                             activeTab={activeTab}
                             index={index}
                             qIndex={qIndex}
-                            questionText={questionText}
-                            questionKeywords={questionKeywords ? questionKeywords : ""}
+                            questionText={question.text}
+                            questionKeywords={question.keywords ? question.keywords : ""}
                             showFavorites={showFavorites}
                             showDelete={showDelete}
                             showAdd={showAdd}

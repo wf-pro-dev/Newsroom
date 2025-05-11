@@ -72,10 +72,11 @@ def refresh_question(question_id):
         seed_questions(questions=list_question, topic=topic) # Generate content for new question
 
         new_question = list_question[0] # ONLY one new question per refresh
+     
+        new_question.order = question.order # Set the desired order value for the new question
 
-        
         # Save the refresh
-
+        
         new_refresh = refresh(
                 question_id = new_question.id,
                 user_id = current_user_id

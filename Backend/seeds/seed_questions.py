@@ -13,14 +13,17 @@ from etl.transform import generate_query
 
 def seed_questions(questions:list[questions],topic):
     
-    for qst in questions:
+    for i, qst in enumerate(questions):
+       
         qst.topic_id = topic.id
+        qst.order = i
 
         keywords, query = generate_query(
         (topic.title, topic.role), qst.text
         )
 
         qst.keywords = keywords
+        
         db.session.add(qst)
         db.session.commit()
 

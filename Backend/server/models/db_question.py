@@ -18,6 +18,7 @@ class questions(db.Model):
     topic_id = db.Column(db.Integer, db.ForeignKey("topics.id"))
     text = db.Column(db.String(255), nullable=False)
     keywords = db.Column(db.String(255), nullable=False)
+    order = db.Column(db.Integer, nullable=False)
 
     def to_dict(self):
         return {
@@ -25,6 +26,7 @@ class questions(db.Model):
             "topic_id": self.topic_id,
             "text": self.text,
             "keywords": self.keywords,
+            "order" : self.order 
         }
 
     def set_articles(self, query: dict):

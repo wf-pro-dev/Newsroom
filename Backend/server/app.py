@@ -47,7 +47,12 @@ def create_app():
         app,
         resources={
             r"/*": {
-                "origins": ["https://newsroom-git-development-william-fotsos-projects.vercel.app","http://localhost:3000"],
+                "origins": [
+                    "https://newsroom-rho.vercel.app/",
+                    "https://newsroom-git-main-william-fotsos-projects.vercel.app",
+                    "https://newsroom-git-development-william-fotsos-projects.vercel.app",
+                    "http://localhost:3000"
+                    ],
                 "methods": ["GET", "POST", "DELETE", "OPTIONS"],
             }
         },

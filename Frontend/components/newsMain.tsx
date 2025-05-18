@@ -92,7 +92,6 @@ const topic_questions = useMemo(() =>
   .sort((a, b) => a.order - b.order), 
   [questions, newsData, activeTab] // Recompute only when these change
 );
-console.log("topic_question",topic_questions)
   return (
     <Tabs
       value={activeTab}
@@ -200,7 +199,7 @@ console.log("topic_question",topic_questions)
         />
       )}
 
-      <div className={`footer  ${showHeader ? "translate-y-0 -bottom-8" : "translate-y-full bottom-0"
+      <div className={`footer  ${showHeader && !atInnerHeight ? "translate-y-0 -bottom-8" : "translate-y-full bottom-0"
         }`} >
 
         <div className="flex flex-col items-center space-y-2" >

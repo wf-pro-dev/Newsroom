@@ -8,6 +8,7 @@ import Image from "next/image";
 
 /* STYLES */
 import "../styles/newsmain.css";
+import "../styles/page.css";
 
 function NewsCarousel({ topic_title, questions }: {
     topic_title: string;
@@ -37,7 +38,7 @@ function NewsCarousel({ topic_title, questions }: {
         const { Icon, color } = icons[currentIconIndex];
 
         return (
-            <div className="flex items-center justify-center mb-8 mt-16 w-full">
+            <div className="flex items-center justify-center w-full">
                 <div className="transition-all duration-300 ease-in-out transform">
                     <Icon
                         strokeWidth={2}
@@ -82,7 +83,7 @@ function NewsCarousel({ topic_title, questions }: {
 
     return (
         <div>
-            <h1 className="text-3xl leading-normal text-center  font-medium
+            <h1 className="text-xl leading-normal text-center  font-medium
             
             text-gray-300">
                 Today&apos;s Question about
@@ -91,14 +92,14 @@ function NewsCarousel({ topic_title, questions }: {
                 </p>
             </h1>
 
-            <div className="h-[1px] justify-self-center min-w-[20em] bg-gray-700 mt-6 mb-12" />
+            <div className="h-[1px] justify-self-center min-w-[20em] bg-gray-700 mt-6 mb-6" />
 
             <div className="flex ">
                 <div className="flex-1 grid grid-cols-3 gap-2">
                     {[1, 2, 3].map((_, index) => {
                         const topic : Topic | undefined = topics.find((tpc) => tpc.title === topic_title);
                         return (
-                            <div key={index} className="col-span-1 rounded-md">
+                            <div key={index} className="col-span-1 rounded-md border-3 border-red-500">
                                 <Carousel
                                     opts={{
                                         loop: true,
@@ -112,11 +113,11 @@ function NewsCarousel({ topic_title, questions }: {
                                         }),
                                     ]}
                                 >
-                                    <div className="flex-column">
+                                    <div className="flex flex-col px-6 py-8 space-y-8 bg-black/60 feature-card">
                                         <CarouselContent className="m-0">
                                             {topic!.images.map((url, idx) => { 
                                                 return (
-                                                <CarouselItem key={idx} className="pl-0 aspect-video border border-gray-700">
+                                                <CarouselItem key={idx} className="pl-0 aspect-video">
                                                     <div className="w-full h-full">
                                                         <Image
                                                             src={url}
@@ -132,7 +133,7 @@ function NewsCarousel({ topic_title, questions }: {
                                                 </CarouselItem>)}
                                             )}
                                         </CarouselContent>
-                                        <div className="w-full grid-col-1 justify-items-center px-4">
+                                        <div className="flex flex-col items-center justify-center space-y-6">
                                             <IconSwitcher index={index} />
                                             <KeywordHighlighter text={questions[index].text} keywords={questions[index].keywords} />
                                         </div>

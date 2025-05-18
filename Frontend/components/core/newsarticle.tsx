@@ -77,7 +77,7 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
     }
 
     return (
-        <Card className={`h-fit group overflow-hidden bg-gray-800/80 border-gray-700 hover:bg-gray-700/80 transition-colors backdrop-blur-sm ${isDeleting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} transition-all duration-300 ease-in-out`}>
+        <Card className={`h-fit max-w-[300px] group overflow-hidden bg-gray-800/80 border-gray-700 hover:bg-gray-700/80 transition-colors backdrop-blur-sm ${isDeleting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} transition-all duration-300 ease-in-out`}>
             <div className='relative'>
                 {article.urlToImage && (
                     <Image

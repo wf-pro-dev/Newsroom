@@ -18,11 +18,14 @@ class fav_videos(db.Model):
     description = db.Column(db.String(255), nullable=True)
     thumbnail = db.Column(db.String(255), nullable=True)
     
-    # Reference to article (with ondelete="SET NULL" to keep favorite when article is deleted)
+    # Reference to video (with ondelete="SET NULL" to keep favorite when article is deleted)
     video_id = db.Column(db.Integer, db.ForeignKey('videos.id', ondelete="SET NULL"), nullable=True)
     
-    # Relationship to original article (if it still exists)
-    video = db.relationship("videos", foreign_keys=[video_id], backref=db.backref("fav_videos", lazy=True))
+    # Updated relationship using back_populates
+    video = db.relationship("videos", 
+                          foreign_keys=[video_id],
+                          back_populates="favorites_videos",
+                          passive_deletes=True)
 
     # Favorite-specific fields
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False) 

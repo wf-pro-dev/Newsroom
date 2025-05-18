@@ -20,6 +20,12 @@ class videos(db.Model):
     hidden_for_users = db.relationship("hidden_videos",
                                     backref=db.backref("video", lazy=True),
                                     cascade="all, delete-orphan")
+    
+    # Explicit relationship with fav_videos (optional but clearer)
+    favorites_videos = db.relationship("fav_videos",
+                                      back_populates="video",
+                                      lazy=True,
+                                      passive_deletes=True)
 
     def to_dict(self):
         return {

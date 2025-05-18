@@ -9,7 +9,7 @@ path.append(backend_root)
 from etl.extract import fetch_topics
 from server.flask_server import app
 from seeds.seed_topics import seed_topics
-from database.operations import drop_all_tables, create_all_tables
+from database.operations import reset_all_tables, create_all_tables
 
 
 
@@ -17,7 +17,7 @@ from database.operations import drop_all_tables, create_all_tables
 def seed_runner(n_topics:int):
    
     # Reset the tables of the database
-    drop_all_tables()
+    reset_all_tables()
     create_all_tables()
     
     # Launch the content generation process

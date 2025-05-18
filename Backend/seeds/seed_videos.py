@@ -16,6 +16,6 @@ def seed_videos(videos:list[videos],question):
         db.session.add(video)
         db.session.commit()
     
-        print(f"Video with id = {video.id} is complete", "-" * 20, sep="\n")
+    print(f"Question ( id : {question.id} ) ( nb of videos : {len(videos)} )", "-" * 20, sep="\n")
 
         

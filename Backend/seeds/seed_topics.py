@@ -11,17 +11,29 @@ from database.connection import db
 
 
 def seed_topics(list_topic:list):
-    print(list_topic)
     for obj_topic in list_topic:
 
         topic = topics(title=obj_topic["topic"], role=obj_topic["role"])
         
         
-        print(topic)
         db.session.add(topic)
         db.session.commit()
         
+        print(
+                f"Topic ( id : {topic.id} ) ( topic : {topic.title} ) is starting )",
+                "=" * 20,
+                sep="\n"
+            )
+        
         topic.set_images()
         db.session.commit()
-
+        
         seed_questions(questions=topic.set_questions(),topic=topic)
+        
+        print(
+                f"Topic ( id : {topic.id} ) ( topic : {topic.title} ) is complete )",
+                "=" * 20,
+                sep="\n"
+            )
+
+

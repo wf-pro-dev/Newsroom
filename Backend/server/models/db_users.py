@@ -20,9 +20,6 @@ class users(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_active = db.Column(db.Boolean, default=True)
 
-    # Relationships (example: one-to-many with posts)
-    # posts = db.relationship('Post', backref='author', lazy=True)
-
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 

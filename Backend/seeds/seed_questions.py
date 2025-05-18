@@ -29,8 +29,4 @@ def seed_questions(questions:list[questions],topic):
 
         seed_articles(qst.set_articles(query=query),qst)
         seed_videos(qst.set_videos(query=query),qst)
-        
-        print(
-            f"Question with id = {qst.id} is complete", "-" * 20, sep="\n"
-        )
-        
+                

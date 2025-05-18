@@ -22,8 +22,8 @@ def seed_articles(articles:list[articles],question):
         db.session.add(article)
         db.session.commit()
 
-        print(
-            f"Artilce with id = {article.id} is complete",
+    print(
+            f"Question ( id : {question.id} ) ( nb of articles : {len(relevant_articles)} )",
             "-" * 20,
             sep="\n",
         )

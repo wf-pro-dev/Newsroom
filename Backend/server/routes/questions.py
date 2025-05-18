@@ -6,8 +6,8 @@ path.append("/Users/williamfotso/Workspace/Newsroom/Backend")
 from flask import Blueprint, request, jsonify
 from server.models.db_question import questions
 from server.models.db_topic import topics
-from server.models.db_article import articles
-from server.models.db_video import videos
+from Backend.server.models.db_articles import articles
+from Backend.server.models.db_videos import videos
 from server.models.db_users import users
 from server.models.db_hidden_articles import hidden_articles
 from server.models.db_hidden_videos import hidden_videos

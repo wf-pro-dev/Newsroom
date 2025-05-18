@@ -11,7 +11,7 @@ from flask import json
 from server.app import create_app
 from database.connection import db
 from server.models.db_question import questions
-from server.models.db_video import videos
+from Backend.server.models.db_videos import videos
 
 
 class VideosTestCase(unittest.TestCase):

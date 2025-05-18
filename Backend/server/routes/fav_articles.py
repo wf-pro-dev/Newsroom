@@ -12,7 +12,7 @@ path.append(backend_root)
 
 from database.connection import db
 from server.models.db_fav_articles import fav_articles
-from server.models.db_article import articles
+from Backend.server.models.db_articles import articles
 
 fav_articles_bp = Blueprint("fav_articles", __name__)
 

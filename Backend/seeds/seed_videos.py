@@ -5,7 +5,7 @@ project_root = os.path.abspath(os.path.join(current_dir, "../../"))
 backend_root = project_root + "/Backend"
 path.append(backend_root)
 
-from server.models.db_video import videos
+from Backend.server.models.db_videos import videos
 from database.connection import db
 
 def seed_videos(videos:list[videos],question):

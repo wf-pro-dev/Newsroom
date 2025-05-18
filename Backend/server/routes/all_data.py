@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify
 from server.models.db_topic import topics
 from server.models.db_question import questions
-from server.models.db_article import articles
-from server.models.db_video import videos
+from Backend.server.models.db_articles import articles
+from Backend.server.models.db_videos import videos
 from server.models.db_favourites import favourites
 
 all_data_bp = Blueprint("all_data", __name__)

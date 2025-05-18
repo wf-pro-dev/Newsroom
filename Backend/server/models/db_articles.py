@@ -12,7 +12,7 @@ from database.connection import db
 class articles(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Float, default=0)
-    question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey("questions.id", ondelete="SET NULL"), nullable=True)
 
     api_source = db.Column(db.String(50), nullable=True)
     title = db.Column(db.String(255), nullable=False)
@@ -26,6 +26,12 @@ class articles(db.Model):
     hidden_for_users = db.relationship("hidden_articles",
                                     backref=db.backref("article", lazy=True),
                                     cascade="all, delete-orphan")
+
+    # Relationship with fav_articles
+    favorites_articles = db.relationship("fav_articles",
+                                       back_populates="article",
+                                       lazy=True,
+                                       cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

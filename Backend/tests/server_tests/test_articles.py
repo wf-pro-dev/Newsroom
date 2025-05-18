@@ -14,7 +14,7 @@ path.append(backend_root)
 
 from server.server import create_app
 from server.models.db_question import questions
-from server.models.db_article import articles
+from Backend.server.models.db_articles import articles
 from database.connection import db
 
 

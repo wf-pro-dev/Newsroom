@@ -8,8 +8,8 @@ path.append(backend_root)
 
 from typing import Tuple, List, Dict
 from rake_nltk import Rake
-from server.models.db_article import articles
-from server.models.db_video import videos
+from Backend.server.models.db_articles import articles
+from Backend.server.models.db_videos import videos
 from core.services.article_analyzer import analyze_article_relevance
 from etl.extract import fetch_articles
 

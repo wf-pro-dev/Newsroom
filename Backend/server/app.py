@@ -122,7 +122,6 @@ def create_app():
     app.register_blueprint(videos_bp)
     app.register_blueprint(topics_bp)
     app.register_blueprint(questions_bp)
-    #app.register_blueprint(favourites_bp)
     app.register_blueprint(fav_articles_bp)
     app.register_blueprint(fav_videos_bp)
     app.register_blueprint(hidden_bp)

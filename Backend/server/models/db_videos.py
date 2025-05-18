@@ -11,7 +11,7 @@ from database.connection import db
 
 class videos(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey("questions.id", ondelete="SET NULL"), nullable=True)
     youtube_id = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=True)
     thumbnail = db.Column(db.String(255), nullable=True)
@@ -21,11 +21,11 @@ class videos(db.Model):
                                     backref=db.backref("video", lazy=True),
                                     cascade="all, delete-orphan")
     
-    # Explicit relationship with fav_videos (optional but clearer)
+    # Relationship with fav_videos
     favorites_videos = db.relationship("fav_videos",
                                       back_populates="video",
                                       lazy=True,
-                                      passive_deletes=True)
+                                      cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

@@ -17,18 +17,23 @@ app = create_app()
 def drop_all_tables():
     """Drop all tables in the database."""
     with app.app_context():
-        
         # Drop the filtered tables with cascade to handle constraints
         db.metadata.drop_all(bind=db.engine)
         print(f"All tables dropped")
 
 def reset_all_tables():
-    """Drop all tables in the database."""
+    """Drop all tables in the database while preserving favorites."""
     with app.app_context():
         # Get all table names from metadata
         all_tables = db.metadata.tables.keys()
         
         excluded_table_name = ["fav_videos", "fav_articles", "users"]
+        
+        # First, set entity_id to NULL in favorites tables
+        with db.engine.connect() as conn:
+            conn.execute("UPDATE fav_videos SET video_id = NULL")
+            conn.execute("UPDATE fav_articles SET article_id = NULL")
+            conn.commit()
 
         # Filter out excluded tables
         tables_to_drop = [db.metadata.tables[name] for name in all_tables 

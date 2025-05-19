@@ -1,6 +1,6 @@
 'use client'
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import NewsMain from '@/components/newsMain'
 import Notification from '@/components/core/notification'
 import { HeroGlobe } from '@/components/heroglobe'

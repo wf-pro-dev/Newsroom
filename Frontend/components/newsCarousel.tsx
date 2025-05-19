@@ -54,9 +54,9 @@ function NewsCarousel({ topic_title, questions }: {
         const highlightKeyword = (word: string) => {
             word = word.replace(/[^a-zA-Z0-9]/g, '');
             return keywords.includes(word)
-              ? 'bg-gradient-to-l from-blue-300 to-blue-600 text-transparent bg-clip-text animated-gradient'
-              : '';
-          };
+                ? 'bg-gradient-to-l from-blue-300 to-blue-600 text-transparent bg-clip-text animated-gradient'
+                : '';
+        };
 
         return (
             <div className="w-full">
@@ -95,11 +95,11 @@ function NewsCarousel({ topic_title, questions }: {
             <div className="h-[1px] justify-self-center min-w-[20em] bg-gray-700 mt-6 mb-6" />
 
             <div className="flex ">
-                <div className="flex-1 grid grid-cols-3 gap-2">
+                <div className="flex-1 grid grid-cols-3 gap-6">
                     {[1, 2, 3].map((_, index) => {
-                        const topic : Topic | undefined = topics.find((tpc) => tpc.title === topic_title);
+                        const topic: Topic | undefined = topics.find((tpc) => tpc.title === topic_title);
                         return (
-                            <div key={index} className="col-span-1 rounded-md border-3 border-red-500">
+                            <div key={index} className="col-span-1 rounded-md feature-card">
                                 <Carousel
                                     opts={{
                                         loop: true,
@@ -113,29 +113,32 @@ function NewsCarousel({ topic_title, questions }: {
                                         }),
                                     ]}
                                 >
-                                    <div className="flex flex-col px-6 py-8 space-y-8 bg-black/60 feature-card">
+                                    <div className="flex flex-col grow px-6 py-8 space-y-8">
                                         <CarouselContent className="m-0">
-                                            {topic!.images.map((url, idx) => { 
+                                            {topic!.images.map((url, idx) => {
                                                 return (
-                                                <CarouselItem key={idx} className="pl-0 aspect-video">
-                                                    <div className="w-full h-full">
-                                                        <Image
-                                                            src={url}
-                                                            alt={`Illustration for topic_${topic!.id}_${idx}.webp`}
-                                                            width={100}
-                                                            height={100}
-                                                            style={{ width: "100%", height:"100%" }}
-                                                            quality={100}
-                                                            priority={true}
-                                                        />
-                                                                                  
-                                                    </div>
-                                                </CarouselItem>)}
+                                                    <CarouselItem key={idx} className="pl-0 aspect-video">
+                                                        <div className="w-full h-full">
+                                                            <Image
+                                                                src={url}
+                                                                alt={`Illustration for topic_${topic!.id}_${idx}.webp`}
+                                                                width={500}
+                                                                height={500}
+                                                                style={{ width: "100%", height: "100%" }}
+                                                                quality={100}
+                                                                priority={true}
+                                                            />
+
+                                                        </div>
+                                                    </CarouselItem>)
+                                            }
                                             )}
                                         </CarouselContent>
                                         <div className="flex flex-col items-center justify-center space-y-6">
                                             <IconSwitcher index={index} />
+
                                             <KeywordHighlighter text={questions[index].text} keywords={questions[index].keywords} />
+
                                         </div>
                                     </div>
                                 </Carousel>
@@ -150,7 +153,7 @@ function NewsCarousel({ topic_title, questions }: {
 
 export default React.memo(NewsCarousel, (prevProps, nextProps) => {
     return (
-      prevProps.topic_title === nextProps.topic_title &&
-      prevProps.questions === nextProps.questions
+        prevProps.topic_title === nextProps.topic_title &&
+        prevProps.questions === nextProps.questions
     );
 })

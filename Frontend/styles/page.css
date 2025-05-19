@@ -27,12 +27,13 @@ body {
 }
 
 .dupe-button {
-    @apply text-lg rounded-full border-2 border-gray-500/50 p-5 bg-gray-800/50 text-gray-300 transition-transform duration-300 ease-in-out;
+    @apply text-lg rounded-full border-2 border-gray-500/50 bg-gray-800/50 text-gray-300 transition-transform duration-300 ease-in-out;
 }
 
 .dupe-button:hover {
-    @apply scale-95;
+    @apply scale-95 bg-white text-black;
 }
+
 
 /* Hero Globe */
 

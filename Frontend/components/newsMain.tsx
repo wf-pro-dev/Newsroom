@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { Heart, LogOut, User } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import "@/styles/newsmain.css";
+import "@/styles/page.css";
 import { useGlobalState } from "@/components/context/GlobalStateContext";
 import QuestionContainer from "./questionContainer";
 import { logout } from "@/utils/api";
@@ -106,7 +107,9 @@ const topic_questions = useMemo(() =>
               value={category}
               onClick={() => goUp(category)}
               className={`
-                          tab-trigger
+                          dupe-button py-3 px-4
+                          data-[state=active]:bg-gray-800/50 data-[state=active]:text-gray-300
+                          
                           group-hover:translate-y-0
                           ${showHeader
                   ? "data-[state=active]:translate-y-0"
@@ -134,7 +137,7 @@ const topic_questions = useMemo(() =>
             topic === activeTab && (
               <div
                 key={index}
-                className="tabs-content-container xl:px-24 2xl:px-40"
+                className="tabs-content-container xl:px-24 2xl:px-40 overflow-scroll"
               >
                 <TabsContent
                   key={topic}

@@ -12,8 +12,8 @@ path.append(backend_root)
 
 # Import your database models
 from database.connection import db
-from Backend.server.models.db_articles import articles
-from Backend.server.models.db_videos import videos
+from server.models.db_articles import articles
+from server.models.db_videos import videos
 from server.models.db_question import questions 
 from server.models.db_hidden_articles import hidden_articles
 from server.models.db_hidden_videos import hidden_videos

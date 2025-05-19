@@ -1,0 +1,15 @@
+2025-05-18 23:45:01 ip-172-31-29-63 newsroom-seed[101841]: INFO : Activating virtual environment
+2025-05-18 23:45:01 ip-172-31-29-63 newsroom-seed[101841]: INFO : Starting seed runner
+Traceback (most recent call last):
+  File "/var/www/newsroom/Backend/seeds/seed_runner.py", line 9, in <module>
+    from etl.extract import fetch_topics
+  File "/var/www/newsroom/Backend/etl/extract.py", line 10, in <module>
+    from api.openai.client import fetch_open_ai
+  File "/var/www/newsroom/Backend/api/openai/client.py", line 9, in <module>
+    client = OpenAI()
+             ^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_client.py", line 116, in __init__
+    raise OpenAIError(
+openai.OpenAIError: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-05-18 23:45:01 ip-172-31-29-63 newsroom-seed[101841]: ERROR : seed runner execution
+2025-05-18 23:45:01 ip-172-31-29-63 newsroom-seed[101841]: INFO : Finish seed runner

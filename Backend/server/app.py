@@ -26,7 +26,6 @@ from server.routes.videos import videos_bp
 from server.routes.topics import topics_bp
 from server.routes.questions import questions_bp
 from server.routes.hidden import hidden_bp
-from server.routes.favourites import favourites_bp
 from server.routes.fav_articles import fav_articles_bp
 from server.routes.fav_videos import fav_videos_bp
 from server.routes.refresh import refresh_bp

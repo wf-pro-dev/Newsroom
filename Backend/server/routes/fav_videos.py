@@ -11,7 +11,7 @@ path.append(backend_root)
 
 from database.connection import db
 from server.models.db_fav_videos import fav_videos
-from Backend.server.models.db_videos import videos
+from server.models.db_videos import videos
 
 fav_videos_bp= Blueprint("fav_videos", __name__)
 

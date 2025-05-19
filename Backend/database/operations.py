@@ -1,5 +1,6 @@
 import os
 import sys
+from sqlalchemy import text
 
 # Add proper relative import paths
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,10 +30,11 @@ def reset_all_tables():
         
         excluded_table_name = ["fav_videos", "fav_articles", "users"]
         
-        # First, set entity_id to NULL in favorites tables
+        # First, drop foreign key constraints
         with db.engine.connect() as conn:
-            conn.execute("UPDATE fav_videos SET video_id = NULL")
-            conn.execute("UPDATE fav_articles SET article_id = NULL")
+            # Drop foreign key constraints
+            conn.execute(text("ALTER TABLE fav_videos DROP CONSTRAINT IF EXISTS fav_videos_video_id_fkey"))
+            conn.execute(text("ALTER TABLE fav_articles DROP CONSTRAINT IF EXISTS fav_articles_article_id_fkey"))
             conn.commit()
 
         # Filter out excluded tables

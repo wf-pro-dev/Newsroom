@@ -17,7 +17,7 @@ type NewsVideoProps = {
 
 type YouTubePlayerRef = {
     setSize: (width: number, height: number) => void;
-    cueVideoById: (params: {videoId: string, suggestedQuality: string}) => void;
+    cueVideoById: (params: { videoId: string, suggestedQuality: string }) => void;
 };
 
 function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps) {
@@ -32,8 +32,8 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
 
     const { videos, setVideos, favourites, setFavourites } = useGlobalState()
 
-    const favorite = favourites.find((fav) => fav.type == "video" && fav.video_id == video.id ) ||
-        favourites.find((fav: Favourite) => fav == video )
+    const favorite = favourites.find((fav) => fav.type == "video" && fav.video_id == video.id) ||
+        favourites.find((fav: Favourite) => fav == video)
 
     // Set mounted state
     useEffect(() => {
@@ -56,7 +56,7 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
         setDimensions(newDimensions);
 
         // Only update player size if the player is available
-        if (playerRef.current && typeof playerRef.current.setSize === 'function' && newDimensions.width && newDimensions.height ) {
+        if (playerRef.current && typeof playerRef.current.setSize === 'function' && newDimensions.width && newDimensions.height) {
             try {
                 playerRef.current.setSize(newDimensions.width, newDimensions.height);
             } catch (error) {
@@ -127,7 +127,7 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
     }, [dimensions, isMounted]);
 
 
-    const onReady = (event: {target: YouTubePlayerRef}) => {
+    const onReady = (event: { target: YouTubePlayerRef }) => {
         if (!isMounted) return;
 
         playerRef.current = event.target;
@@ -147,7 +147,7 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
         });
     }
 
-    const onStateChange = (event: {data: number}) => {
+    const onStateChange = (event: { data: number }) => {
         if (!isMounted) return;
 
         if (bufferingTimeoutRef.current) {
@@ -241,16 +241,15 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
                 showDelete(false);
             }, 2000);
         } catch (error) {
-            console.error("Error deleting article:", error);
-            // Revert optimistic update if necessary
-            // Fetch the latest data or handle the error state
+            console.error("Error deleting video:", error);
+        } finally {
             setIsDeleting(false);
         }
     }
 
     if (!isMounted) return null;
     return (
-        <div ref={containerRef} className={`${isDeleting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} w-full h-full rounded-md overflow-hidden relative transition-all duration-300 ease-in-out`}>
+        <div ref={containerRef} className={`${isDeleting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} w-full h-full border border-gray-700 rounded-md overflow-hidden relative transition-all duration-300 ease-in-out`}>
             {dimensions.width > 0 && dimensions.height > 0 && (
                 <YouTube
                     videoId={video.youtube_id}
@@ -278,15 +277,16 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
                             }
                         </div>
                     </Button>
-                    
-                    <Button
-                        variant="secondary"
-                        className="p-0 h-fit  bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
-                        onClick={handleDelete}>
-                        <div className='p-2 flex justify-center items-center'>
-                            <X style={{ width: 18, height: 18 }} strokeWidth={2} />
-                        </div>
-                    </Button>
+                    {!showFavorites && (
+                        <Button
+                            variant="secondary"
+                            className="p-0 h-fit  bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
+                            onClick={handleDelete}>
+                            <div className='p-2 flex justify-center items-center'>
+                                <X style={{ width: 18, height: 18 }} strokeWidth={2} />
+                            </div>
+                        </Button>
+                    )}
                 </div>
             )}
         </div>

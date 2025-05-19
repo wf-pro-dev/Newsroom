@@ -102,7 +102,7 @@ export default function App() {
 
 
 
-  const { topics, user, articles } = useGlobalState();
+  const { topics, user } = useGlobalState();
 
   useEffect(() => {
     if (topics.length > 0) {
@@ -118,14 +118,10 @@ export default function App() {
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.body.style.overflow = isFixed ? 'auto' : 'hidden'
+      document.body.style.overflow = 'auto'
     }
-  }, [isFixed])
+  }, [])
 
-  const getHeroStyles = (isFixed: boolean) => ({
-    transition: '',
-    ...(isFixed ? {} : { opacity: 1 })
-  })
 
   useEffect(() => {
 
@@ -136,11 +132,10 @@ export default function App() {
 
   // DupeHero Component
   const DupeHero = useCallback(
-    ({ isFixed, heroRef, setIsFixed }: { isFixed: boolean, heroRef: React.Ref<HTMLDivElement>, setIsFixed: Dispatch<SetStateAction<boolean>> }) => (
+    ({ heroRef }: { heroRef: React.Ref<HTMLDivElement>}) => (
       <div
         ref={heroRef}
-        className={`dupe-section ${isFixed ? 'opacity-0' : 'opacity-100'} 0.3s ease-in-out, transform 0.3s ease-in-out`}
-        style={getHeroStyles(isFixed)}
+        className={`dupe-section 0.3s ease-in-out, transform 0.3s ease-in-out`}
       >
         <div className="dupe-content ">
 
@@ -184,7 +179,7 @@ export default function App() {
                   <Button
                     variant="outline"
                     className="dupe-button"
-                    onClick={() => setIsFixed(true)}
+                    onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
                   >
 
                     <p className="text-sm text-gray-600">Welcome,</p>
@@ -194,7 +189,6 @@ export default function App() {
                 </div>
 
               </div>
-
 
 
 
@@ -213,16 +207,15 @@ export default function App() {
 
   return (
     <div className="app-page">
-      <div className="dupe-main relative before:absolute before:inset-0 before:border-2 before:border-transparent before:rounded-lg before:animate-border-flow"
+      <div className="dupe-main relative"
         style={{ height: isFixed ? heroRef.current?.offsetHeight : 'auto' }}>
-        <DupeHero isFixed={isFixed} heroRef={heroRef} setIsFixed={setIsFixed} />
+        <DupeHero heroRef={heroRef} />
       </div>
 
-      <div className="header-hero relative before:absolute before:inset-0 before:border-2 before:border-transparent before:rounded-lg before:animate-border-flow"
+      <div className="header-hero relative"
         style={{
           height: heroRef.current?.offsetHeight,
           pointerEvents: isFixed ? 'auto' : 'none',
-          ...getHeroStyles(true)
         }}
       >
         <HeroGlobe />
@@ -230,7 +223,7 @@ export default function App() {
 
       <Auth />
 
-      <div className={`news-main relative before:absolute before:inset-0 before:border-2 before:border-transparent before:rounded-lg before:animate-border-flow ${isFixed ? 'z-10' : ''}`}>
+      <div className={`news-main relative`}>
         <NewsMain
           activeTab={activeTab}
           setActiveTab={setActiveTab}

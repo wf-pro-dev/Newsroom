@@ -3,10 +3,8 @@
 /* Tabs Container */
 .tabs-container {
 
-
     @apply 
-    w-screen 
-    overflow-hidden 
+    w-screen  
     m-0 p-0 
     !important;
 }

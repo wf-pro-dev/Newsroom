@@ -5,7 +5,6 @@ import NewsVideo from './core/newsvideo';
 
 import '@/styles/newsmain.css';
 import '@/styles/page.css';
-import { Separator } from './ui/separator';
 
 import { useGlobalState } from '@/components/context/GlobalStateContext'
 
@@ -22,21 +21,21 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
 
   return (
 
-    <div className="min-h-screen w-screen xl:px-24 2xl:px-40 bg-black/60 backdrop-blur-sm  backdrop-contrast-125">
+    <div className="w-screen min-h-screen xl:px-24 2xl:px-40 bg-black/60 backdrop-blur-sm backdrop-contrast-125">
 
       {favourites.length > 0 && (
-        <div className='justify-items-center py-12' >
+        <div className='py-12 justify-items-center' >
 
-          <div className="separator my-12" />
+          <div className="my-12 separator" />
 
-          <h1 className="text-2xl leading-normal mb-8 text-center text-gray-300">
+          <h1 className="mb-8 text-2xl leading-normal text-center text-gray-300">
             Your Favorite News
-            <p className="text-4xl leading-normal text-center font-bold bg-gradient-to-r from-blue-300 to-blue-700 text-transparent bg-clip-text">
+            <p className="text-4xl font-bold leading-normal text-center text-transparent bg-gradient-to-r from-blue-300 to-blue-700 bg-clip-text">
               Articles
             </p>
           </h1>
 
-          <div className=" grid gap-6 md:grid-cols-2 w-full lg:grid-cols-4 ">
+          <div className="grid w-full gap-6  md:grid-cols-2 lg:grid-cols-4">
 
             {favourites.map((obj: Favourite, index) => {
               if (obj.type === "article") {
@@ -73,9 +72,9 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
       )}
 
       {(favourites.length == 0) && (
-        <div className="flex h-screen justify-center items-center">
-          <div className="p-8 h-fit flex flex-col items-center justify-center text-center feature-card">
-            <svg className="w-16 h-16 text-gray-400 mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div className="flex items-center justify-center h-screen">
+          <div className="flex flex-col items-center justify-center p-8 text-center h-fit feature-card">
+            <svg className="w-16 h-16 mb-4 text-gray-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
                 <animate
                   attributeName="stroke"
@@ -85,7 +84,7 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
                 />
               </path>
             </svg>
-            <h3 className="text-xl font-semibold text-gray-200 mb-2">No Favorites Yet</h3>
+            <h3 className="mb-2 text-xl font-semibold text-gray-200">No Favorites Yet</h3>
             <p className="text-gray-400">Start adding articles to your favorites </p>
             <p className="text-gray-400">to see them here.</p>
           </div>

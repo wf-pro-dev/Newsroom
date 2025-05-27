@@ -38,21 +38,21 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     const [videos, setVideos] = useState<Video[]>([]);
     const [favourites, setFavourites] = useState<Favourite[]>([]);
     const [newsData, setNewsData] = useState<Record<string, Record<string, Array<Video | Article>>>>({});
-    const [ isLoadingUser, setIsLoadingUser] = useState(true);
+    const [isLoadingUser, setIsLoadingUser] = useState(true);
 
     useEffect(() => {
         const fetchInitialData = async () => {
-            
-            
+
+
             const [AllData] = await Promise.all([
                 fetchAllData(),
             ])
-            
-            setIsLoadingUser(true) 
+
+            setIsLoadingUser(true)
             fetchUser()
                 .then((user) => setUser(user || null))
-                .finally(()=>  setIsLoadingUser(false))
-                
+                .finally(() => setIsLoadingUser(false))
+
             setTopics(AllData["topics"])
 
             fetchCsrfToken().then((token) => setCSRFtoken(token || null))
@@ -67,9 +67,9 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
         if (user) {
 
             fetchQuestions()
-                .then((questions)=> setQuestions(questions))
-                .catch((error) => console.log(error) )
-            
+                .then((questions) => setQuestions(questions))
+                .catch((error) => console.log(error))
+
             fetchArticles()
                 .then((articles) => setArticles(articles))
                 .catch((error) => console.log(error))
@@ -79,21 +79,30 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
                 .catch((error) => console.log(error))
 
             fetchFavorites()
-                .then((favourites)=> setFavourites(mixArray(
-                    favourites.filter((fav: Favourite) => fav.type === "article"), favourites.filter((fav: Favourite) => fav.type === "video"), 4)
-                ))
-                .catch((error) => console.log(error) )
-            
+                .then((favorites) => {
+
+                    const articlesFavorites = favorites.filter((fav: (Article | Video)) => fav.type === "article") as Article[]
+                    const videosFavorites = favorites.filter((fav: (Article | Video)) => fav.type === "video") as Video[]
+
+                    const newFavourites = mixArray(
+                        articlesFavorites, videosFavorites, 4
+                    )
+                    // Optimistically update UI
+                    setFavourites(newFavourites as Favourite[]);
+                })
+
+                .catch((error) => console.log(error))
+
         }
 
     }, [user])
 
 
     useEffect(() => {
-        if (!user || !questions || !articles || !videos ) return
+        if (!user || !questions || !articles || !videos) return
 
-       
- 
+
+
         const data: Record<string, Record<string, Array<Video | Article>>> = {}
 
 
@@ -106,28 +115,28 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
             questions
                 .filter((question: Question) => question.topic_id == topic.id)
                 .forEach((qst: Question) => {
-                    
+
                     data[topic.title][qst.text] = mixArray(articles.filter((article) => article.question_id == qst.id), videos.filter((video) => video.question_id == qst.id), 4)
                 })
         })
 
         setNewsData(data)
-    }, [user, topics, questions, articles, videos ])
+    }, [user, topics, questions, articles, videos])
 
     if (isLoadingUser) return null;
 
     return (
-        <GlobalStateContext.Provider 
-            value={{ 
+        <GlobalStateContext.Provider
+            value={{
                 csrftoken, setCSRFtoken,
                 user, setUser,
-                isLoadingUser ,setIsLoadingUser,
+                isLoadingUser, setIsLoadingUser,
                 topics, setTopics,
                 questions, setQuestions,
                 articles, setArticles,
                 videos, setVideos,
                 favourites, setFavourites,
-                newsData, setNewsData 
+                newsData, setNewsData
             }}
         >
             {children}

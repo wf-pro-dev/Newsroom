@@ -1,4 +1,4 @@
-import { Favourite, Video } from "@/utils/types";
+import { Article, Favourite, Video } from "@/utils/types";
 import { HeartOff, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import YouTube from "react-youtube"
@@ -9,6 +9,7 @@ import { addFavourite, deleteFavouritebyId, hideContent } from "@/utils/api";
 import { useGlobalState } from "../context/GlobalStateContext";
 
 import "@/styles/newsmain.css"
+import { mixArray } from "@/lib/utils";
 
 type NewsVideoProps = {
     video: Video;
@@ -219,9 +220,18 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
 
                 showAdd(true);
 
-                const newFavourite = await addFavourite(video.id, video.type);
+                const newFavorite = await addFavourite(video.id, video.type);
+
+                let newFavourites : (Article | Video)[] = [...favourites, newFavorite]
+
+                const articlesFavorites = newFavourites.filter((fav: (Article | Video)) => fav.type === "article") as Article[]
+                const videosFavorites = newFavourites.filter((fav: (Article | Video)) => fav.type === "video") as Video[]
+
+                newFavourites = mixArray(
+                   articlesFavorites , videosFavorites, 4
+                )
                 // Optimistically update UI
-                setFavourites([...favourites, newFavourite]);
+                setFavourites(newFavourites as Favourite[]);
             }
         } catch (error) {
             console.error("Error handling favorite:", error);

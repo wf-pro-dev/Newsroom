@@ -6,7 +6,6 @@ import { Button } from "./ui/button";
 import { RefreshCcw } from "lucide-react";
 import NewsArticle from "./core/newsarticle";
 import NewsVideo from "./core/newsvideo";
-import { Separator } from "@/components/ui/separator";
 
 /* FUNCTIONS */
 import { refreshQuestion } from "@/utils/api";
@@ -64,7 +63,7 @@ function QuestionContainer({
       
         return (
           <div className="w-4/5">
-            <div className="inline-block text-center whitespace-normal break-words">
+            <div className="inline-block text-center break-words whitespace-normal">
               <p>
                 {text.split(' ').map((word, index) => (
                   <span
@@ -139,8 +138,8 @@ function QuestionContainer({
                 ? "max-h-0 opacity-0 overflow-hidden" 
                 : "max-h-[5000px] opacity-100"
         }`}>
-            <div className="question-header space-y-8">
-                <div className="flex flex-col w-full items-center">
+            <div className="space-y-8 question-header">
+                <div className="flex flex-col items-center w-full">
                     <KeywordHighlighter text={questionText} keywords={questionKeywords} />
                 </div>
 
@@ -149,24 +148,24 @@ function QuestionContainer({
                         <div className="relative group">
                             <Button
                                 variant="ghost"
-                                className="absolute -left-16 top-1/2 -translate-y-1/2 hover:bg-blue-500/20 transition-all duration-300 rounded-full p-3 shadow-lg hover:shadow-blue-500/20"
+                                className="absolute p-3 transition-all duration-300 -translate-y-1/2 rounded-full shadow-lg -left-16 top-1/2 hover:bg-blue-500/20 hover:shadow-blue-500/20"
                                 onClick={() => onQuestionChange(questions.find((qst: Question) => qst.text === questionText)!)}
                             >
                                 <RefreshCcw
                                     strokeWidth={2.5}
-                                    className="w-6 h-6 text-blue-400 group-hover:text-blue-300 transition-colors"
+                                    className="w-6 h-6 text-blue-400 transition-colors group-hover:text-blue-300"
                                 />
                             </Button>
                             
-                            <div className="px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500/20 via-blue-600/20 to-blue-500/20 backdrop-blur-md border border-blue-500/20 shadow-lg shadow-blue-500/10">
-                                <p className="text-base font-medium bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text">
+                            <div className="px-4 py-3 border shadow-lg rounded-xl bg-gradient-to-r from-blue-500/20 via-blue-600/20 to-blue-500/20 backdrop-blur-md border-blue-500/20 shadow-blue-500/10">
+                                <p className="text-base font-medium text-transparent bg-gradient-to-r from-blue-300 to-blue-500 bg-clip-text">
                                     {questionKeywords || "No keywords"}
                                 </p>
                             </div>
                         </div>
                     </div>
                     
-                    <div className="separator my-8" />
+                    <div className="my-8 separator" />
                 </div>
             </div>
 
@@ -204,7 +203,7 @@ function QuestionContainer({
                 )}
             </div>
 
-            <div className="separator my-16" />
+            <div className="my-16 separator" />
         </div>
     )
 }

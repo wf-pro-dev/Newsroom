@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
 import NewsCarousel from "./newsCarousel";
 import { Question } from "@/utils/types";
 import { Button } from "./ui/button";
-import { Heart, LogOut, LucideIcon, LucideProps, User } from "lucide-react";
+import { Heart, LogOut, LucideIcon, User } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import "@/styles/newsmain.css";
 import "@/styles/page.css";
@@ -255,7 +254,7 @@ function NewsMain({
           <BottomButton
             key={index}
             Icon={button.icon}
-            text={button.text}
+            text={button.text!}
             onClick={button.onClick}
           />
         ))}

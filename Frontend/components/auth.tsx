@@ -126,7 +126,7 @@ export default function Auth() {
       style={{
         scale: isVisible ? 1 : 0,
         opacity: isVisible ? 1 : 0,
-        transition: 'scale 0.4s ease-in-out, opacity 0.4s ease-in-out',
+        transition: 'scale 0.6s ease-in-out, opacity ease-in-out',
       }}
     >
       <div className={`header`}>

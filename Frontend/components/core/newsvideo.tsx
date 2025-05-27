@@ -8,6 +8,8 @@ import Image from "next/image";
 import { addFavourite, deleteFavouritebyId, hideContent } from "@/utils/api";
 import { useGlobalState } from "../context/GlobalStateContext";
 
+import "@/styles/newsmain.css"
+
 type NewsVideoProps = {
     video: Video;
     showFavorites: boolean
@@ -181,16 +183,17 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
     }
 
     const LoadingState = () => (
-        <div className="absolute top-0 left-0 w-full h-full bg-stone-800 flex flex-col items-center justify-center gap-2">
-            <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full gap-2 bg-stone-800">
+            <div className="w-full h-full I">
                 <Image
                     src={video.thumbnail}
                     alt="Video thumbnail"
                     layout="fill"
                     objectFit="cover"
+
                 />
             </div>
-            <div className="absolute inset-0 bg-black bg-opacity-75 animate-pulse flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 animate-pulse">
                 <p className="text-white">Loading Video...</p>
             </div>
         </div>
@@ -249,7 +252,10 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
 
     if (!isMounted) return null;
     return (
-        <div ref={containerRef} className={`${isDeleting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} w-full h-full border border-gray-700 rounded-md overflow-hidden relative transition-all duration-300 ease-in-out`}>
+        <div ref={containerRef} className={`${isDeleting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} w-full h-full border border-gray-700 rounded-md overflow-hidden relative transition-all duration-300 ease-in-out hover:border-blue-500/30`}>
+            
+            {!isFullyLoaded && <LoadingState />}
+
             {dimensions.width > 0 && dimensions.height > 0 && (
                 <YouTube
                     videoId={video.youtube_id}
@@ -257,19 +263,18 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
                     onReady={onReady}
                     onStateChange={onStateChange}
                     onError={onError}
-                    className={`${isFullyLoaded ? 'opacity-100' : 'opacity-0'} w-full h-full`}
+                    className={`${isFullyLoaded ? 'opacity-100' : 'opacity-0'}`}
                     style={{ transition: 'opacity 0.3s ease-in-out' }}
                 />
             )}
-            {!isFullyLoaded && <LoadingState />}
 
             {isFullyLoaded && (
-                <div className="z-50 p-4 pr-2 rounded-l-3xl bg-gray-700/50 backdrop-blur-sm grid grid-cols-1  absolute gap-2 right-0 top-1/2 transform -translate-y-1/2 translate-x-11 hover:translate-x-0 transition-all duration-300 ease-in-out">
+                <div className="absolute right-0 z-50 grid grid-cols-1 gap-2 p-4 pr-2 transition-all duration-300 ease-in-out transform -translate-y-1/2 border border-gray-700 rounded-l-3xl bg-gray-800/50 backdrop-blur-md top-1/2 translate-x-11 hover:translate-x-0">
                     <Button
                         variant="secondary"
-                        className="p-0 h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
+                        className={`button`}
                         onClick={handleFavorite}>
-                        <div className='p-2 flex justify-center items-center'>
+                        <div className='button-content'>
                             {favourites.length > 0 && favorite ?
                                 <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} />
                                 :
@@ -280,9 +285,9 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
                     {!showFavorites && (
                         <Button
                             variant="secondary"
-                            className="p-0 h-fit  bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 text-gray-300 transition-all duration-300 ease-in-out hover:animate-bounce-subtle"
+                            className={`button`}                            
                             onClick={handleDelete}>
-                            <div className='p-2 flex justify-center items-center'>
+                            <div className='button-content'>
                                 <X style={{ width: 18, height: 18 }} strokeWidth={2} />
                             </div>
                         </Button>

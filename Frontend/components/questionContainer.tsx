@@ -139,40 +139,35 @@ function QuestionContainer({
                 ? "max-h-0 opacity-0 overflow-hidden" 
                 : "max-h-[5000px] opacity-100"
         }`}>
-            <div className="question-header">
-                {/* <h1 className="question-title">{questionText}</h1> */}
-
+            <div className="question-header space-y-8">
                 <div className="flex flex-col w-full items-center">
                     <KeywordHighlighter text={questionText} keywords={questionKeywords} />
                 </div>
 
-                <div>
-                    <div className="flex flex-row items-center justify-center w-fit mt-6 px-20">
-                        <p className="relative question-keywords ">
-                            <div className="absolute xl:-top-1/4 xl:-left-14 refresh-button-containe">
-                                <Button
-                                    variant="ghost"
-                                    className={`button`}
-                                    onClick={() => onQuestionChange(questions.find((qst: Question) => qst.text === questionText)!)}
-                                >
-                                    <div className="button-content p-2">
-                                        <RefreshCcw
-                                            strokeWidth={2}
-                                            style={{ width: 16, height: 16 }}
-                                        />
-                                    </div>
-                                </Button>
+                <div className="relative">
+                    <div className="flex flex-row items-center justify-center w-full">
+                        <div className="relative group">
+                            <Button
+                                variant="ghost"
+                                className="absolute -left-16 top-1/2 -translate-y-1/2 hover:bg-blue-500/20 transition-all duration-300 rounded-full p-3 shadow-lg hover:shadow-blue-500/20"
+                                onClick={() => onQuestionChange(questions.find((qst: Question) => qst.text === questionText)!)}
+                            >
+                                <RefreshCcw
+                                    strokeWidth={2.5}
+                                    className="w-6 h-6 text-blue-400 group-hover:text-blue-300 transition-colors"
+                                />
+                            </Button>
+                            
+                            <div className="px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500/20 via-blue-600/20 to-blue-500/20 backdrop-blur-md border border-blue-500/20 shadow-lg shadow-blue-500/10">
+                                <p className="text-base font-medium bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text">
+                                    {questionKeywords || "No keywords"}
+                                </p>
                             </div>
-
-
-                            {questionKeywords || "No keywords"}
-
-                        </p>
-
+                        </div>
                     </div>
-                    <Separator className="bg-gray-600 my-6" />
+                    
+                    <div className="separator my-8" />
                 </div>
-
             </div>
 
             <div className="news-grid">
@@ -180,7 +175,7 @@ function QuestionContainer({
                     (obj: Video | Article) => {
                         if (obj.type == "article") {
                             return (
-                                <div key={`article-${obj.id}`}>
+                                <div key={`article-${obj.id}`} className="bg-transparent">
                                     <NewsArticle
                                         article={obj as Article}
                                         showFavorites={showFavorites}
@@ -209,7 +204,7 @@ function QuestionContainer({
                 )}
             </div>
 
-            <Separator className="separator" />
+            <div className="separator my-16" />
         </div>
     )
 }

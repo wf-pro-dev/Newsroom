@@ -83,16 +83,19 @@ function NewsCarousel({ topic_title, questions }: {
 
     return (
         <div>
-            <h1 className="text-xl leading-normal text-center  font-medium
+            <div className="flex flex-col w-fit justify-self-center items-center">
+                <h1 className="text-xl leading-normal text-center  font-medium
             
             text-gray-300">
-                Today&apos;s Question about
-                <p className="text-5xl leading-normal text-center font-semibold bg-gradient-to-l from-blue-300 to-blue-600 text-transparent bg-clip-text animated-title-gradient">
-                    {topic_title}
-                </p>
-            </h1>
+                    Today&apos;s Question about
+                    <p className="text-5xl leading-normal text-center font-semibold bg-gradient-to-l from-blue-300 to-blue-600 text-transparent bg-clip-text animated-title-gradient">
+                        {topic_title}
+                    </p>
+                </h1>
+                <div className="separator m-6" />
+            </div>
 
-            <div className="h-[1px] justify-self-center min-w-[20em] bg-gray-700 mt-6 mb-6" />
+
 
             <div className="flex ">
                 <div className="flex-1 grid grid-cols-3 gap-6">
@@ -114,26 +117,28 @@ function NewsCarousel({ topic_title, questions }: {
                                     ]}
                                 >
                                     <div className="flex flex-col grow px-6 py-8 space-y-8">
-                                        <CarouselContent className="m-0">
-                                            {topic!.images.map((url, idx) => {
-                                                return (
-                                                    <CarouselItem key={idx} className="pl-0 aspect-video">
-                                                        <div className="w-full h-full">
-                                                            <Image
-                                                                src={url}
-                                                                alt={`Illustration for topic_${topic!.id}_${idx}.webp`}
-                                                                width={500}
-                                                                height={500}
-                                                                style={{ width: "100%", height: "100%" }}
-                                                                quality={100}
-                                                                priority={true}
-                                                            />
+                                        <div className="feature-card p-1 overflow-hidden">
+                                            <CarouselContent className="m-0">
+                                                {topic!.images.map((url, idx) => {
+                                                    return (
+                                                        <CarouselItem key={idx} className="pl-0 aspect-video">
+                                                            <div className="w-full h-full">
+                                                                <Image
+                                                                    src={url}
+                                                                    alt={`Illustration for topic_${topic!.id}_${idx}.webp`}
+                                                                    width={500}
+                                                                    height={500}
+                                                                    style={{ width: "100%", height: "100%" }}
+                                                                    quality={100}
+                                                                    priority={true}
+                                                                />
 
-                                                        </div>
-                                                    </CarouselItem>)
-                                            }
-                                            )}
-                                        </CarouselContent>
+                                                            </div>
+                                                        </CarouselItem>)
+                                                }
+                                                )}
+                                            </CarouselContent>
+                                        </div>
                                         <div className="flex flex-col items-center justify-center space-y-6">
                                             <IconSwitcher index={index} />
 

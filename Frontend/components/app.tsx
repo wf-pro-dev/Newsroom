@@ -1,6 +1,6 @@
 'use client'
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import NewsMain from '@/components/newsMain'
 import Notification from '@/components/core/notification'
 import { HeroGlobe } from '@/components/heroglobe'
@@ -127,12 +127,16 @@ export default function App() {
 
 
     if (user == null) setIsFixed(false)
+    
+      if (typeof document !== 'undefined') {
+      document.body.style.overflow = user ? 'auto' : 'hidden'
+    }
 
   }, [user])
 
   // DupeHero Component
   const DupeHero = useCallback(
-    ({ heroRef }: { heroRef: React.Ref<HTMLDivElement>}) => (
+    ({ heroRef }: { heroRef: React.Ref<HTMLDivElement> }) => (
       <div
         ref={heroRef}
         className={`dupe-section 0.3s ease-in-out, transform 0.3s ease-in-out`}
@@ -153,21 +157,21 @@ export default function App() {
                 <div className='flex flex-row items-center space-x-16 '>
 
                   <div className='flex flex-col items-center max-w-[250px] p-4 space-y-2 bg-black/60 rounded-lg feature-card'>
-                    <p className='text-base text-white font-medium' >Discover</p>
+                    <p className='text-base text-white font-semibold' >Discover</p>
                     <p className='text-base text-gray-500 text-center'>
                       curated insights from trusted sources worldwide.
                     </p>
                   </div>
 
                   <div className='flex flex-col items-center max-w-[250px] p-4 space-y-2 bg-black/60 rounded-lg feature-card'>
-                    <p className='text-base text-white font-medium' >Transform</p>
+                    <p className='text-base text-white font-semibold' >Transform</p>
                     <p className='text-base text-gray-500 text-center'>
                       complex information into clear, actionable knowledge.
                     </p>
                   </div>
 
                   <div className='flex flex-col items-center max-w-[250px] p-4 space-y-2 bg-black/60 rounded-lg feature-card'>
-                    <p className='text-base text-white font-medium' >Join</p>
+                    <p className='text-base text-white font-semibold' >Join</p>
                     <p className='text-base text-gray-500 text-center'>
                       a community of decision-makers shaping tomorrow.
                     </p>

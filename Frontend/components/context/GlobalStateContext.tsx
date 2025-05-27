@@ -79,7 +79,9 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
                 .catch((error) => console.log(error))
 
             fetchFavorites()
-                .then((favourites)=> setFavourites(favourites))
+                .then((favourites)=> setFavourites(mixArray(
+                    favourites.filter((fav: Favourite) => fav.type === "article"), favourites.filter((fav: Favourite) => fav.type === "video"), 4)
+                ))
                 .catch((error) => console.log(error) )
             
         }

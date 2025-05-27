@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import NewsCarousel from "./newsCarousel";
 import { Question } from "@/utils/types";
 import { Button } from "./ui/button";
-import { Heart, LogOut, User } from "lucide-react";
+import { Heart, LogOut, LucideIcon, LucideProps, User } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import "@/styles/newsmain.css";
 import "@/styles/page.css";
@@ -31,32 +31,33 @@ function NewsMain({
   const [showHeader, setShowHeader] = useState(false);
   const [atInnerHeight, setAtInnerHeight] = useState(false);
   const showHeaderRef = useRef(false);
-  const atInnerHeightRef = useRef(false); 
+  const atInnerHeightRef = useRef(false);
 
   const {
+    user,
     setUser,
     newsData,
     questions,
   } = useGlobalState();
 
 
-useEffect(() => {
-  const handleScroll = () => {
-    const showHeader = window.scrollY >= window.innerHeight;
-    const atInnerHeight = window.scrollY === window.innerHeight;
-    
-    // Only update state if values actually changed
-    if (showHeader !== showHeaderRef.current || atInnerHeight !== atInnerHeightRef.current) {
-      setShowHeader(showHeader);
-      setAtInnerHeight(atInnerHeight);
-      showHeaderRef.current = showHeader;
-      atInnerHeightRef.current = atInnerHeight;
-    }
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      const showHeader = window.scrollY >= window.innerHeight;
+      const atInnerHeight = window.scrollY === window.innerHeight;
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+      // Only update state if values actually changed
+      if (showHeader !== showHeaderRef.current || atInnerHeight !== atInnerHeightRef.current) {
+        setShowHeader(showHeader);
+        setAtInnerHeight(atInnerHeight);
+        showHeaderRef.current = showHeader;
+        atInnerHeightRef.current = atInnerHeight;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   function onValueChange(value: string) {
     if (showFavorites) setShowFavorites(false);
@@ -85,14 +86,60 @@ useEffect(() => {
   }
 
   // Inside NewsMain component
-const topic_questions = useMemo(() => 
-  questions
-  .filter((question: Question) =>
-    Object.keys(newsData[activeTab]).includes(question.text)
-  )
-  .sort((a, b) => a.order - b.order), 
-  [questions, newsData, activeTab] // Recompute only when these change
-);
+  const topic_questions = useMemo(() =>
+    questions
+      .filter((question: Question) =>
+        Object.keys(newsData[activeTab]).includes(question.text)
+      )
+      .sort((a, b) => a.order - b.order),
+    [questions, newsData, activeTab] // Recompute only when these change
+  );
+
+  const bottom_buttons = [
+    {
+      icon: User,
+      text: user?.username,
+      onClick: onLogOut
+    },
+    {
+      icon: Heart,
+      text: "Favorites",
+      onClick: () => setShowFavorites(!showFavorites)
+    },
+    {
+      icon: LogOut,
+      text: "LogOut",
+      onClick: onLogOut
+    }
+  ]
+
+  const BottomButton = (
+    { Icon, text, onClick }: { Icon: LucideIcon, text: string, onClick: () => void }) => {
+    return (
+      <div className="flex flex-col items-center group" >
+          <div
+            className={`button-container`}
+          >
+            <Button
+              variant="secondary"
+              className={`button`}
+              onClick={onClick}
+            >
+              <div className="button-content">
+                <Icon strokeWidth={1.5} style={{ width: 28, height: 28 }} />
+              </div>
+            </Button>
+          </div>
+
+
+          <div className="absolute flex flex-col px-2 py-1 transition-all duration-300 ease-in-out border rounded-lg shadow-lg opacity-0 grow -top-1/2 bg-gradient-to-r from-blue-500/60 via-blue-600/60 to-blue-500/60 border-blue-500/30 shadow-blue-500/20 group-hover:opacity-100" >
+            <p className="text-sm font-medium">{text}</p>
+          </div>
+
+        </div>
+    )
+  }
+
   return (
     <Tabs
       value={activeTab}
@@ -107,21 +154,21 @@ const topic_questions = useMemo(() =>
               value={category}
               onClick={() => goUp(category)}
               className={`
-                          dupe-button py-3 px-4
-                          data-[state=active]:bg-gray-800/50 data-[state=active]:text-gray-300
-                          
-                          group-hover:translate-y-0
-                          ${showHeader
+                relative
+                py-2.5 px-4
+                tab-trigger
+                group-hover:translate-y-0
+                ${showHeader
                   ? "data-[state=active]:translate-y-0"
                   : "data-[state=active]:-translate-y-20"
                 } 
-                          ${atInnerHeight
+                ${atInnerHeight
                   ? "translate-y-0"
                   : "-translate-y-20"
                 }
-                      `}
+              `}
             >
-              <p className="2xl:text-[15px] xl:text-sm font-medium">
+              <p className="text-sm font-medium">
                 {category}
               </p>
             </TabsTrigger>
@@ -131,65 +178,64 @@ const topic_questions = useMemo(() =>
 
       {!showFavorites &&
         Object.keys(newsData).map(
-          (topic, index) =>
-          { 
+          (topic, index) => {
             return (
-            topic === activeTab && (
-              <div
-                key={index}
-                className="tabs-content-container xl:px-24 2xl:px-40 overflow-scroll"
-              >
-                <TabsContent
-                  key={topic}
-                  value={topic}
-                  className={`${isChanging ? "opacity-0" : "opacity-100"
-                    } tabs-content`}
+              topic === activeTab && (
+                <div
+                  key={index}
+                  className="overflow-scroll tabs-content-container xl:px-24 2xl:px-40"
                 >
-                  <Separator className="separator" />
-
-                  {questions.filter((question: Question) =>
-                    Object.keys(newsData[activeTab]).includes(question.text)
-                  ).length == 3 && (
-
-                      <NewsCarousel
-                        topic_title={activeTab}
-                        questions={topic_questions}
-                      />
-
-                    )}
-
-                  <Separator className="separator" />
-
-                  <div
-                    key={activeTab}
+                  <TabsContent
+                    key={topic}
+                    value={topic}
+                    className={`${isChanging ? "opacity-0" : "opacity-100"
+                      } tabs-content`}
                   >
+                    <div className="my-12 separator" />
 
-                    {topic_questions.map(
-                      (question: Question, qIndex) => {
-                        
-                        return (
-                          <QuestionContainer
-                            key={`question_${qIndex}`}
-                            activeTab={activeTab}
-                            index={index}
-                            qIndex={qIndex}
-                            questionText={question.text}
-                            questionKeywords={question.keywords ? question.keywords : ""}
-                            showFavorites={showFavorites}
-                            showDelete={showDelete}
-                            showAdd={showAdd}
-                          />
+                    {questions.filter((question: Question) =>
+                      Object.keys(newsData[activeTab]).includes(question.text)
+                    ).length == 3 && (
 
-                        );
-                      }
+                        <NewsCarousel
+                          topic_title={activeTab}
+                          questions={topic_questions}
+                        />
 
-                    )}
-                  </div>
+                      )}
 
-                </TabsContent>
-              </div>
+                    <div className="my-16 separator" />
+
+                    <div
+                      key={activeTab}
+                    >
+
+                      {topic_questions.map(
+                        (question: Question, qIndex) => {
+
+                          return (
+                            <QuestionContainer
+                              key={`question_${qIndex}`}
+                              activeTab={activeTab}
+                              index={index}
+                              qIndex={qIndex}
+                              questionText={question.text}
+                              questionKeywords={question.keywords ? question.keywords : ""}
+                              showFavorites={showFavorites}
+                              showDelete={showDelete}
+                              showAdd={showAdd}
+                            />
+
+                          );
+                        }
+
+                      )}
+                    </div>
+
+                  </TabsContent>
+                </div>
+              )
             )
-          )
           }
 
         )}
@@ -202,64 +248,20 @@ const topic_questions = useMemo(() =>
         />
       )}
 
-      <div className={`footer  ${showHeader && !atInnerHeight ? "translate-y-0 -bottom-8" : "translate-y-full bottom-0"
+      <div className={`footer  ${(showHeader && !atInnerHeight) || showFavorites ? "translate-y-1/2 bottom-0" : "translate-y-full bottom-0"
         }`} >
 
-        <div className="flex flex-col items-center space-y-2" >
-          <div
-            className={`button-container`}
-          >
-            <Button
-              variant="secondary"
-              className={`button`}
-              onClick={onLogOut}
-            >
-              <div className="button-content">
-                <User strokeWidth={2} style={{ width: 20, height: 20 }} />
-              </div>
-            </Button>
-          </div>
-          <p className="text-xs text-center font-semibold ">Profile</p>
-        </div>
-
-        <div className="flex flex-col items-center space-y-2" >
-          <div
-            className={`button-container`}
-          >
-            <Button
-              variant="secondary"
-              className={`button`}
-              onClick={() => setShowFavorites(!showFavorites)}
-            >
-              <div className="button-content">
-                <Heart strokeWidth={2} style={{ width: 20, height: 20 }} />
-              </div>
-            </Button>
-          </div>
-
-          <p className="text-xs text-center font-semibold"> Likes</p>
-        </div>
-
-
-        <div className="flex flex-col items-center space-y-2" >
-          <div
-            className={`button-container`}
-          >
-            <Button
-              variant="secondary"
-              className={`button`}
-              onClick={onLogOut}
-            >
-              <div className="button-content">
-                <LogOut strokeWidth={2} style={{ width: 20, height: 20 }} />
-              </div>
-            </Button>
-          </div>
-          <p className="text-xs text-center font-semibold"> Log Out</p>
-        </div>
+        {bottom_buttons.map((button, index) => (
+          <BottomButton
+            key={index}
+            Icon={button.icon}
+            text={button.text}
+            onClick={button.onClick}
+          />
+        ))}
 
       </div>
-    </Tabs>
+    </Tabs >
   );
 }
 

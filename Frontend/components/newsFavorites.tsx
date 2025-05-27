@@ -27,7 +27,7 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
       {favourites.length > 0 && (
         <div className='justify-items-center py-12' >
 
-          <Separator className="separator" />
+          <div className="separator my-12" />
 
           <h1 className="text-2xl leading-normal mb-8 text-center text-gray-300">
             Your Favorite News

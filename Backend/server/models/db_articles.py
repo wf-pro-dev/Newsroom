@@ -27,11 +27,7 @@ class articles(db.Model):
                                     backref=db.backref("article", lazy=True),
                                     cascade="all, delete-orphan")
 
-    # Relationship with fav_articles
-    favorites_articles = db.relationship("fav_articles",
-                                       back_populates="article",
-                                       lazy=True,
-                                       cascade="all, delete-orphan")
+    favorites_articles = db.relationship("fav_articles", back_populates="article", lazy=True, cascade="all, delete-orphan") 
 
     def to_dict(self):
         return {

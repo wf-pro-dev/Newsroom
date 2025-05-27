@@ -61,7 +61,7 @@ def generate_image_replicate(prompt: str,topic_id: int,index: int) -> str:
     return public_url
 
 if __name__ == "__main__" :
-    list_prompts = fetch_prompt_image_gen_ai("Artificial intelligence")
+    list_prompts = fetch_prompt_image_gen_ai("Political Science")
     for i ,prompt in enumerate(list_prompts):
         result = generate_image_replicate(prompt=prompt, topic_id=6, index=i)
         print(result)

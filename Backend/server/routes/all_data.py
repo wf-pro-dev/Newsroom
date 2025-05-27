@@ -14,14 +14,12 @@ def get_aggregated_data():
         questions_data = questions.query.all()
         articles_data = articles.query.all()
         videos_data = videos.query.all()
-        favourites_data = favourites.query.all()
 
         response = {
             "topics": [topic.to_dict() for topic in topics_data],
             "questions": [question.to_dict() for question in questions_data],
             "articles": [article.to_dict() for article in articles_data],
             "videos": [video.to_dict() for video in videos_data],
-            "favourites": [favourite.to_dict() for favourite in favourites_data],
         }
 
         return jsonify(response), 200

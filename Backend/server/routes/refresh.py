@@ -96,7 +96,7 @@ def refresh_question(question_id):
         
         response_data["videos"] = [
             video.to_dict() for video in videos.query.filter_by(question_id=new_question.id).all()
-        ] # Add vidoes data to the response
+        ] # Add videos data to the response
         
 
         return jsonify(response_data), 200

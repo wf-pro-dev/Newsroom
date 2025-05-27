@@ -29,7 +29,7 @@ class fav_articles(db.Model):
     # Reference to article (with ondelete="SET NULL" to keep favorite when article is deleted)
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id', ondelete="SET NULL"), nullable=True)
     
-    article = db.relationship("articles", foreign_keys=[article_id], backref=db.backref("fav_articles", lazy=True))
+    article = db.relationship("articles", foreign_keys=[article_id], back_populates="favorites_articles")
 
     # Favorite-specific fields
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False) 

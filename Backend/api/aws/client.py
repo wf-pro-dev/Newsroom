@@ -1,5 +1,6 @@
 from sys import path
 import os
+import datetime
 import boto3
 from botocore.exceptions import NoCredentialsError
 from botocore.config import Config
@@ -29,9 +30,9 @@ def upload_to_s3(image_data, topic_id, index, prompt):
         config=s3_config
      )
 
-    
+    now = datetime.datetime.now()
     bucket_name = 'newsroom.bucket'
-    object_name = f"topic_{topic_id}_{index}.webp"
+    object_name = f"{now.strftime("%Y-%m")}/{now.strftime("%Y-%m-%d")}/topic_{topic_id}_{index}.webp"
     
     try:
         # Upload the file

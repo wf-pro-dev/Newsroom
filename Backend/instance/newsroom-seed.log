@@ -1,15 +1,367 @@
-2025-05-18 23:45:01 ip-172-31-29-63 newsroom-seed[101841]: INFO : Activating virtual environment
-2025-05-18 23:45:01 ip-172-31-29-63 newsroom-seed[101841]: INFO : Starting seed runner
-Traceback (most recent call last):
-  File "/var/www/newsroom/Backend/seeds/seed_runner.py", line 9, in <module>
-    from etl.extract import fetch_topics
-  File "/var/www/newsroom/Backend/etl/extract.py", line 10, in <module>
-    from api.openai.client import fetch_open_ai
-  File "/var/www/newsroom/Backend/api/openai/client.py", line 9, in <module>
-    client = OpenAI()
-             ^^^^^^^^
-  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_client.py", line 116, in __init__
-    raise OpenAIError(
-openai.OpenAIError: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
-2025-05-18 23:45:01 ip-172-31-29-63 newsroom-seed[101841]: ERROR : seed runner execution
-2025-05-18 23:45:01 ip-172-31-29-63 newsroom-seed[101841]: INFO : Finish seed runner
+2025-05-24 14:54:58 ip-172-31-29-63 newsroom-seed[2195]: INFO : Activating virtual environment
+2025-05-24 14:54:58 ip-172-31-29-63 newsroom-seed[2195]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Topic ( id : 1 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 1 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 1 ) ( topic : Climate Change ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 4 ) ( nb of articles : 11 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 0 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 1 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Public Health ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 15 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : Public Health ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Financial Markets ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 10 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 4 ) ( topic : Financial Markets ) is complete )
+====================
+Topic ( id : 5 ) ( topic : International Relations ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 13 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 5 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 5 ) ( topic : International Relations ) is complete )
+====================
+2025-05-24 14:54:58 ip-172-31-29-63 newsroom-seed[2195]: INFO : Finish seed runner
+2025-05-24 23:45:01 ip-172-31-29-63 newsroom-seed[4879]: INFO : Activating virtual environment
+2025-05-24 23:45:01 ip-172-31-29-63 newsroom-seed[4879]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Topic ( id : 1 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 1 ) ( nb of articles : 1 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 3 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 4 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 1 ) ( topic : Climate Change ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 4 ) ( nb of articles : 11 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 5 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 6 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Public Health ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 7 ) ( nb of articles : 0 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 9 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : Public Health ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Financial Markets ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 10 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 4 ) ( topic : Financial Markets ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Geopolitics ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 13 ) ( nb of articles : 16 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 9 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 5 ) ( topic : Geopolitics ) is complete )
+====================
+2025-05-24 23:45:01 ip-172-31-29-63 newsroom-seed[4879]: INFO : Finish seed runner
+2025-05-25 23:45:01 ip-172-31-29-63 newsroom-seed[12937]: INFO : Activating virtual environment
+2025-05-25 23:45:01 ip-172-31-29-63 newsroom-seed[12937]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Topic ( id : 1 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 1 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 12 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 1 ) ( topic : Climate Change ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 4 ) ( nb of articles : 2 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 6 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Public Health ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : Public Health ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Financial Markets ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 10 ) ( nb of articles : 12 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 4 ) ( topic : Financial Markets ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Geopolitics ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 13 ) ( nb of articles : 15 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 15 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 2 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 3 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 5 ) ( topic : Geopolitics ) is complete )
+====================
+2025-05-25 23:45:01 ip-172-31-29-63 newsroom-seed[12937]: INFO : Finish seed runner
+2025-05-26 23:45:01 ip-172-31-29-63 newsroom-seed[18976]: INFO : Activating virtual environment
+2025-05-26 23:45:01 ip-172-31-29-63 newsroom-seed[18976]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Topic ( id : 1 ) ( topic : Inflation ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 1 ) ( nb of articles : 4 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 1 ) ( topic : Inflation ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 4 ) ( nb of articles : 4 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 0 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 2 ) ( topic : Climate Change ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Artificial Intelligence ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 4 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 12 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : Artificial Intelligence ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Healthcare ) is starting )
+====================
+Error fetching images : Parameter validation failed:
+Non ascii characters found in S3 metadata for key "prompt", value: "Ultra-detailed DNA double helix with holographic edges, integrated with swirling medical data streams. A patient’s vitals displayed within the strands under tri-point neonsphere lighting. Background: Hexagonal grid pattern with low-opacity circuit board textures with anamorphic flare -- Aspect Ratio: 16:9, Focus: f/2.8, Lighting: Tri-point neonsphere, Lens: 24mm anamorphic".  
+S3 metadata can only contain ASCII characters. 
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 10 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 3 )
+--------------------
+Topic ( id : 4 ) ( topic : Healthcare ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Education ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 13 ) ( nb of articles : 7 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 2 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 5 ) ( topic : Education ) is complete )
+====================
+2025-05-26 23:46:05 ip-172-31-29-63 newsroom-seed[18976]: INFO : Finish seed runner

@@ -15,6 +15,7 @@ env = os.getenv("FLASK_ENV", "development")
 load_dotenv()
 
 # API Keys
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 NEWSAPI_KEY = os.getenv("NEWSAPI")
 NEWSDATA_KEY = os.getenv("NEWSDATA")
 YOUTUBE_KEY = os.getenv("YT_KEY")

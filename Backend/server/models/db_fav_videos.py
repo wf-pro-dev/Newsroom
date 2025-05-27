@@ -10,7 +10,7 @@ from database.connection import db
 
 
 class fav_videos(db.Model):
-    
+
     id = db.Column(db.Integer, primary_key=True)
 
     question_id = db.Column(db.Integer , nullable=True)
@@ -18,14 +18,10 @@ class fav_videos(db.Model):
     description = db.Column(db.String(255), nullable=True)
     thumbnail = db.Column(db.String(255), nullable=True)
     
-    # Reference to video (with ondelete="SET NULL" to keep favorite when article is deleted)
+    # Reference to video (with ondelete="SET NULL" to keep favorite when video is deleted)
     video_id = db.Column(db.Integer, db.ForeignKey('videos.id', ondelete="SET NULL"), nullable=True)
     
-    # Updated relationship using back_populates
-    video = db.relationship("videos", 
-                          foreign_keys=[video_id],
-                          back_populates="favorites_videos",
-                          passive_deletes=True)
+    video = db.relationship("videos", foreign_keys=[video_id], back_populates="favorites_videos")
 
     # Favorite-specific fields
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False) 

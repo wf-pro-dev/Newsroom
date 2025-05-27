@@ -1,3 +1,5 @@
+import os
+from sys import path
 import json
 from typing import Optional
 from io import BytesIO
@@ -5,8 +7,14 @@ import requests
 from openai import OpenAI
 from PIL import Image
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, "../../../"))
+backend_root = project_root + "/Backend"
+path.append(backend_root)
 
-client = OpenAI()
+from config.constants import OPENAI_API_KEY 
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 def fetch_open_ai(prompt: str) -> list:
     """

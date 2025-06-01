@@ -1,6 +1,7 @@
 type User = {
-  username:string;
+  username: string;
   email: string;
+  image?: string;
 }
 
 type Topic = {

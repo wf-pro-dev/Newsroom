@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import '@/styles/page.css'
 import { useGlobalState } from './context/GlobalStateContext'
 import Auth from './auth'
+import { motion } from 'framer-motion'
 
 
 // Constants for scroll directions
@@ -127,8 +128,8 @@ export default function App() {
 
 
     if (user == null) setIsFixed(false)
-    
-      if (typeof document !== 'undefined') {
+
+    if (typeof document !== 'undefined') {
       document.body.style.overflow = user ? 'auto' : 'hidden'
     }
 
@@ -139,67 +140,180 @@ export default function App() {
     ({ heroRef }: { heroRef: React.Ref<HTMLDivElement> }) => (
       <div
         ref={heroRef}
-        className={`dupe-section 0.3s ease-in-out, transform 0.3s ease-in-out`}
+        className={`bg-gradient-to-b from-gray-900 via-blue-900/20 to-black/40 dupe-section transition-all duration-300 ease-in-out relative overflow-hidden`}
       >
-        <div className="dupe-content ">
 
+
+
+        <div className="dupe-content relative z-10">
           {user && (
-            <div className="pointer-events-auto w-screen flex flex-row justify-center" >
+            <div className="pointer-events-auto w-screen flex flex-row justify-center min-h-screen">
+              <div className='flex flex-col self-center items-center p-10 space-y-20 max-w-7xl'>
 
-              <div className='flex flex-col self-center items-center  p-10 space-y-16 '>
+                {/* Main Title Card with enhanced effects */}
+                <motion.div
+                  className='relative group space-y-6 w-fit p-10 bg-gray-800/20 backdrop-blur-2xl border border-blue-500/30 rounded-2xl shadow-2xl shadow-blue-500/20'
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  whileHover={{ scale: 1.03, y: -5 }}
+                >
 
-                <div className='space-y-2 w-fit p-8 bg-black/60 rounded-lg feature-card'>
-                  <h1 className='text-center text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>The Newsroom</h1>
-                  <div className='h-0.5 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full'></div>
-                  <p className='text-lg font-medium text-white'>Your Gateway to Global Intelligence</p>
+                  {/* Animated border glow */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400/0 via-blue-400/50 to-blue-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{
+                    background: 'linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
+                    backgroundSize: '200% 200%',
+                    animation: 'gradientSlide 3s ease-in-out infinite'
+                  }} />
+
+                  <div className="relative z-10 space-y-6 text-center">
+                    <motion.h1
+                      className='text-4xl font-bold bg-gradient-to-r from-blue-300 via-blue-400 to-cyan-300 bg-clip-text text-transparent leading-tight'
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 1, delay: 0.3 }}
+                    >
+                      The Newsroom
+                    </motion.h1>
+
+                    <motion.div
+                      className='h-1 w-32 mx-auto bg-gradient-to-r from-blue-400/40 via-cyan-400/80 to-blue-400/40 rounded-full shadow-lg shadow-blue-500/40'
+                      initial={{ width: 0 }}
+                      animate={{ width: 128 }}
+                      transition={{ duration: 1, delay: 0.6 }}
+                    />
+
+                    <motion.p
+                      className='text-xl font-medium text-gray-200 leading-relaxed'
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 1, delay: 0.8 }}
+                    >
+                      Your Gateway to Global Intelligence
+                    </motion.p>
+                  </div>
+                </motion.div>
+
+                {/* Enhanced Feature Cards Grid */}
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl'>
+                  {[
+                    {
+                      title: "Discover",
+                      description: "Curated insights from trusted sources worldwide, delivered with precision and clarity.",
+                      icon: "🌍",
+                      gradient: "from-blue-400/20 to-cyan-400/20"
+                    },
+                    {
+                      title: "Transform",
+                      description: "Complex information transformed into clear, actionable knowledge for informed decisions.",
+                      icon: "⚡",
+                      gradient: "from-cyan-400/20 to-blue-400/20"
+                    },
+                    {
+                      title: "Join",
+                      description: "Connect with a community of decision-makers who are shaping tomorrow's world.",
+                      icon: "🚀",
+                      gradient: "from-blue-400/20 to-purple-400/20"
+                    }
+                  ].map((feature, index) => (
+                    <motion.div
+                      key={feature.title}
+                      className='relative group flex flex-col items-center p-6 space-y-3 bg-gray-800/20 backdrop-blur-2xl border border-gray-600/30 rounded-2xl shadow-xl hover:shadow-blue-500/30 h-full'
+                      initial={{ opacity: 0, y: 50}}
+                      animate={{ opacity: 1, y: 0}}
+                      transition={{ duration: 0.4, delay: 0.4 + index * 0.2 }}
+                      whileHover={{
+                        scale: 1.05,
+                        y: -10,
+                        borderColor: 'rgba(59, 130, 246, 0.5)',
+                        backgroundColor: 'rgba(31, 41, 55, 0.3)',
+                        transition: { duration: 0.2, delay:0, ease: "easeInOut" }
+
+                      }}
+                    >
+                      {/* Enhanced holographic effects */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm`} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 via-transparent to-transparent rounded-2xl" />
+
+                      <div className="relative z-10 text-center space-y-3 flex-1 flex flex-col justify-center">
+                        <motion.div
+                          className="text-3xl mb-1"
+                          whileHover={{ scale: 1.2, rotate: 5 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {feature.icon}
+                        </motion.div>
+
+                        <h3 className='text-xl font-bold bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent'>
+                          {feature.title}
+                        </h3>
+
+                        <p className='text-sm text-gray-300 leading-relaxed text-center'>
+                          {feature.description}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
 
-                <div className='flex flex-row items-center space-x-16 '>
+                {/* Enhanced Welcome Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 1.2 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative"
+                >
+                  {/* Button glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-cyan-400/30 to-blue-500/30 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  <div className='flex flex-col items-center max-w-[250px] p-4 space-y-2 bg-black/60 rounded-lg feature-card'>
-                    <p className='text-base text-white font-semibold' >Discover</p>
-                    <p className='text-base text-gray-500 text-center'>
-                      curated insights from trusted sources worldwide.
-                    </p>
-                  </div>
-
-                  <div className='flex flex-col items-center max-w-[250px] p-4 space-y-2 bg-black/60 rounded-lg feature-card'>
-                    <p className='text-base text-white font-semibold' >Transform</p>
-                    <p className='text-base text-gray-500 text-center'>
-                      complex information into clear, actionable knowledge.
-                    </p>
-                  </div>
-
-                  <div className='flex flex-col items-center max-w-[250px] p-4 space-y-2 bg-black/60 rounded-lg feature-card'>
-                    <p className='text-base text-white font-semibold' >Join</p>
-                    <p className='text-base text-gray-500 text-center'>
-                      a community of decision-makers shaping tomorrow.
-                    </p>
-                  </div>
-
-                </div>
-
-                <div>
                   <Button
                     variant="outline"
-                    className="dupe-button"
+                    className="relative group px-12 py-6 bg-gray-800/20 backdrop-blur-2xl border-2 border-blue-500/40 text-white transition-all duration-500 hover:bg-gradient-to-r hover:from-blue-500/30 hover:via-cyan-400/30 hover:to-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 rounded-2xl text-lg hover:border-cyan-400/60"
                     onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
                   >
+                    {/* Enhanced holographic background */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-cyan-400/20 to-blue-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
 
-                    <p className="text-sm text-gray-600">Welcome,</p>
-                    <p className="font-bold">{user.username}</p>
+                    <div className="relative z-10 flex flex-col items-center space-y-2">
+                      <motion.p
+                        className="text-sm text-gray-300 font-medium"
+                        initial={{ opacity: 0.7 }}
+                        whileHover={{ opacity: 1 }}
+                      >
+                        Welcome back,
+                      </motion.p>
+                      <motion.p
+                        className="font-bold text-2xl bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {user.username}
+                      </motion.p>
+                      <motion.p
+                        className="text-xs text-gray-400 font-medium"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.5 }}
+                      >
+                        Continue to your personalized feed
+                      </motion.p>
+                    </div>
 
+                    {/* Animated arrow indicator */}
+                    <motion.div
+                      className="absolute -bottom-3 left-1/2 transform -translate-x-1/2"
+                      animate={{ y: [0, 5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-blue-400/60" />
+                    </motion.div>
                   </Button>
-                </div>
+                </motion.div>
 
               </div>
-
-
-
             </div>
           )}
-
-
         </div>
       </div>
     ), [user])

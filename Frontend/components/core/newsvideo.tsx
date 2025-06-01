@@ -279,7 +279,7 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
             )}
 
             {isFullyLoaded && (
-                <div className="absolute right-0 z-50 grid grid-cols-1 gap-2 p-4 pr-2 transition-all duration-300 ease-in-out transform -translate-y-1/2 border border-gray-700 rounded-l-3xl bg-gray-800/50 backdrop-blur-md top-1/2 translate-x-11 hover:translate-x-0">
+                <div className="absolute right-0 z-50 grid grid-cols-1 gap-2 p-2.5 pr-2 transition-all duration-300 ease-in-out transform -translate-y-1/2 border border-gray-700 rounded-l-2xl bg-gray-800/50 backdrop-blur-md top-1/2 translate-x-11 hover:translate-x-0">
                     <Button
                         variant="secondary"
                         className={`button`}

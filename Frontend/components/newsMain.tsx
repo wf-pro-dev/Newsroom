@@ -10,6 +10,7 @@ import "@/styles/page.css";
 import { useGlobalState } from "@/components/context/GlobalStateContext";
 import QuestionContainer from "./questionContainer";
 import { logout } from "@/utils/api";
+import ProfilePage from "./profile";
 
 function NewsMain({
   activeTab,
@@ -28,6 +29,7 @@ function NewsMain({
 }) {
   const [isChanging, setIsChanging] = useState(false);
   const [showHeader, setShowHeader] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [atInnerHeight, setAtInnerHeight] = useState(false);
   const showHeaderRef = useRef(false);
   const atInnerHeightRef = useRef(false);
@@ -84,6 +86,16 @@ function NewsMain({
     }, 400);
   }
 
+  const onPageChange = (page: string) => {
+    if (page === "profile") {
+      setShowProfile(!showProfile)
+      setShowFavorites(false)
+    } else if (page === "favorites") {
+      setShowFavorites(!showFavorites)
+      setShowProfile(false)
+    } 
+  }
+
   // Inside NewsMain component
   const topic_questions = useMemo(() =>
     questions
@@ -97,23 +109,26 @@ function NewsMain({
   const bottom_buttons = [
     {
       icon: User,
-      text: user?.username,
-      onClick: onLogOut
+      text: user?.username.charAt(0).toUpperCase() + user?.username.slice(1),
+      active: showProfile,
+      onClick: () => onPageChange("profile")
     },
     {
       icon: Heart,
       text: "Favorites",
-      onClick: () => setShowFavorites(!showFavorites)
+      active: showFavorites,
+      onClick: () => onPageChange("favorites")
     },
     {
       icon: LogOut,
       text: "LogOut",
+      active: false,
       onClick: onLogOut
     }
   ]
 
   const BottomButton = (
-    { Icon, text, onClick }: { Icon: LucideIcon, text: string, onClick: () => void }) => {
+    { Icon, text, active, onClick }: { Icon: LucideIcon, text: string, active: boolean, onClick: () => void }) => {
     return (
       <div className="flex flex-col items-center group" >
           <div
@@ -121,7 +136,7 @@ function NewsMain({
           >
             <Button
               variant="secondary"
-              className={`button`}
+              className={`${ active ? "active-button" : "button" }`}
               onClick={onClick}
             >
               <div className="button-content">
@@ -131,7 +146,7 @@ function NewsMain({
           </div>
 
 
-          <div className="absolute flex flex-col px-2 py-1 transition-all duration-300 ease-in-out border rounded-lg shadow-lg opacity-0 grow -top-1/2 bg-gradient-to-r from-blue-500/60 via-blue-600/60 to-blue-500/60 border-blue-500/30 shadow-blue-500/20 group-hover:opacity-100" >
+          <div className="absolute flex flex-col px-2 py-1 transition-all duration-300 ease-in-out border rounded-lg shadow-lg opacity-0 grow -top-2/3 bg-gradient-to-r from-blue-500/60 via-blue-600/60 to-blue-500/60 border-blue-500/30 shadow-blue-500/20 group-hover:opacity-100" >
             <p className="text-sm font-medium">{text}</p>
           </div>
 
@@ -145,7 +160,7 @@ function NewsMain({
       onValueChange={onValueChange}
       className="tabs-container"
     >
-      <TabsList className="tabs-list group">
+      <TabsList className={`tabs-list group ${showHeader && !showProfile ? "opacity-100" : "opacity-0"}`}>
         {Object.keys(newsData).map((category, index) => (
           <div key={index} className="tab-item">
             <TabsTrigger
@@ -156,12 +171,12 @@ function NewsMain({
                 relative
                 py-2.5 px-4
                 tab-trigger
-                group-hover:translate-y-0
-                ${showHeader
-                  ? "data-[state=active]:translate-y-0"
+                
+                ${showHeader && !showProfile
+                  ? "data-[state=active]:translate-y-0 group-hover:translate-y-0"
                   : "data-[state=active]:-translate-y-20"
                 } 
-                ${atInnerHeight
+                ${atInnerHeight && !showProfile
                   ? "translate-y-0"
                   : "-translate-y-20"
                 }
@@ -176,7 +191,8 @@ function NewsMain({
       </TabsList>
 
       {!showFavorites &&
-        Object.keys(newsData).map(
+       !showProfile &&
+       Object.keys(newsData).map(
           (topic, index) => {
             return (
               topic === activeTab && (
@@ -247,7 +263,11 @@ function NewsMain({
         />
       )}
 
-      <div className={`footer  ${(showHeader && !atInnerHeight) || showFavorites ? "translate-y-1/2 bottom-0" : "translate-y-full bottom-0"
+      {showProfile && (
+        <ProfilePage />
+      )}
+
+      <div className={`footer  ${(showHeader && ( !atInnerHeight || showFavorites )) ? "translate-y-1/2 bottom-0" : "translate-y-full bottom-0"
         }`} >
 
         {bottom_buttons.map((button, index) => (
@@ -255,6 +275,7 @@ function NewsMain({
             key={index}
             Icon={button.icon}
             text={button.text!}
+            active={button.active}
             onClick={button.onClick}
           />
         ))}

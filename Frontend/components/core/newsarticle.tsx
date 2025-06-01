@@ -11,6 +11,7 @@ import moment from 'moment'
 import { Separator } from '@radix-ui/react-separator'
 import { useGlobalState } from '@/components/context/GlobalStateContext'
 import { mixArray } from '@/lib/utils'
+import '@/styles/newsmain.css'
 
 function NewsArticle({ article, showFavorites, showDelete, showAdd }:
     {
@@ -48,13 +49,13 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
 
                 const newFavorite = await addFavourite(article.id, article.type);
 
-                let newFavourites : (Article | Video)[] = [...favourites, newFavorite]
+                let newFavourites: (Article | Video)[] = [...favourites, newFavorite]
 
                 const articlesFavorites = newFavourites.filter((fav: (Article | Video)) => fav.type === "article") as Article[]
                 const videosFavorites = newFavourites.filter((fav: (Article | Video)) => fav.type === "video") as Video[]
 
                 newFavourites = mixArray(
-                   articlesFavorites , videosFavorites, 4
+                    articlesFavorites, videosFavorites, 4
                 )
                 // Optimistically update UI
                 setFavourites(newFavourites as Favourite[]);
@@ -99,17 +100,19 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                     />
                 )}
                 <div className="absolute flex flex-row justify-between bottom-4 left-6 right-6 ">
-                    <div className='flex items-center p-2 rounded w-fit bg-gray-700/60 backdrop-blur-sm'>
-                        <CalendarDays style={{ width: 18, height: 18 }} strokeWidth={1} color='white' />
-                        <Separator orientation="vertical" className='mx-1 w-[1px] h-[12px] bg-gray-300' />
-                        <p className='text-white xl:text-xs 2xl:text-sm'>{moment(article_date).format("DD MMMM YY")}</p>
+                    <div className='p-2 rounded-lg tag'>
+                        <div className='flex flex-row items-center'>
+                            <CalendarDays style={{ width: 18, height: 18 }} strokeWidth={1} color='white' />
+                            <Separator orientation="vertical" className='mx-1 w-[1px] h-[12px] bg-gray-300' />
+                            <p className='text-white xl:text-xs 2xl:text-sm'>{moment(article_date).format("DD MMMM YY")}</p>
+                        </div>
                     </div>
 
-                    <div className='flex items-center p-2 rounded w-fit bg-gray-700/60 backdrop-blur-sm'>
+                    <div className='p-2 rounded-lg tag'>
                         <p className='text-white xl:text-xs 2xl:text-sm'>{article.score}</p>
                     </div>
 
-                    <div className='flex items-center p-2 rounded w-fit bg-gray-700/60 backdrop-blur-sm'>
+                    <div className='p-2 rounded-lg tag'>
                         <p className='text-white xl:text-xs 2xl:text-sm'>{article.api_source}</p>
                     </div>
                 </div>
@@ -119,7 +122,7 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                 <div className="absolute flex justify-between top-4 left-6 right-6">
                     <Button
                         variant="secondary"
-                        className="p-0 text-gray-300 transition-all duration-300 ease-in-out h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 hover:animate-bounce-subtle"
+                        className="button"
                         onClick={handleFavorite}>
                         <div className='flex items-center justify-center p-2'>
                             {favourites.length > 0 && favorite ?
@@ -133,7 +136,7 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                     {!showFavorites && (
                         <Button
                             variant="secondary"
-                            className="p-0 text-gray-300 transition-all duration-300 ease-in-out h-fit bg-gray-700/60 backdrop-blur-sm hover:bg-gray-700/80 hover:animate-bounce-subtle"
+                            className="button"
                             onClick={handleDelete}>
                             <div className='flex items-center justify-center p-2'>
                                 <X style={{ width: 18, height: 18 }} strokeWidth={2} />

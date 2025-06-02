@@ -15,6 +15,8 @@ class fav_articles(db.Model):
     # Primary key for this table (independent from articles)
     id = db.Column(db.Integer, primary_key=True)
     
+    favAt = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    
     # Article data (duplicated to preserve even if original article is deleted)
     score = db.Column(db.Float, default=0)
     question_id = db.Column(db.Integer, nullable=True)
@@ -37,6 +39,7 @@ class fav_articles(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
+            "favAt" : self.favAt,
             "article_id": self.article_id,
             "score": self.score,
             "question_id": self.question_id,

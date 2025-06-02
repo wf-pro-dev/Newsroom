@@ -1,5 +1,6 @@
 from sys import path
 import os
+from datetime import datetime
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, "../../../"))
@@ -12,6 +13,8 @@ from database.connection import db
 class fav_videos(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
+    
+    favAt = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     question_id = db.Column(db.Integer , nullable=True)
     youtube_id = db.Column(db.String(255), nullable=False)
@@ -29,6 +32,7 @@ class fav_videos(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
+            "favAt" : self.favAt,
             "youtube_id": self.youtube_id,
             "video_id": self.video_id,
             "question_id": self.question_id,

@@ -72,7 +72,6 @@ def add_favorite_article():
             
             article_id=article_id,  # Reference to the original article
             user_id=current_user_id,
-            
             score=article.score,
             question_id=article.question_id,
             api_source=article.api_source,

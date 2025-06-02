@@ -365,3 +365,636 @@ Question ( id : 15 ) ( nb of videos : 4 )
 Topic ( id : 5 ) ( topic : Education ) is complete )
 ====================
 2025-05-26 23:46:05 ip-172-31-29-63 newsroom-seed[18976]: INFO : Finish seed runner
+2025-05-27 23:45:01 ip-172-31-29-63 newsroom-seed[26663]: INFO : Activating virtual environment
+2025-05-27 23:45:01 ip-172-31-29-63 newsroom-seed[26663]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Topic ( id : 1 ) ( topic : Inflation ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 1 ) ( nb of articles : 3 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 0 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 1 ) ( topic : Inflation ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Climate ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 4 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 2 ) ( topic : Climate ) is complete )
+====================
+Topic ( id : 3 ) ( topic : AI ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : AI ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Healthcare ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 10 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 4 ) ( topic : Healthcare ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Education ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 13 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 5 ) ( topic : Education ) is complete )
+====================
+2025-05-27 23:46:05 ip-172-31-29-63 newsroom-seed[26663]: INFO : Finish seed runner
+2025-05-28 23:45:01 ip-172-31-29-63 newsroom-seed[37296]: INFO : Activating virtual environment
+2025-05-28 23:45:01 ip-172-31-29-63 newsroom-seed[37296]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Topic ( id : 1 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 1 ) ( nb of articles : 0 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 2 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 2 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 1 ) ( topic : Climate Change ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 4 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 13 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Public Health ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : Public Health ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Financial Markets ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 10 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 13 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 4 ) ( topic : Financial Markets ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Cybersecurity ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 13 ) ( nb of articles : 2 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 18 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 5 ) ( topic : Cybersecurity ) is complete )
+====================
+2025-05-28 23:46:03 ip-172-31-29-63 newsroom-seed[37296]: INFO : Finish seed runner
+2025-05-29 23:45:01 ip-172-31-29-63 newsroom-seed[44257]: INFO : Activating virtual environment
+2025-05-29 23:45:01 ip-172-31-29-63 newsroom-seed[44257]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Topic ( id : 1 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 1 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 14 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 3 )
+--------------------
+Topic ( id : 1 ) ( topic : Climate Change ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 4 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 0 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 8 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Public Health ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 18 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 19 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 3 )
+--------------------
+Topic ( id : 3 ) ( topic : Public Health ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Financial Markets ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 10 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 4 ) ( topic : Financial Markets ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Geopolitics ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'Your account is not active, please check your billing details on our website.', 'type': 'billing_not_active', 'param': None, 'code': 'billing_not_active'}}
+Question ( id : 13 ) ( nb of articles : 16 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 4 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 5 ) ( topic : Geopolitics ) is complete )
+====================
+2025-05-29 23:46:06 ip-172-31-29-63 newsroom-seed[44257]: INFO : Finish seed runner
+2025-05-30 23:45:01 ip-172-31-29-63 newsroom-seed[51197]: INFO : Activating virtual environment
+2025-05-30 23:45:01 ip-172-31-29-63 newsroom-seed[51197]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Topic ( id : 1 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 1 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 2 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 1 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 1 ) ( topic : Climate Change ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 4 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 2 ) ( topic : Artificial Intelligence ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Public Health ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 3 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : Public Health ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Financial Markets ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 10 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 4 ) ( topic : Financial Markets ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Geopolitics ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 13 ) ( nb of articles : 14 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 1 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 17 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 5 ) ( topic : Geopolitics ) is complete )
+====================
+2025-05-30 23:46:09 ip-172-31-29-63 newsroom-seed[51197]: INFO : Finish seed runner
+2025-05-31 23:45:01 ip-172-31-29-63 newsroom-seed[57824]: INFO : Activating virtual environment
+2025-05-31 23:45:01 ip-172-31-29-63 newsroom-seed[57824]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Topic ( id : 1 ) ( topic : Inflation ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 1 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 2 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 0 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 1 ) ( topic : Inflation ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 4 ) ( nb of articles : 11 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 2 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 3 )
+--------------------
+Topic ( id : 2 ) ( topic : Climate Change ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Artificial Intelligence ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 9 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : Artificial Intelligence ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Healthcare ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 10 ) ( nb of articles : 14 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 2 )
+--------------------
+Topic ( id : 4 ) ( topic : Healthcare ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Geopolitics ) is starting )
+====================
+Traceback (most recent call last):
+  File "/var/www/newsroom/Backend/seeds/seed_runner.py", line 28, in <module>
+    seed_runner(5)
+  File "/var/www/newsroom/Backend/seeds/seed_runner.py", line 24, in seed_runner
+    seed_topics(fetch_topics(n_elem=n_topics))
+  File "/var/www/newsroom/Backend/seeds/seed_topics.py", line 28, in seed_topics
+    topic.set_images()
+  File "/var/www/newsroom/Backend/server/models/db_topic.py", line 41, in set_images
+    list_prompts = fetch_prompt_image_gen_ai(self.title)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/api/genai/client.py", line 127, in fetch_prompt_image_gen_ai
+    return ast.literal_eval(cleaned)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/ast.py", line 66, in literal_eval
+    node_or_string = parse(node_or_string.lstrip(" \t"), mode='eval')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/ast.py", line 52, in parse
+    return compile(source, filename, mode, flags,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<unknown>", line 1
+    ```json
+    ^
+SyntaxError: invalid syntax
+2025-05-31 23:45:57 ip-172-31-29-63 newsroom-seed[57824]: ERROR : seed runner execution
+2025-05-31 23:45:57 ip-172-31-29-63 newsroom-seed[57824]: INFO : Finish seed runner
+2025-06-01 23:45:01 ip-172-31-29-63 newsroom-seed[64439]: INFO : Activating virtual environment
+2025-06-01 23:45:01 ip-172-31-29-63 newsroom-seed[64439]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Topic ( id : 1 ) ( topic : Climate Change ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Traceback (most recent call last):
+  File "/var/www/newsroom/Backend/etl/extract.py", line 71, in fetch_questions
+    questions = fetch_open_ai(prompt=prompt)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/api/openai/client.py", line 30, in fetch_open_ai
+    response = client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_utils/_utils.py", line 279, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/resources/chat/completions/completions.py", line 929, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 1276, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 949, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 1042, in _request
+    return self._retry_request(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 1091, in _retry_request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 1042, in _request
+    return self._retry_request(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 1091, in _retry_request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 1057, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/www/newsroom/Backend/seeds/seed_runner.py", line 28, in <module>
+    seed_runner(5)
+  File "/var/www/newsroom/Backend/seeds/seed_runner.py", line 24, in seed_runner
+    seed_topics(fetch_topics(n_elem=n_topics))
+  File "/var/www/newsroom/Backend/seeds/seed_topics.py", line 31, in seed_topics
+    seed_questions(questions=topic.set_questions(),topic=topic)
+                             ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/server/models/db_topic.py", line 34, in set_questions
+    str_questions = fetch_questions(topic=self.title, role=self.role,n_qst=n_qst)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/etl/extract.py", line 74, in fetch_questions
+    questions = fetch_gen_ai(prompt=prompt)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/api/genai/client.py", line 50, in fetch_gen_ai
+    response = client.models.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/google/genai/models.py", line 5019, in generate_content
+    response = self._generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/google/genai/models.py", line 3995, in _generate_content
+    response_dict = self._api_client.request(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/google/genai/_api_client.py", line 742, in request
+    response = self._request(http_request, stream=False)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/google/genai/_api_client.py", line 671, in _request
+    errors.APIError.raise_for_response(response)
+  File "/var/www/newsroom/Backend/.venv/lib/python3.12/site-packages/google/genai/errors.py", line 103, in raise_for_response
+    raise ServerError(status_code, response_json, response)
+google.genai.errors.ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}
+2025-06-01 23:45:16 ip-172-31-29-63 newsroom-seed[64439]: ERROR : seed runner execution
+2025-06-01 23:45:16 ip-172-31-29-63 newsroom-seed[64439]: INFO : Finish seed runner
+2025-06-02 07:21:00 ip-172-31-29-63 newsroom-seed[66806]: INFO : Activating virtual environment
+2025-06-02 07:21:00 ip-172-31-29-63 newsroom-seed[66806]: INFO : Starting seed runner
+All tables dropped except: fav_videos, fav_articles, users
+All tables created.
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Topic ( id : 1 ) ( topic : Economy ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 1 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 1 ) ( nb of videos : 4 )
+--------------------
+Question ( id : 2 ) ( nb of articles : 10 )
+--------------------
+Question ( id : 2 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 3 ) ( nb of articles : 2 )
+--------------------
+Question ( id : 3 ) ( nb of videos : 3 )
+--------------------
+Topic ( id : 1 ) ( topic : Economy ) is complete )
+====================
+Topic ( id : 2 ) ( topic : Climate ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 4 ) ( nb of articles : 4 )
+--------------------
+Question ( id : 4 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 5 ) ( nb of articles : 1 )
+--------------------
+Question ( id : 5 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 6 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 6 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 2 ) ( topic : Climate ) is complete )
+====================
+Topic ( id : 3 ) ( topic : Healthcare ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 7 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 7 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 8 ) ( nb of articles : 9 )
+--------------------
+Question ( id : 8 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 9 ) ( nb of articles : 19 )
+--------------------
+Question ( id : 9 ) ( nb of videos : 5 )
+--------------------
+Topic ( id : 3 ) ( topic : Healthcare ) is complete )
+====================
+Topic ( id : 4 ) ( topic : Technology ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 10 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 10 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 11 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 11 ) ( nb of videos : 3 )
+--------------------
+Question ( id : 12 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 12 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 4 ) ( topic : Technology ) is complete )
+====================
+Topic ( id : 5 ) ( topic : Politics ) is starting )
+====================
+Error Fetching from OpenAI switch to GenAi Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+Question ( id : 13 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 13 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 14 ) ( nb of articles : 11 )
+--------------------
+Question ( id : 14 ) ( nb of videos : 5 )
+--------------------
+Question ( id : 15 ) ( nb of articles : 20 )
+--------------------
+Question ( id : 15 ) ( nb of videos : 4 )
+--------------------
+Topic ( id : 5 ) ( topic : Politics ) is complete )
+====================
+2025-06-02 07:22:03 ip-172-31-29-63 newsroom-seed[66806]: INFO : Finish seed runner

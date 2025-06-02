@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.8 (Ubuntu 16.8-0ubuntu0.24.04.1)
--- Dumped by pg_dump version 16.8 (Ubuntu 16.8-0ubuntu0.24.04.1)
+-- Dumped from database version 16.9 (Ubuntu 16.9-0ubuntu0.24.04.1)
+-- Dumped by pg_dump version 16.9 (Ubuntu 16.9-0ubuntu0.24.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -96,6 +96,7 @@ ALTER SEQUENCE public.articles_id_seq OWNED BY public.articles.id;
 
 CREATE TABLE public.fav_articles (
     id integer NOT NULL,
+    "favAt" timestamp without time zone NOT NULL,
     score double precision,
     question_id integer,
     api_source character varying(50),
@@ -140,6 +141,7 @@ ALTER SEQUENCE public.fav_articles_id_seq OWNED BY public.fav_articles.id;
 
 CREATE TABLE public.fav_videos (
     id integer NOT NULL,
+    "favAt" timestamp without time zone NOT NULL,
     question_id integer,
     youtube_id character varying(255) NOT NULL,
     description character varying(255),
@@ -592,7 +594,7 @@ COPY public.articles (id, score, question_id, api_source, title, description, co
 -- Data for Name: fav_articles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.fav_articles (id, score, question_id, api_source, title, description, content, url, "urlToImage", "publishedAt", article_id, user_id) FROM stdin;
+COPY public.fav_articles (id, "favAt", score, question_id, api_source, title, description, content, url, "urlToImage", "publishedAt", article_id, user_id) FROM stdin;
 \.
 
 
@@ -600,7 +602,7 @@ COPY public.fav_articles (id, score, question_id, api_source, title, description
 -- Data for Name: fav_videos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.fav_videos (id, question_id, youtube_id, description, thumbnail, video_id, user_id) FROM stdin;
+COPY public.fav_videos (id, "favAt", question_id, youtube_id, description, thumbnail, video_id, user_id) FROM stdin;
 \.
 
 
@@ -665,8 +667,6 @@ COPY public.topics (id, title, role, images) FROM stdin;
 --
 
 COPY public.users (id, username, email, password_hash, created_at, is_active) FROM stdin;
-1	will	wfotso21@gmail.com	scrypt:32768:8:1$UbIimXbCm0GXWVPc$8c3c84c0893d1188a0b289a927ae74eca47531d1644804c5c59619ab6953a94a4b0d90f91d1625e28a8ba8aadafc30b8e1f6dc4cf2ca1d383c36052b741928a1	2025-05-18 21:55:07.147476	t
-2	freecs	will.fotso.pro@gmail.com	scrypt:32768:8:1$jhvIiFPfEA0OcyLN$ed4a08ac1075f4e5bd2a5a11ba1f214a684dbefef6217aadf658f930d2e71690682a19762f7f40e0de98626eb25ea00a5cbd1d0b736c980b298da8cf9225e744	2025-05-19 17:17:01.51268	t
 \.
 
 
@@ -689,14 +689,14 @@ SELECT pg_catalog.setval('public.articles_id_seq', 1, false);
 -- Name: fav_articles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.fav_articles_id_seq', 1, true);
+SELECT pg_catalog.setval('public.fav_articles_id_seq', 1, false);
 
 
 --
 -- Name: fav_videos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.fav_videos_id_seq', 2, true);
+SELECT pg_catalog.setval('public.fav_videos_id_seq', 1, false);
 
 
 --
@@ -752,7 +752,7 @@ SELECT pg_catalog.setval('public.topics_id_seq', 1, false);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 2, true);
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
 
 
 --
@@ -907,6 +907,14 @@ ALTER TABLE ONLY public.articles
 
 
 --
+-- Name: fav_articles fav_articles_article_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.fav_articles
+    ADD CONSTRAINT fav_articles_article_id_fkey FOREIGN KEY (article_id) REFERENCES public.articles(id) ON DELETE SET NULL;
+
+
+--
 -- Name: fav_articles fav_articles_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -920,6 +928,14 @@ ALTER TABLE ONLY public.fav_articles
 
 ALTER TABLE ONLY public.fav_videos
     ADD CONSTRAINT fav_videos_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fav_videos fav_videos_video_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.fav_videos
+    ADD CONSTRAINT fav_videos_video_id_fkey FOREIGN KEY (video_id) REFERENCES public.videos(id) ON DELETE SET NULL;
 
 
 --

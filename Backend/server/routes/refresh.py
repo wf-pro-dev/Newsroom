@@ -31,7 +31,6 @@ refresh_bp = Blueprint('refresh', __name__)
 @refresh_bp.route("/refresh/<int:question_id>", methods=["POST"])
 @jwt_required()
 def refresh_question(question_id):
-    
     # Get CSRF token from header
     csrf_token = request.headers.get('X-CSRF-TOKEN')
     current_app.logger.info(f"Register attempt with CSRF Token: {csrf_token}")
@@ -58,7 +57,7 @@ def refresh_question(question_id):
                 question_id = question_id,
                 user_id = current_user_id
         )
-
+        
         db.session.add(hidden_question)
         db.session.commit()
         

@@ -9,7 +9,7 @@ import { Article, Favourite, Video } from '@/utils/types'
 import { addFavourite, deleteFavouritebyId, hideContent } from '@/utils/api'
 import moment from 'moment'
 import { Separator } from '@radix-ui/react-separator'
-import { useGlobalState } from '@/components/context/GlobalStateContext'
+import { useGlobalState } from '@/src/contexts/GlobalStateContext'
 import { mixArray } from '@/lib/utils'
 import '@/styles/newsmain.css'
 

@@ -12,6 +12,21 @@ from api.aws.client import upload_to_s3
 from api.genai.client import fetch_prompt_image_gen_ai
 from config.constants import REPLICATE_API_TOKEN
 
+def fetch_replicate_ai(prompt:str, model:str):
+    """
+    Fetch the answer of arg prompt on the given ai model through replicate api
+    """
+
+    try:
+        output = replicate.run(
+            model,
+            input=prompt
+        )
+        return output
+    except Exception as e:
+        print(f"Error fetching from replicate : {e}")
+        return None
+
 def generate_image_replicate(prompt: str,topic_id: int,index: int) -> str:
     """
     Generates an image based on the given prompt using Gemini API and upload it to a s3 bucket.

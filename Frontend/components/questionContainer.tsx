@@ -9,7 +9,7 @@ import NewsVideo from "./core/newsvideo";
 
 /* FUNCTIONS */
 import { refreshQuestion } from "@/utils/api";
-import { useGlobalState } from "./context/GlobalStateContext";
+import { useGlobalState } from "../src/contexts/GlobalStateContext";
 
 /* STYLES */
 import "../styles/newsmain.css";
@@ -228,5 +228,11 @@ function QuestionContainer({
     )
 }
 
-export default React.memo(QuestionContainer);
+export default React.memo(QuestionContainer, (prevProps, nextProps) => {
+    return (
+        prevProps.activeTab === nextProps.activeTab &&
+        prevProps.index === nextProps.index &&
+        prevProps.qIndex === nextProps.qIndex
+    );
+});
 

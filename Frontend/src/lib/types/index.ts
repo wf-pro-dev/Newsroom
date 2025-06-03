@@ -8,15 +8,15 @@ type Topic = {
   id: number;
   title: string;
   role: string;
-  images:string[];
+  images: string[];
 };
 
 type Question = {
   id: number;
   keywords: string;
   text: string;
-  topic_id: number; // Changed from topic to topic_id to match the model
-  order:number
+  topic_id: number;
+  order: number;
 };
 
 interface newQuestion extends Question {
@@ -27,11 +27,10 @@ interface newQuestion extends Question {
 type Video = {
   id: number;
   question_id: number;
-  youtube_id: string; // Changed from number to string
+  youtube_id: string;
   description: string;
   thumbnail: string;
-  type : "video"
-
+  type: "video";
 };
 
 type Article = {
@@ -40,19 +39,24 @@ type Article = {
   title: string;
   description: string;
   content: string;
-  publishedAt: string; // Ensure this is a string if you're using ISO format
+  publishedAt: string;
   url: string;
   urlToImage: string;
   api_source: string;
   score: number;
-  type : "article";
+  type: "article";
 };
-
 
 type Favourite =
   | (Article & { article_id: number; favAt: string; user_id: number })
   | (Video & { video_id: number; favAt: string; user_id: number });
 
-
-
-export type { User, Article, Question, newQuestion, Topic, Video, Favourite };
+export type { 
+  User, 
+  Article, 
+  Question, 
+  newQuestion, 
+  Topic, 
+  Video, 
+  Favourite 
+}; 

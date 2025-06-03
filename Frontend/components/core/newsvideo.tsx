@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { addFavourite, deleteFavouritebyId, hideContent } from "@/utils/api";
-import { useGlobalState } from "../context/GlobalStateContext";
+import { useGlobalState } from "../../src/contexts/GlobalStateContext";
 
 import "@/styles/newsmain.css"
 import { mixArray } from "@/lib/utils";

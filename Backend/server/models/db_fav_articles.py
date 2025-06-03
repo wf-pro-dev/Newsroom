@@ -34,7 +34,8 @@ class fav_articles(db.Model):
     article = db.relationship("articles", foreign_keys=[article_id], back_populates="favorites_articles")
 
     # Favorite-specific fields
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False) 
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    favAt = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     
     def to_dict(self):
         return {
@@ -51,4 +52,5 @@ class fav_articles(db.Model):
             "publishedAt": self.publishedAt,
             "api_source": self.api_source,
             "user_id": self.user_id,
+            "favAt": self.favAt,
         }

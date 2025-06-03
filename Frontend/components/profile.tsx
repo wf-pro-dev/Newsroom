@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useGlobalState } from "@/components/context/GlobalStateContext";
+import { useGlobalState } from "@/src/contexts/GlobalStateContext";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

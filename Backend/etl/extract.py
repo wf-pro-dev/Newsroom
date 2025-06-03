@@ -10,7 +10,7 @@ from api.news.client import Newsfetcher
 from api.openai.client import fetch_open_ai
 from api.genai.client import fetch_gen_ai
 from api.youtube.client import fetch_video
-
+from api.replicate.client import fetch_replicate_ai
 
 def fetch_topics(n_elem:int) -> list[dict[str, str]]:
     """
@@ -36,8 +36,13 @@ def fetch_topics(n_elem:int) -> list[dict[str, str]]:
     try:
         topics = fetch_open_ai(prompt=elem_str+prompt)
     except Exception as error:
-        print("Error Fetching from OpenAI switch to GenAi",error)
-        topics = fetch_gen_ai(prompt=elem_str+prompt)
+        try : 
+            print("Error Fetching from OpenAI switch to GenAi",error)
+            topics = fetch_gen_ai(prompt=elem_str+prompt)
+        except Exception as error:
+            print("Error Fetching from GenAi switch to Replicate",error)
+            topics = fetch_replicate_ai(prompt=elem_str+prompt, model="gemini-2.0-flash")
+        
         
     return topics
 
@@ -100,4 +105,4 @@ def fetch_videos(query: dict) -> list:
 
 if __name__ == "__main__":
     query = {"NewsAPI" : "Tech","NewsDATA": "Tech" }
-    print(fetch_articles(query=query))
+    print(fetch_topics(n_elem=1))

@@ -27,7 +27,8 @@ class fav_videos(db.Model):
     video = db.relationship("videos", foreign_keys=[video_id], back_populates="favorites_videos")
 
     # Favorite-specific fields
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False) 
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    favAt = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def to_dict(self):
         return {
@@ -39,6 +40,7 @@ class fav_videos(db.Model):
             "video_id": self.video_id,
             "description": self.description,
             "thumbnail": self.thumbnail,
-            "user_id":self.user_id
+            "user_id":self.user_id,
+            "favAt": self.favAt
         }
 

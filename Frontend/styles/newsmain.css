@@ -8,106 +8,198 @@
     !important;
 }
 
-/* Tabs List */
+/* Professional Tabs List - Enhanced */
 .tabs-list {
     @apply
     h-fit
-    bg-transparent
-    py-6 
+    bg-gray-800/50 backdrop-blur-3xl
     fixed
-    xl:px-24 2xl:px-40 top-0 left-0 right-0 
-    grid grid-cols-5 z-50
-    transition-all duration-300 ease-in-out 
-    
+    top-4
+    left-1/2
+    transform
+    -translate-x-1/2
+    rounded-2xl
+    mx-0
+    flex justify-center items-center gap-2
+    px-6 py-2
+    z-50
+    transition-all duration-500 ease-in-out
+    border border-slate-600/30
+    shadow-2xl shadow-slate-900/50
+  
     !important;
+    
+    /* Enhanced backdrop effects */
+    background: linear-gradient(135deg, 
+        rgba(30, 41, 59, 0.7) 0%, 
+        rgba(51, 65, 85, 0.8) 50%, 
+        rgba(30, 41, 59, 0.7) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
 }
 
-.tabs-list:hover {
-    @apply
-    bg-gray-900/80
-    backdrop-blur-md
-    shadow-lg shadow-blue-500/10
+.tabs-list::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl opacity-50;
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.1) 0%, 
+        transparent 50%, 
+        rgba(59, 130, 246, 0.1) 100%);
+    pointer-events: none;
 }
 
 /* Tab Item */
 .tab-item {
-    @apply flex flex-1 justify-center;
+    @apply flex justify-center items-center relative;
 }
 
-/* Tab Trigger */
+/* Enhanced Tab Trigger */
 .tab-trigger {
     @apply 
-    w-fit 
-    py-2.5 
-    px-6 
-    rounded-full 
-    text-gray-200 
-    bg-gray-800/50 
-    backdrop-blur-sm
-    border border-gray-700/50
-    transition-all duration-300 ease-in-out 
-    hover:scale-105
+    w-full h-full
+    py-3
+    px-8 
+    rounded-2xl 
+    text-slate-300 
+    transition-all duration-500 ease-in-out 
+    font-medium
+    tracking-wide
+    relative
+    overflow-hidden
     !important;
+    
+    /* Enhanced text rendering */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .tab-trigger:hover {
     @apply 
-    text-white 
-    bg-blue-600/20 
-    border-blue-500/30
-    shadow-lg shadow-blue-500/20
+    text-slate-200 
     !important;
+    
+    /* Enhanced hover glow */
+    text-shadow: 0 0 8px rgba(148, 163, 184, 0.4);
 }
 
 .tab-trigger[data-state="active"] {
     @apply 
-    bg-gradient-to-r from-blue-500/20 via-blue-600/20 to-blue-500/20
     text-white 
-    border-blue-500/50
-    shadow-lg shadow-blue-500/30
+    font-semibold
     !important;
+    
+    /* Enhanced active state */
+    text-shadow: 
+        0 0 10px rgba(59, 130, 246, 0.5),
+        0 0 20px rgba(59, 130, 246, 0.3),
+        0 0 30px rgba(59, 130, 246, 0.2);
 }
 
-/* Footer */
+/* Enhanced sliding indicator animations */
+@keyframes slideGlow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 20px rgba(59, 130, 246, 0.3),
+            0 0 40px rgba(59, 130, 246, 0.2),
+            inset 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    50% { 
+        box-shadow: 
+            0 0 30px rgba(59, 130, 246, 0.5),
+            0 0 60px rgba(59, 130, 246, 0.3),
+            inset 0 0 30px rgba(255, 255, 255, 0.15);
+    }
+}
+
+/* Particle animations */
+@keyframes particleFloat {
+    0% { 
+        transform: translateY(0) translateX(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(-10px) translateX(0) scale(1);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(-50px) translateX(var(--random-x)) scale(1);
+    }
+    100% { 
+        transform: translateY(-60px) translateX(var(--random-x)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Ripple effect */
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.animate-ripple {
+    animation: ripple 0.6s ease-out;
+}
+
+/* Enhanced 3D transforms */
+.preserve-3d {
+    transform-style: preserve-3d;
+}
+
+.backface-hidden {
+    backface-visibility: hidden;
+}
+
+/* Professional Footer - Updated to match */
 .footer {
     @apply 
     flex 
     flex-row 
     
     space-x-2.5
-    p-2
+    p-3
     fixed 
     right-1/2
     translate-x-1/2
-    bg-gray-800/50
-    backdrop-blur-md
-    border border-gray-700 
+    bg-slate-800/70
+    backdrop-blur-xl
+    border border-slate-600/60 
     rounded-2xl 
-    transition-all duration-300 ease-in-out
-    shadow-lg shadow-blue-500/10
+    transition-all duration-500 ease-in-out
+    shadow-xl shadow-slate-900/40
     !important;
 }
 
 .footer:hover {
     @apply
     -translate-y-1/4
-    shadow-lg shadow-blue-500
+    shadow-xl shadow-slate-800/60
+    bg-slate-700/80
+    border-slate-500/70
 }
 
-/* Tag*/
-
+/* Professional Tag - Updated */
 .tag {
     @apply
     w-fit 
     h-fit 
-    bg-gray-800/50
-    text-gray-200
-    border border-gray-700
+    bg-slate-800/60
+    text-slate-300
+    border border-slate-600/50
     transition-all duration-300 ease-in-out
     !important;
 }
 
-/* Button */
+/* Professional Button - Updated */
 .button-container {
     @apply 
     w-fit 
@@ -121,10 +213,10 @@
     w-fit 
     h-fit 
     p-0.5 
-    bg-gray-800/50
-    text-gray-200
+    bg-slate-800/60
+    text-slate-300
     rounded-xl 
-    border border-gray-700
+    border border-slate-600/50
     transition-all duration-300 ease-in-out
     !important;
 }
@@ -132,9 +224,10 @@
 .button:hover {
     @apply 
     scale-105
-    bg-gradient-to-r from-blue-500/40 via-blue-600/40 to-blue-500/40
-    border-blue-500/30
-    shadow-lg shadow-blue-500/20
+    bg-gradient-to-r from-slate-700/70 via-blue-800/50 to-slate-700/70
+    border-slate-500/60
+    shadow-lg shadow-slate-800/40
+    text-slate-200
     !important;
 }
 
@@ -145,11 +238,11 @@
     h-fit 
     p-0.5
     rounded-xl
-    bg-gray-800/50
-    text-gray-200
-    bg-gradient-to-r from-blue-500/40 via-blue-600/40 to-blue-500/40
-    border border-blue-500/30
-    shadow-lg shadow-blue-500/20
+    bg-slate-800/60
+    text-slate-200
+    bg-gradient-to-r from-slate-700/70 via-blue-800/50 to-slate-700/70
+    border border-slate-500/60
+    shadow-lg shadow-slate-800/40
     transition-all duration-300 ease-in-out
     !important;
 }
@@ -157,55 +250,52 @@
 .active-button:hover {
     @apply
     scale-100
-    bg-gray-800/30
-    text-gray-200
+    bg-slate-800/50
+    text-slate-300
     rounded-xl 
-    border border-gray-700
+    border border-slate-600/50
     transition-all duration-300 ease-in-out
     !important;
 }
 
 .button-content {
     @apply 
-    p-2 
+    /* p-2  */
     flex 
     justify-center 
     items-center;
 }
 
 /* Refresh Button */
-
 .refresh-·button-container {
     @apply absolute w-fit h-fit 2xl:left-12 !important;
 }
 
-
-
 /* New meaningful classes */
 .tabs-content-container {
-    @apply  pt-12 pb-1 bg-black/50 backdrop-blur-sm backdrop-contrast-125 !important;
+    @apply  
+    bg-black/30
+    /* bg-black/50 
+    backdrop-blur-sm 
+    backdrop-contrast-125 */
+    !important;
 }
 
 .tabs-content {
     @apply mt-0 transition-all duration-300 ease-in-out !important;
 }
 
-/* .question-refresh {
-    
-} */
-
-/* Articles */
-
+/* Professional Articles - Updated */
 .article-card {
     @apply
-    border border-gray-700 
+    border border-slate-600/50 
 }
 
 .article-card:hover {
     @apply 
-    bg-gradient-to-r from-blue-500/20 via-blue-600/20 to-blue-500/20 
-    border-blue-500/30
-    shadow-lg shadow-blue-500/50
+    bg-gradient-to-r from-slate-700/40 via-blue-800/30 to-slate-700/40 
+    border-slate-500/60
+    shadow-lg shadow-slate-800/50
 }
 
 .question-header {
@@ -217,7 +307,7 @@
 }
 
 .question-keywords {
-    @apply text-center w-fit text-gray-400;
+    @apply text-center w-fit text-slate-400;
 }
 
 .news-grid {
@@ -242,7 +332,6 @@
     !important;
 }
 
-
 @keyframes gradientSlide {
     from { background-position: 200% center; }
 
@@ -253,7 +342,6 @@
   background-size: 200% auto;
   animation: gradientSlide 3.5s linear infinite;
 }
-
 
 @keyframes gradientTitleSlide {
     from { background-position: 200% center; }

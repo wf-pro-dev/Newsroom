@@ -6,7 +6,7 @@ import Notification from '@/components/core/notification'
 import { HeroGlobe } from '@/components/heroglobe'
 import { Button } from '@/components/ui/button'
 import '@/styles/page.css'
-import { useGlobalState } from './context/GlobalStateContext'
+import { useGlobalState } from '../src/contexts/GlobalStateContext'
 import Auth from './auth'
 import { motion } from 'framer-motion'
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import NewsCarousel from "./newsCarousel";
 import { Question } from "@/utils/types";
 import { Button } from "./ui/button";
@@ -7,10 +7,11 @@ import { Heart, LogOut, LucideIcon, User } from "lucide-react";
 import NewsFavorites from "./newsFavorites";
 import "@/styles/newsmain.css";
 import "@/styles/page.css";
-import { useGlobalState } from "@/components/context/GlobalStateContext";
+import { useGlobalState } from "@/src/contexts/GlobalStateContext";
 import QuestionContainer from "./questionContainer";
 import { logout } from "@/utils/api";
 import ProfilePage from "./profile";
+import { motion, AnimatePresence } from "framer-motion";
 
 function NewsMain({
   activeTab,
@@ -33,6 +34,7 @@ function NewsMain({
   const [atInnerHeight, setAtInnerHeight] = useState(false);
   const showHeaderRef = useRef(false);
   const atInnerHeightRef = useRef(false);
+  
 
   const {
     user,
@@ -41,6 +43,7 @@ function NewsMain({
     questions,
   } = useGlobalState();
 
+  const availableTabs = useMemo(() => Object.keys(newsData), [newsData]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,20 +65,25 @@ function NewsMain({
 
   function onValueChange(value: string) {
     if (showFavorites) setShowFavorites(false);
-    setIsChanging(true);
 
+    setIsChanging(true);
+    // Add smooth transition animation
     setTimeout(() => {
       setActiveTab(value);
       window.scrollTo({ top: window.innerHeight, behavior: "instant" });
       setTimeout(() => {
         setIsChanging(false);
-      }, 200);
-    }, 400);
+      }, 300);
+    }, 200);
   }
 
-  function goUp(category: string) {
+  function onTabChange(category: string) {
     if (category === activeTab) {
+      // If clicking the same tab, scroll to content
       window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+    } else {
+      // If clicking a different tab, use proper onValueChange flow
+      onValueChange(category);
     }
   }
 
@@ -93,7 +101,7 @@ function NewsMain({
     } else if (page === "favorites") {
       setShowFavorites(!showFavorites)
       setShowProfile(false)
-    } 
+    }
   }
 
   // Inside NewsMain component
@@ -103,13 +111,15 @@ function NewsMain({
         Object.keys(newsData[activeTab]).includes(question.text)
       )
       .sort((a, b) => a.order - b.order),
+
     [questions, newsData, activeTab] // Recompute only when these change
   );
+
 
   const bottom_buttons = [
     {
       icon: User,
-      text: user?.username.charAt(0).toUpperCase() + user?.username.slice(1),
+      text: user?.username ? user.username.charAt(0).toUpperCase() + user.username.slice(1) : "Profile",
       active: showProfile,
       onClick: () => onPageChange("profile")
     },
@@ -131,26 +141,26 @@ function NewsMain({
     { Icon, text, active, onClick }: { Icon: LucideIcon, text: string, active: boolean, onClick: () => void }) => {
     return (
       <div className="flex flex-col items-center group" >
-          <div
-            className={`button-container`}
+        <div
+          className={`button-container`}
+        >
+          <Button
+            variant="secondary"
+            className={`${active ? "active-button" : "button"}`}
+            onClick={onClick}
           >
-            <Button
-              variant="secondary"
-              className={`${ active ? "active-button" : "button" }`}
-              onClick={onClick}
-            >
-              <div className="button-content">
-                <Icon strokeWidth={1.5} style={{ width: 28, height: 28 }} />
-              </div>
-            </Button>
-          </div>
-
-
-          <div className="absolute flex flex-col px-2 py-1 transition-all duration-300 ease-in-out border rounded-lg shadow-lg opacity-0 grow -top-2/3 bg-gradient-to-r from-blue-500/60 via-blue-600/60 to-blue-500/60 border-blue-500/30 shadow-blue-500/20 group-hover:opacity-100" >
-            <p className="text-sm font-medium">{text}</p>
-          </div>
-
+            <div className="button-content">
+              <Icon strokeWidth={1.5} style={{ width: 28, height: 28 }} />
+            </div>
+          </Button>
         </div>
+
+
+        <div className="absolute flex flex-col px-2 py-1 transition-all duration-300 ease-in-out border rounded-lg shadow-lg opacity-0 grow -top-2/3 bg-gradient-to-r from-slate-700/80 via-slate-800/80 to-slate-700/80 border-slate-600/50 shadow-slate-900/40 group-hover:opacity-100" >
+          <p className="text-sm font-medium text-slate-200">{text}</p>
+        </div>
+
+      </div>
     )
   }
 
@@ -160,45 +170,202 @@ function NewsMain({
       onValueChange={onValueChange}
       className="tabs-container"
     >
-      <TabsList className={`tabs-list group ${showHeader && !showProfile ? "opacity-100" : "opacity-0"}`}>
-        {Object.keys(newsData).map((category, index) => (
-          <div key={index} className="tab-item">
-            <TabsTrigger
-              key={category}
-              value={category}
-              onClick={() => goUp(category)}
-              className={`
-                relative
-                py-2.5 px-4
-                tab-trigger
-                
-                ${showHeader && !showProfile
-                  ? "data-[state=active]:translate-y-0 group-hover:translate-y-0"
-                  : "data-[state=active]:-translate-y-20"
-                } 
-                ${atInnerHeight && !showProfile
-                  ? "translate-y-0"
-                  : "-translate-y-20"
-                }
-              `}
-            >
-              <p className="text-sm font-medium">
-                {category}
-              </p>
-            </TabsTrigger>
-          </div>
-        ))}
-      </TabsList>
+      {!showFavorites && (
+        <motion.div
+          className={`tabs-list group relative ${showHeader && !showProfile && !showFavorites ? "opacity-100" : "opacity-0"}`}
+          initial={{ y: -100, opacity: 0 }}
+          animate={{
+            y: showHeader && !showProfile && !showFavorites ? 0 : -100,
+            opacity: showHeader && !showProfile && !showFavorites ? 1 : 0
+          }}
+          transition={{
+            duration: 0.6,
+            ease: [0.23, 1, 0.32, 1],
+            opacity: { duration: 0.4 }
+          }}
+        >
+          {/* Enhanced sliding indicator */}
+          <motion.div
+            className="absolute inset-y-2 bg-gradient-to-r from-slate-700/90 via-blue-800/70 to-slate-700/90 rounded-2xl border border-slate-400/60 shadow-xl shadow-slate-700/60 backdrop-blur-xl"
+            layoutId="activeTab"
+            transition={{
+              type: "spring",
+              stiffness: 500,
+              damping: 30,
+              mass: 0.8
+            }}
+            style={{
+              zIndex: 1
+            }}
+          />
+
+
+          <AnimatePresence mode="wait">
+            {availableTabs.map((category, index) => (
+              <motion.div
+                key={`${category}-${index}`}
+                className="tab-item relative z-10"
+                initial={{ scale: 0.8, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.8, opacity: 0, y: -20 }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.08,
+                  ease: [0.23, 1, 0.32, 1]
+                }}
+              >
+                <motion.button
+                  onClick={() => onTabChange(category)}
+                  className={`
+                    relative p-4 rounded-2xl font-medium tracking-wide
+                    transition-all duration-500 ease-in-out backdrop-blur-xl
+                    overflow-hidden z-20
+                    ${activeTab === category
+                      ? 'text-white font-semibold'
+                      : 'text-slate-300 hover:text-slate-200'
+                    }
+                  `}
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.2 }
+                  }}
+                  whileTap={{
+                    scale: 0.98,
+                    transition: { duration: 0.1 }
+                  }}
+                  onTap={() => {
+                    // Create ripple effect
+                    const ripple = document.createElement('div');
+                    ripple.className = 'absolute inset-0 bg-white/20 rounded-2xl animate-ping';
+                    ripple.style.animationDuration = '0.6s';
+                    const button = event?.currentTarget as HTMLElement;
+                    button.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                  }}
+                >
+
+
+
+                  {/* Enhanced text animation */}
+                  <motion.span
+                    className="relative z-30"
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: index * 0.05,
+                      ease: [0.23, 1, 0.32, 1]
+                    }}
+                  >
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={activeTab}
+                        initial={{
+                          y: activeTab === category ? -20 : 0,
+                          opacity: activeTab === category ? 0 : 1,
+                          scale: activeTab === category ? 0.9 : 1
+                        }}
+                        animate={{
+                          y: 0,
+                          opacity: 1,
+                          scale: 1
+                        }}
+                        exit={{
+                          y: activeTab === category ? 20 : 0,
+                          opacity: activeTab === category ? 0 : 1,
+                          scale: activeTab === category ? 1.1 : 1
+                        }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0.23, 1, 0.32, 1]
+                        }}
+                        className="inline-block"
+                      >
+                        {category.split('').map((char, charIndex) => (
+                          <motion.span
+                            key={`${category}-${charIndex}`}
+                            initial={{
+                              y: 15,
+                              opacity: 0,
+                              rotateX: -90
+                            }}
+                            animate={{
+                              y: 0,
+                              opacity: 1,
+                              rotateX: 0
+                            }}
+                            transition={{
+                              duration: 0.4,
+                              delay: (index * 0.05) + (charIndex * 0.015),
+                              ease: [0.23, 1, 0.32, 1]
+                            }}
+                            className="inline-block"
+                            style={{
+                              transformOrigin: 'center bottom',
+                              textShadow: activeTab === category
+                                ? '0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3)'
+                                : 'none'
+                            }}
+                          >
+                            {char === ' ' ? '\u00A0' : char}
+                          </motion.span>
+                        ))}
+                      </motion.span>
+                    </AnimatePresence>
+                  </motion.span>
+
+                  {/* Particle effect for active tab */}
+                  <AnimatePresence>
+                    {activeTab === category && (
+                      <motion.div className="absolute inset-0 pointer-events-none">
+                        {[...Array(6)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-blue-400/60 rounded-full"
+                            initial={{
+                              opacity: 0,
+                              scale: 0,
+                              x: Math.random() * 100 - 50,
+                              y: Math.random() * 40 - 20
+                            }}
+                            animate={{
+                              opacity: [0, 1, 0],
+                              scale: [0, 1, 0],
+                              y: [0, -30, -60],
+                              x: [0, (Math.random() - 0.5) * 40]
+                            }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              delay: i * 0.3,
+                              ease: "easeOut"
+                            }}
+                            style={{
+                              left: '50%',
+                              top: '50%',
+                              boxShadow: '0 0 6px rgba(59, 130, 246, 0.8)'
+                            }}
+                          />
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      )}
 
       {!showFavorites &&
-       !showProfile &&
-       Object.keys(newsData).map(
+        !showProfile &&
+        availableTabs.map(
           (topic, index) => {
             return (
               topic === activeTab && (
                 <div
                   key={index}
-                  className="overflow-scroll tabs-content-container xl:px-24 2xl:px-40"
+                  className="overflow-scroll tabs-content-container "
                 >
                   <TabsContent
                     key={topic}
@@ -206,15 +373,19 @@ function NewsMain({
                     className={`${isChanging ? "opacity-0" : "opacity-100"
                       } tabs-content`}
                   >
-                    <div className="my-12 separator" />
+
 
                     {questions.filter((question: Question) =>
                       Object.keys(newsData[activeTab]).includes(question.text)
                     ).length == 3 && (
 
                         <NewsCarousel
+                          key={activeTab}
                           topic_title={activeTab}
                           questions={topic_questions}
+                          activeTab={activeTab}
+                          setActiveTab={setActiveTab}
+                          availableTabs={availableTabs}
                         />
 
                       )}
@@ -267,7 +438,7 @@ function NewsMain({
         <ProfilePage />
       )}
 
-      <div className={`footer  ${(showHeader && ( !atInnerHeight || showFavorites )) ? "translate-y-1/2 bottom-0" : "translate-y-full bottom-0"
+      <div className={`footer  ${(showHeader && (!atInnerHeight || showFavorites)) ? "translate-y-1/2 bottom-0" : "translate-y-full bottom-0"
         }`} >
 
         {bottom_buttons.map((button, index) => (

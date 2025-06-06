@@ -171,36 +171,10 @@ function NewsMain({
       className="tabs-container"
     >
       {!showFavorites && (
-        <motion.div
-          className={`tabs-list group relative ${showHeader && !showProfile && !showFavorites ? "opacity-100" : "opacity-0"}`}
-          initial={{ y: -100, opacity: 0 }}
-          animate={{
-            y: showHeader && !showProfile && !showFavorites ? 0 : -100,
-            opacity: showHeader && !showProfile && !showFavorites ? 1 : 0
-          }}
-          transition={{
-            duration: 0.6,
-            ease: [0.23, 1, 0.32, 1],
-            opacity: { duration: 0.4 }
-          }}
+        <div
+          className={`tabs-list group relative opacity-0`}
         >
-          {/* Enhanced sliding indicator */}
-          <motion.div
-            className="absolute inset-y-2 bg-gradient-to-r from-slate-700/90 via-blue-800/70 to-slate-700/90 rounded-2xl border border-slate-400/60 shadow-xl shadow-slate-700/60 backdrop-blur-xl"
-            layoutId="activeTab"
-            transition={{
-              type: "spring",
-              stiffness: 500,
-              damping: 30,
-              mass: 0.8
-            }}
-            style={{
-              zIndex: 1
-            }}
-          />
-
-
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" >
             {availableTabs.map((category, index) => (
               <motion.div
                 key={`${category}-${index}`}
@@ -354,7 +328,7 @@ function NewsMain({
               </motion.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
       )}
 
       {!showFavorites &&

@@ -140,7 +140,7 @@ export default function App() {
     ({ heroRef }: { heroRef: React.Ref<HTMLDivElement> }) => (
       <div
         ref={heroRef}
-        className={`bg-gradient-to-b from-gray-900 via-blue-900/20 to-black/40 dupe-section transition-all duration-300 ease-in-out relative overflow-hidden`}
+        className={`dupe-section transition-all duration-300 ease-in-out relative overflow-hidden`}
       >
 
 
@@ -339,9 +339,12 @@ export default function App() {
         <HeroGlobe />
       </div>
 
+      <div className="fixed top-0 left-0 w-screen h-3/4  bg-gradient-to-b from-blue-900/60 via-gray-700/40  to-black/40"/>
+
       <Auth />
 
       <div className={`news-main relative`}>
+
         <NewsMain
           activeTab={activeTab}
           setActiveTab={setActiveTab}

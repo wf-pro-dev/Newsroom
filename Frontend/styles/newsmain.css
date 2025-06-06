@@ -212,7 +212,7 @@
     @apply 
     w-fit 
     h-fit 
-    p-0.5 
+    p-2
     bg-slate-800/60
     text-slate-300
     rounded-xl 
@@ -274,7 +274,6 @@
 /* New meaningful classes */
 .tabs-content-container {
     @apply  
-    bg-black/30
     /* bg-black/50 
     backdrop-blur-sm 
     backdrop-contrast-125 */

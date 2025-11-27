@@ -7,16 +7,9 @@ import Image from "next/image";
 import "@/styles/newsmain.css"
 
 
-type NewsVideoProps = {
-    video: Video;
-    showFavorites: boolean
-    showAdd: React.Dispatch<React.SetStateAction<boolean>>,
-    showDelete: React.Dispatch<React.SetStateAction<boolean>>,  
-};
 
 
-function Thumbnail({ video, showFavorites, showAdd, showDelete }: NewsVideoProps) {
-
+function Thumbnail(video : Video) {
 
     return (
         <div className="flex flex-col items-center justify-center w-full h-full gap-2 border border-gray-700 rounded-md">

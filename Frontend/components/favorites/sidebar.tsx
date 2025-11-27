@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect, useMemo } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Favourite } from "@/utils/types";
 import { useGlobalState } from "@/src/contexts/GlobalStateContext";

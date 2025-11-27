@@ -19,8 +19,6 @@ interface DraggableContentProps {
 const DraggableContent = ({ items, showFavorites, showDelete, showAdd }: DraggableContentProps) => {
   const [positions, setPositions] = useState<ItemPositions>({});
   const [scale, setScale] = useState(1 / 3);
-  const [views, setViews] = useState([]);
-  const [currentView, setCurrentView] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Generate grid positions for new items

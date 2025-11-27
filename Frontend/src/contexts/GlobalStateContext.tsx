@@ -2,7 +2,7 @@
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { User, Article, Question, Favourite, Topic, Video, Collection, Item, Page } from '@/utils/types';
-import { fetchTopics, fetchArticles, fetchCollections, fetchCsrfToken, fetchFavorites, fetchQuestions, fetchUser, fetchVideos, fetchItems } from '@/utils/api';
+import { fetchTopics, fetchArticles, fetchCollections, fetchCsrfToken, fetchFavorites, fetchQuestions, fetchUser, fetchVideos } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {

@@ -10,8 +10,6 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import Thumbnail from "../core/thumbnail";
 
 function FavoriteMain(
     { favourites, showFavorites, showDelete, showAdd, setShowAddToCollection, selectedItems, setSelectedItems }:
@@ -31,7 +29,6 @@ function FavoriteMain(
     const [isContentSelectable, setIsContentSelectable] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-    const defaultClassNames = getDefaultClassNames();
     const formatDateHeader = (dateString: string) => {
         const date = new Date(dateString);
         const today = new Date();

@@ -53,6 +53,26 @@ type Favourite =
   | (Article & { article_id: number; favAt: string; user_id: number })
   | (Video & { video_id: number; favAt: string; user_id: number });
 
+type Collection = {
+  id: number;
+  name: string;
+  user_id: number;
+  createdAt: string;
+  items: Item[];
+}
+
+type Item = {
+  id: number;
+  pos_x: number;
+  pos_y: number;
+  collection_id: number;
+  content: Article | Video;
+  content_id: number;
+  content_type: string;
+  createdAt: string;
+}
+
+type Page = "Login" | "Header" | "Topic" | "Question" | "Profile" | "Collection" | "Canvas"
 
 
-export type { User, Article, Question, newQuestion, Topic, Video, Favourite };
+export type { User, Article, Question, newQuestion, Topic, Video, Favourite, Collection, Item, Page };

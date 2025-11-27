@@ -7,7 +7,7 @@ backend_root = project_root + "/Backend"
 path.append(backend_root)
 
 # config
-from config.constants import NEWSAPI_KEY
+from config.constants import NEWSAPI_API_KEY
 
 from newsapi import NewsApiClient
 
@@ -32,7 +32,7 @@ class NewsAPI:
         """
         try:
 
-            newsapi = NewsApiClient(api_key=NEWSAPI_KEY)
+            newsapi = NewsApiClient(api_key=NEWSAPI_API_KEY)
             NewsAPI_articles = newsapi.get_everything(q=query, page_size=30)
             return NewsAPI_articles["articles"]
 

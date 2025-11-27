@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 
 # Define the path to the Newsroom backend
-NEWSROOM_PATH = "/var/www/newsroom/Backend/"
+NEWSROOM_PATH = "/home/will/Newsroom/Backend"
 
 # Determine the environment (default to 'development')
 env = os.getenv("FLASK_ENV", "development")
@@ -16,10 +16,10 @@ load_dotenv()
 
 # API Keys
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-NEWSAPI_KEY = os.getenv("NEWSAPI")
-NEWSDATA_KEY = os.getenv("NEWSDATA")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+NEWSAPI_API_KEY = os.getenv("NEWSAPI_API_KEY")
+NEWSDATA_API_KEY = os.getenv("NEWSDATA_API_KEY")
 YOUTUBE_KEY = os.getenv("YT_KEY")
-GEMINI_KEY = os.getenv("GEMINI_KEY")
 REPLICATE_API_TOKEN = os.getenv("REPLICATE_API_TOKEN")
 
 # secret keys
@@ -38,9 +38,13 @@ PYLINT_RCFILE = os.getenv("PYLINT_RCFILE", "")
 BLACK_LINE_LENGTH = os.getenv("BLACK_LINE_LENGTH", "88")
 
 # Load environment variables for the specific FLASK_ENV
-load_dotenv(f"{NEWSROOM_PATH}/.env.{env}")
-DEBUG = os.getenv("DEBUG", "True") == "True"
-DATABASE_URI = os.getenv("DATABASE_URI", "sqlite:///test.db")
+try:
+    load_dotenv(f"{NEWSROOM_PATH}/.env.{env}")
+    DEBUG = os.getenv("DEBUG", "True") == "True"
+    DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///test.db")
+except Exception as e:
+    print(f"Error loading environment variables from {NEWSROOM_PATH}/.env.{env}", e)
+
 
 # Table and columns for .db file
 COLUMNS = {
@@ -86,4 +90,4 @@ COLUMNS = {
 }
 
 if __name__ == "__main__":
-    print(env, CSRF_SECRET_KEY)
+    print(NEWSAPI_API_KEY, NEWSDATA_API_KEY, REPLICATE_API_TOKEN)

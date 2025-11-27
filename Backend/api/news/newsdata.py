@@ -7,7 +7,7 @@ backend_root = project_root + "/Backend"
 path.append(backend_root)
 
 # config
-from config.constants import NEWSDATA_KEY
+from config.constants import NEWSDATA_API_KEY
 
 from newsdataapi import NewsDataApiClient
 
@@ -32,7 +32,7 @@ class NewsDATA:
         """
         try:
 
-            api = NewsDataApiClient(apikey=NEWSDATA_KEY)
+            api = NewsDataApiClient(apikey=NEWSDATA_API_KEY)
             NewsDATA_articles = api.news_api(q=query)
             return NewsDATA_articles["results"]
 

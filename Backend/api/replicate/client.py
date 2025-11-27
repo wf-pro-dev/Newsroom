@@ -10,7 +10,6 @@ path.append(backend_root)
 
 from api.aws.client import upload_to_s3
 from api.genai.client import fetch_prompt_image_gen_ai
-from config.constants import REPLICATE_API_TOKEN
 
 def fetch_replicate_ai(prompt:str, model:str):
     """
@@ -20,7 +19,7 @@ def fetch_replicate_ai(prompt:str, model:str):
     try:
         output = replicate.run(
             model,
-            input=prompt
+            input=prompt,
         )
         return output
     except Exception as e:

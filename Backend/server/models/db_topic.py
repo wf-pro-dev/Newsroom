@@ -46,7 +46,6 @@ class topics(db.Model):
                 img_url = generate_image_replicate(prompt=prompt, topic_id=self.id, index=i)
             except Exception as e:
                 print(f"ERROR generating image with Replicate : {e}")
-                img_url = fetch_image_gen_ai(prompt=prompt, topic_id=self.id, index=i)
 
             images.append(img_url)
         

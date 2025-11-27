@@ -14,4 +14,4 @@ from config.constants import DEBUG
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1",port=5000, debug=DEBUG, threaded=False)
+    app.run(host="100.104.22.121",port=5000, debug=DEBUG, threaded=False)

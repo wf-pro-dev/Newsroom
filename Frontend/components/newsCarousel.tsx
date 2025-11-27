@@ -440,6 +440,7 @@ function NewsCarousel({
                                         {topic_title}
                                     </h2>
                                 </div>
+                                
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <h2
                                         className="text-3xl font-bold tracking-tight text-slate-600/30"
@@ -450,6 +451,7 @@ function NewsCarousel({
                                         {topic_title}
                                     </h2>
                                 </div>
+                                
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <h2
                                         className="text-3xl font-bold tracking-tight text-blue-800/25"

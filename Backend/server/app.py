@@ -34,6 +34,7 @@ from server.routes.all_data import all_data_bp
 from config.constants import DATABASE_URI, JWT_SECRET_KEY, CSRF_SECRET_KEY
 
 
+
 def create_app():
     app = Flask(__name__)
     
@@ -50,7 +51,9 @@ def create_app():
                     "https://newsroom-rho.vercel.app",
                     "https://newsroom-git-main-william-fotsos-projects.vercel.app",
                     "https://newsroom-git-development-william-fotsos-projects.vercel.app",
-                    "http://localhost:3000"
+                    "http://localhost:3000",
+                    "https://wwwill.dedyn.io",
+                    "http://newsroom-api-1:3000"
                     ],
                 "methods": ["GET", "POST", "DELETE", "OPTIONS"],
             }
@@ -58,7 +61,7 @@ def create_app():
         supports_credentials=True
     )
     
-    # Configure security settings in one place - no duplicate or conflicting settings
+    # Configure security settings
     app.config.update({
         # Basic Flask security
         'SECRET_KEY': 'dev-key-123',
@@ -84,6 +87,10 @@ def create_app():
         'JWT_TOKEN_LOCATION': ['cookies'],
         'JWT_ACCESS_TOKEN_EXPIRES': timedelta(hours=1)
     })
+    
+    @app.route('/health', methods=['GET'])
+    def health():
+        return jsonify({"status": "ok"}), 200
     
     
     # Share csrf with application context

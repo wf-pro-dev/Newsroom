@@ -1,8 +1,8 @@
 'use client'
 // components/context/GlobalStateContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { User, Article, Question, Favourite, Topic, Video } from '@/utils/types';
-import { fetchAllData, fetchArticles, fetchCsrfToken, fetchFavorites, fetchQuestions, fetchUser, fetchVideos } from '@/utils/api';
+import { User, Article, Question, Favourite, Topic, Video, Collection, Item, Page } from '@/utils/types';
+import { fetchTopics, fetchArticles, fetchCollections, fetchCsrfToken, fetchFavorites, fetchQuestions, fetchUser, fetchVideos, fetchItems } from '@/utils/api';
 import { mixArray } from '@/lib/utils';
 
 interface GlobalState {
@@ -10,6 +10,8 @@ interface GlobalState {
     setCSRFtoken: React.Dispatch<React.SetStateAction<string | null>>;
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    page: Page;
+    setPage: React.Dispatch<React.SetStateAction<Page>>;
     isLoadingUser: boolean;
     setIsLoadingUser: React.Dispatch<React.SetStateAction<boolean>>;
     topics: Topic[];
@@ -24,6 +26,12 @@ interface GlobalState {
     setFavourites: React.Dispatch<React.SetStateAction<Favourite[]>>;
     newsData: Record<string, Record<string, Array<Video | Article>>>;
     setNewsData: React.Dispatch<Record<string, Record<string, (Article | Video)[]>>>
+    collections: Collection[];
+    setCollections: React.Dispatch<React.SetStateAction<Collection[]>>;
+    items: Item[];
+    setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+    scrollEnabled: boolean;
+    setScrollEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
@@ -32,6 +40,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
 
     const [csrftoken, setCSRFtoken] = useState<string | null>(null)
     const [user, setUser] = useState<User | null>(null)
+    const [page, setPage] = useState<Page>("Login")
     const [topics, setTopics] = useState<Topic[]>([]);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [articles, setArticles] = useState<Article[]>([]);
@@ -39,23 +48,41 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     const [favourites, setFavourites] = useState<Favourite[]>([]);
     const [newsData, setNewsData] = useState<Record<string, Record<string, Array<Video | Article>>>>({});
     const [isLoadingUser, setIsLoadingUser] = useState(true);
+    const [collections, setCollections] = useState<Collection[]>([]);
+    const [items, setItems] = useState<Item[]>([]);
+    const [scrollEnabled, setScrollEnabled] = useState(true);
 
     useEffect(() => {
+
         const fetchInitialData = async () => {
 
 
-            const [AllData] = await Promise.all([
-                fetchAllData(),
-            ])
+            fetchTopics()
+                .then((topics) => setTopics(topics))
+                .catch((error) => console.log(error))
 
-            setIsLoadingUser(true)
-            fetchUser()
-                .then((user) => setUser(user || null))
-                .finally(() => setIsLoadingUser(false))
+            fetchCsrfToken()
+                .then((token) => {
+                    setCSRFtoken(token || null)
+                    setIsLoadingUser(true)
+                    fetchUser()
+                        .then((user) => {
+                            setUser(user)
+                            setPage("Header")
+                        })
+                        .catch((error) => {
+                            console.log("Authentication failed:", error)
+                            // Clear user state if authentication fails (e.g., expired tokens)
+                            setUser(null)
+                            setPage("Login")
+                        })
+                        .finally(() => setIsLoadingUser(false))
+                })
+                .catch((error) => {
+                    console.log("CSRF token fetch failed:", error)
+                    setIsLoadingUser(false)
+                })
 
-            setTopics(AllData["topics"])
-
-            fetchCsrfToken().then((token) => setCSRFtoken(token || null))
 
         }
 
@@ -90,12 +117,25 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
                     // Optimistically update UI
                     setFavourites(newFavourites as Favourite[]);
                 })
-
                 .catch((error) => console.log(error))
+
+
 
         }
 
     }, [user])
+
+
+    useEffect(() => {
+        if (page === "Collection") {
+            fetchCollections()
+                .then((collections) => {
+                    setCollections(collections)
+                })
+                .catch((error) => console.log(error))
+        }
+
+    }, [page])
 
 
     useEffect(() => {
@@ -121,6 +161,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
         })
 
         setNewsData(data)
+        console.log("newsData", data)
     }, [user, topics, questions, articles, videos])
 
     if (isLoadingUser) return null;
@@ -130,13 +171,17 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
             value={{
                 csrftoken, setCSRFtoken,
                 user, setUser,
+                page, setPage,
                 isLoadingUser, setIsLoadingUser,
                 topics, setTopics,
                 questions, setQuestions,
                 articles, setArticles,
                 videos, setVideos,
                 favourites, setFavourites,
-                newsData, setNewsData
+                newsData, setNewsData,
+                collections, setCollections,
+                items, setItems,
+                scrollEnabled, setScrollEnabled
             }}
         >
             {children}

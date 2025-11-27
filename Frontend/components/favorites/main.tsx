@@ -1,7 +1,7 @@
 import { Favourite, Article, Video } from "@/utils/types";
 import NewsArticle from "../core/newsarticle";
 import NewsVideo from "../core/newsvideo";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";

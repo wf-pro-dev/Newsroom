@@ -14,8 +14,9 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
     showAdd: React.Dispatch<React.SetStateAction<boolean>>
   }) {
 
-  const { favourites } = useGlobalState()
+  const { favourites, items } = useGlobalState()
   const [isDraggableMode, setIsDraggableMode] = useState(false);
+  
 
   const handleToggleDraggableMode = () => {
     setIsDraggableMode(!isDraggableMode);
@@ -29,12 +30,15 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
         favourites={favourites} 
         isDraggableMode={isDraggableMode}
         onToggleDraggableMode={handleToggleDraggableMode}
+        onAddToCollection={() => {}}
+        selectedCollection={null}
+        setSelectedCollection={() => {}}
       />
 
       {/* Main Content */}
       {isDraggableMode ? (
         <DraggableContent
-          favourites={favourites}
+          items={items}
           showFavorites={showFavorites}
           showDelete={showDelete}
           showAdd={showAdd}
@@ -45,6 +49,12 @@ function NewsFavorites({ showFavorites, showDelete, showAdd }:
           showFavorites={showFavorites}
           showDelete={showDelete}
           showAdd={showAdd}
+          showAddToCollection={false}
+          setShowAddToCollection={() => {}}
+          selectedCollection={null}
+          setSelectedCollection={() => {}}
+          selectedItems={[]}
+          setSelectedItems={() => {}}
         />
       )}
 

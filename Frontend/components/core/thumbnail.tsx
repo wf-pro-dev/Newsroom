@@ -6,10 +6,7 @@ import Image from "next/image";
 
 import "@/styles/newsmain.css"
 
-
-
-
-function Thumbnail(video : Video) {
+function Thumbnail({ video } : { video: Video }) {
 
     return (
         <div className="flex flex-col items-center justify-center w-full h-full gap-2 border border-gray-700 rounded-md">
@@ -20,7 +17,6 @@ function Thumbnail(video : Video) {
                     layout="fill"
                     objectFit="cover"
                     draggable={false}
-
                 />
             </div>
         </div>

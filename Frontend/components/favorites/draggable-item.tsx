@@ -85,9 +85,6 @@ const DraggableItem = ({
                         ) : (
                             <Thumbnail
                                 video={content as Video}
-                                showFavorites={showFavorites}
-                                showDelete={showDelete}
-                                showAdd={showAdd}
                             />
                         )}
                     </div>

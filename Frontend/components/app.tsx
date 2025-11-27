@@ -219,15 +219,15 @@ export default function App() {
                     <motion.div
                       key={feature.title}
                       className='relative group flex flex-col items-center p-6 space-y-3 bg-gray-800/20 backdrop-blur-2xl border border-gray-600/30 rounded-2xl shadow-xl hover:shadow-blue-500/30 h-full'
-                      initial={{ opacity: 0, y: 50}}
-                      animate={{ opacity: 1, y: 0}}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, delay: 0.4 + index * 0.2 }}
                       whileHover={{
                         scale: 1.05,
                         y: -10,
                         borderColor: 'rgba(59, 130, 246, 0.5)',
                         backgroundColor: 'rgba(31, 41, 55, 0.3)',
-                        transition: { duration: 0.2, delay:0, ease: "easeInOut" }
+                        transition: { duration: 0.2, delay: 0, ease: "easeInOut" }
 
                       }}
                     >
@@ -268,47 +268,45 @@ export default function App() {
                   {/* Button glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-cyan-400/30 to-blue-500/30 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  <Button
-                    variant="outline"
-                    className="relative group px-12 py-6 bg-gray-800/20 backdrop-blur-2xl border-2 border-blue-500/40 text-white transition-all duration-500 hover:bg-gradient-to-r hover:from-blue-500/30 hover:via-cyan-400/30 hover:to-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 rounded-2xl text-lg hover:border-cyan-400/60"
-                    onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-                  >
-                    {/* Enhanced holographic background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-cyan-400/20 to-blue-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
-
-                    <div className="relative z-10 flex flex-col items-center space-y-2">
-                      <motion.p
-                        className="text-sm text-gray-300 font-medium"
-                        initial={{ opacity: 0.7 }}
-                        whileHover={{ opacity: 1 }}
-                      >
-                        Welcome back,
-                      </motion.p>
-                      <motion.p
-                        className="font-bold text-2xl bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        {user.username}
-                      </motion.p>
-                      <motion.p
-                        className="text-xs text-gray-400 font-medium"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1.5 }}
-                      >
-                        Continue to your personalized feed
-                      </motion.p>
-                    </div>
-
-                    {/* Animated arrow indicator */}
-                    <motion.div
-                      className="absolute -bottom-3 left-1/2 transform -translate-x-1/2"
-                      animate={{ y: [0, 5, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
+                  <div className="relative group/button flex flex-col items-center -space-y-1">
+                    <motion.p
+                      className="text-sm text-gray-300 font-medium z-10 group/button-hover:text-white transition-colors duration-300"
+                      initial={{ opacity: 0.7 }}
+                      whileHover={{ opacity: 1 }}
                     >
-                      <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-blue-400/60" />
-                    </motion.div>
-                  </Button>
+                      Welcome back,
+                    </motion.p>
+                    <Button
+                      className="min-w-64 relative px-12 py-6 bg-gray-800/20 backdrop-blur-2xl border-2 border-blue-500/40 text-white transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/40 rounded-2xl text-lg hover:border-cyan-400/60 overflow-hidden"
+                      onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+                    >
+                      {/* Sliding background effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/15 via-cyan-400/15 to-blue-500/15 transform -translate-x-full group-hover/button:translate-x-0 transition-transform duration-700 ease-out" />
+
+                      <div className="relative z-10 flex flex-col items-center space-y-2">
+
+
+                        <motion.p
+                          className="font-bold text-2xl bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent"
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          {user.username}
+                        </motion.p>
+
+                      </div>
+                    </Button>
+
+                    <motion.p
+                      className="text-xs text-gray-400 font-medium z-10 group/button-hover:text-white transition-colors duration-300"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.5 }}
+                    >
+                      Continue to your personalized feed
+                    </motion.p>
+
+                   
+                  </div>
                 </motion.div>
 
               </div>
@@ -339,7 +337,7 @@ export default function App() {
         <HeroGlobe />
       </div>
 
-      <div className="fixed top-0 left-0 w-screen h-3/4  bg-gradient-to-b from-blue-900/60 via-gray-700/40  to-black/40"/>
+      <div className="fixed top-0 left-0 w-screen h-3/4  bg-gradient-to-b from-blue-900/60 via-gray-700/40  to-black/40" />
 
       <Auth />
 

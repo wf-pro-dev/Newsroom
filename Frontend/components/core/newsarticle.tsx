@@ -91,10 +91,10 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isDeleting ? 0 : 1, y: 0, scale: isDeleting ? 0.95 : 1 }}
             transition={{ duration: 0.3 }}
-            whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.01, ease: "easeInOut" } }}
+            whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3, ease: "easeOut"  } }}
             className="group"
         >
-            <Card className="relative h-full overflow-hidden transition-all duration-500 border-2 shadow-2xl bg-gray-800/30 backdrop-blur-xl border-slate-600/30 rounded-2xl hover:shadow-blue-500/30 group-hover:border-blue-400/50 group-hover:bg-gray-700/40">
+            <Card className="relative min-h-full overflow-hidden transition-all duration-500 border-2 shadow-2xl bg-gray-800/30 backdrop-blur-xl border-slate-600/30 rounded-2xl hover:shadow-blue-500/30 group-hover:border-blue-400/50 group-hover:bg-gray-700/40">
                 {/* Enhanced holographic effects */}
 
                 <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-blue-400/10 via-cyan-400/5 to-purple-400/10 rounded-2xl group-hover:opacity-100" />
@@ -110,7 +110,7 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                                     alt={`Illustration for ${article.urlToImage}`}
                                     width={300}
                                     height={200}
-                                    className="object-cover w-full h-48 transition-transform duration-700 group-hover:scale-105"
+                                    className="object-cover w-full h-48 transition-transform duration-500 group-hover:scale-125"
                                     priority={true}
                                 />
                                 {/* Enhanced image overlay */}
@@ -129,7 +129,7 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                                 <div className='flex flex-row items-center'>
                                     <CalendarDays style={{ width: 18, height: 18 }} strokeWidth={1.5} className="text-blue-300" />
                                     <Separator orientation="vertical" className='mx-2 w-[1px] h-[12px] bg-slate-400/60' />
-                                    <p className='text-slate-200 xl:text-xs 2xl:text-sm font-medium'>{moment(article_date).format("DD MMMM YY")}</p>
+                                    <p className='text-slate-200 xl:text-xs 2xl:text-sm font-medium'>{moment(article_date).format("DD MMM YY")}</p>
                                 </div>
                             </motion.div>
 
@@ -167,7 +167,7 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
 
                 </CardHeader>
 
-                <CardContent className="relative z-10 space-y-2 h-">
+                <CardContent className="relative z-10 space-y-2 ">
                     <div className="overflow-hidden">
                         <CardTitle className="inline-block font-semibold text-slate-100 whitespace-nowrap group-hover:animate-marquee text-lg leading-tight">
                             {article.title}
@@ -178,8 +178,8 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                     </CardDescription>
                 </CardContent>
 
-                <CardFooter className="relative z-10">
-                    <div className="relatrive overflow-hidden">
+                <CardFooter className="relative z-10 w-full">
+                    <div className="relative  w-full">
                         {/* Enhanced action buttons */}
                         <div className="flex flex-row space-x-2 z-20">
                             <motion.div
@@ -187,8 +187,7 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <Button
-                                    variant="secondary"
-                                    className="p-3 bg-slate-800/60 backdrop-blur-md border border-slate-600/40 rounded-xl hover:bg-gradient-to-r hover:from-blue-500/30 hover:via-cyan-400/20 hover:to-blue-500/30 hover:border-blue-400/60 hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-300"
+                                    className="p-2 bg-slate-800/60 backdrop-blur-md border border-slate-600/40 rounded-xl hover:bg-gradient-to-r hover:from-blue-500/30 hover:via-cyan-400/20 hover:to-blue-500/30 hover:border-blue-400/60 hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-300"
                                     onClick={handleFavorite}>
                                     <div className='flex items-center justify-center'>
                                         {favourites.length > 0 && favorite ?
@@ -206,8 +205,8 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                                     whileTap={{ scale: 0.95 }}
                                 >
                                     <Button
-                                        variant="secondary"
-                                        className="p-3 bg-slate-800/60 backdrop-blur-md border border-slate-600/40 rounded-xl hover:bg-gradient-to-r hover:from-red-500/30 hover:via-red-400/20 hover:to-red-500/30 hover:border-red-400/60 hover:shadow-lg hover:shadow-red-500/40 transition-all duration-300"
+
+                                        className="p-2 bg-slate-800/60 backdrop-blur-md border border-slate-600/40 rounded-xl hover:bg-gradient-to-r hover:from-red-500/30 hover:via-red-400/20 hover:to-red-500/30 hover:border-red-400/60 hover:shadow-lg hover:shadow-red-500/40 transition-all duration-300"
                                         onClick={handleDelete}>
                                         <div className='flex items-center justify-center'>
                                             <X style={{ width: 18, height: 18 }} strokeWidth={2} className="text-slate-300 hover:text-red-400 transition-colors duration-200" />
@@ -217,18 +216,20 @@ function NewsArticle({ article, showFavorites, showDelete, showAdd }:
                             )}
 
                             <motion.div
-                                whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.98 }}
                                 className="w-full"
                             >
                                 <Button
-                                    variant="secondary"
-                                    className="w-full p-4 bg-gradient-to-r from-blue-500/20 via-cyan-400/20 to-blue-500/20 backdrop-blur-md border border-blue-500/40 rounded-xl hover:from-blue-500/30 hover:via-cyan-400/30 hover:to-blue-500/30 hover:border-cyan-400/60 hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-300 text-slate-200 hover:text-white"
+                                    
+                                    className="relative w-full p-3 bg-slate-800/60 backdrop-blur-md border border-blue-500/40 rounded-xl overflow-hidden text-slate-200 transition-all duration-300 hover:border-cyan-400/60 hover:shadow-lg hover:shadow-blue-500/40 hover:text-white group/button"
                                     onClick={() => window.open(article.url)}
                                 >
-                                    <div className='flex items-center justify-center space-x-2'>
+                                    {/* Sliding background effect */}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/15 via-cyan-400/15 to-blue-500/15 transform -translate-x-full group-hover/button:translate-x-0 transition-transform duration-700 ease-out" />
+                                    
+                                    <div className='relative z-10 flex items-center justify-center space-x-2'>
                                         <p className='font-semibold'>Read More</p>
-                                        <ArrowRight strokeWidth={2.5} size={18} className="transition-transform group-hover:translate-x-1" />
+                                        <ArrowRight strokeWidth={2.5} size={18} className="transition-transform group-hover/button:translate-x-1 duration-300" />
                                     </div>
                                 </Button>
                             </motion.div>

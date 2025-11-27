@@ -1,5 +1,6 @@
 from sys import path
 import os
+from time import sleep
 from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import ARRAY
 
@@ -48,7 +49,8 @@ class topics(db.Model):
                 print(f"ERROR generating image with Replicate : {e}")
 
             images.append(img_url)
-        
+            sleep(60) # wait 1 minute to avoid rate limit
+         
         self.images = images
         
     

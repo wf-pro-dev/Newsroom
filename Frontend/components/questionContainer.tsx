@@ -437,7 +437,7 @@ function QuestionContainer({
                         (obj: Video | Article) => {
                             if (obj.type == "article") {
                                 return (
-                                    <div key={`article-${obj.id}`} className="bg-transparent">
+                                    <div key={`article-${obj.id}`} className="bg-transparent min-h-full">
                                         <NewsArticle
                                             article={obj as Article}
                                             showFavorites={showFavorites}

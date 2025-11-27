@@ -1,12 +1,13 @@
 import { Article, Favourite, Video } from "@/utils/types";
-import { HeartOff, X } from "lucide-react";
+import { HeartOff, X, Heart, Play } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import YouTube from "react-youtube"
 import { Button } from "../ui/button";
-import { Heart } from "lucide-react";
 import Image from "next/image";
 import { addFavourite, deleteFavouritebyId, hideContent } from "@/utils/api";
 import { useGlobalState } from "../../src/contexts/GlobalStateContext";
+import { motion } from 'framer-motion';
+import { Separator } from '@radix-ui/react-separator';
 
 import "@/styles/newsmain.css"
 import { mixArray } from "@/lib/utils";
@@ -184,18 +185,31 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
     }
 
     const LoadingState = () => (
-        <div className="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full gap-2 bg-stone-800">
-            <div className="w-full h-full I">
+        <div className="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full gap-2 bg-gray-800/30 backdrop-blur-xl rounded-2xl overflow-hidden">
+            <div className="w-full h-full relative">
                 <Image
                     src={video.thumbnail}
                     alt="Video thumbnail"
                     layout="fill"
                     objectFit="cover"
-
+                    className="transition-transform duration-500 group-hover:scale-125"
                 />
+                {/* Enhanced image overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-transparent to-cyan-500/20" />
             </div>
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 animate-pulse">
-                <p className="text-white">Loading Video...</p>
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+                    className="flex flex-col items-center space-y-3"
+                >
+                    <div className="p-4 bg-blue-500/20 backdrop-blur-md border border-blue-400/30 rounded-full">
+                        <Play className="w-8 h-8 text-blue-300" strokeWidth={1.5} />
+                    </div>
+                    <p className="text-slate-200 font-medium">Loading Video...</p>
+                </motion.div>
             </div>
         </div>
     );
@@ -261,50 +275,117 @@ function NewsVideo({ video, showFavorites, showAdd, showDelete }: NewsVideoProps
     }
 
     if (!isMounted) return null;
+    
     return (
-        <div ref={containerRef} className={`${isDeleting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} w-full h-full border border-gray-700 rounded-md overflow-hidden relative transition-all duration-300 ease-in-out hover:border-blue-500/30`}>
-            
-            {!isFullyLoaded && <LoadingState />}
+        <motion.div
+            ref={containerRef}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isDeleting ? 0 : 1, y: 0, scale: isDeleting ? 0.95 : 1 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3, ease: "easeOut" } }}
+            className="group w-full h-full"
+        >
+            <div className="relative min-h-full overflow-hidden transition-all duration-500 border-2 shadow-2xl bg-gray-800/30 backdrop-blur-xl border-slate-600/30 rounded-2xl hover:shadow-blue-500/30 group-hover:border-blue-400/50 group-hover:bg-gray-700/40">
+                {/* Enhanced holographic effects */}
+                <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-blue-400/10 via-cyan-400/5 to-purple-400/10 rounded-2xl group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 via-transparent to-white/5 rounded-2xl" />
+                
+                {!isFullyLoaded && <LoadingState />}
 
-            {dimensions.width > 0 && dimensions.height > 0 && (
-                <YouTube
-                    videoId={video.youtube_id}
-                    opts={opts}
-                    onReady={onReady}
-                    onStateChange={onStateChange}
-                    onError={onError}
-                    className={`${isFullyLoaded ? 'opacity-100' : 'opacity-0'}`}
-                    style={{ transition: 'opacity 0.3s ease-in-out' }}
-                />
-            )}
+                {dimensions.width > 0 && dimensions.height > 0 && (
+                    <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                        <YouTube
+                            videoId={video.youtube_id}
+                            opts={opts}
+                            onReady={onReady}
+                            onStateChange={onStateChange}
+                            onError={onError}
+                            className={`${isFullyLoaded ? 'opacity-100' : 'opacity-0'} w-full h-full`}
+                            style={{ transition: 'opacity 0.3s ease-in-out' }}
+                        />
+                        
+                        {/* Video overlay information */}
+                        {isFullyLoaded && (
+                            <>
+                                {/* Top overlay with metadata */}
+                                <div className="absolute flex flex-row justify-between top-3 left-3 right-3 z-30">
+                                    <motion.div
+                                        className='p-2 rounded-lg bg-slate-800/60 backdrop-blur-md border border-slate-600/40'
+                                        whileHover={{ scale: 1.05 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <div className='flex flex-row items-center'>
+                                            <Play style={{ width: 18, height: 18 }} strokeWidth={1.5} className="text-blue-300" />
+                                            <Separator orientation="vertical" className='mx-2 w-[1px] h-[12px] bg-slate-400/60' />
+                                            <p className='text-slate-200 xl:text-xs 2xl:text-sm font-medium'>
+                                                Video
+                                            </p>
+                                        </div>
+                                    </motion.div>
 
-            {isFullyLoaded && (
-                <div className="absolute right-0 z-50 grid grid-cols-1 gap-2 p-2.5 pr-2 transition-all duration-300 ease-in-out transform -translate-y-1/2 border border-gray-700 rounded-l-2xl bg-gray-800/50 backdrop-blur-md top-1/2 translate-x-11 hover:translate-x-0">
-                    <Button
-                        variant="secondary"
-                        className={`button`}
-                        onClick={handleFavorite}>
-                        <div className='button-content'>
-                            {favourites.length > 0 && favorite ?
-                                <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} />
-                                :
-                                <Heart style={{ width: 18, height: 18 }} strokeWidth={2} />
-                            }
-                        </div>
-                    </Button>
-                    {!showFavorites && (
-                        <Button
-                            variant="secondary"
-                            className={`button`}                            
-                            onClick={handleDelete}>
-                            <div className='button-content'>
-                                <X style={{ width: 18, height: 18 }} strokeWidth={2} />
-                            </div>
-                        </Button>
-                    )}
-                </div>
-            )}
-        </div>
+                                    <motion.div
+                                        className='p-2 rounded-lg bg-slate-800/60 backdrop-blur-md border border-slate-600/40'
+                                        whileHover={{ scale: 1.05 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <p className='text-blue-300 xl:text-xs 2xl:text-sm font-medium'>YouTube</p>
+                                    </motion.div>
+                                </div>
+
+                                {/* Bottom overlay with score */}
+                                <div className="absolute flex flex-row justify-between bottom-3 left-3 right-3 z-30">
+                                    <motion.div
+                                        className='p-2 rounded-lg bg-slate-800/60 backdrop-blur-md border border-slate-600/40'
+                                        whileHover={{ scale: 1.05 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <p className='text-cyan-300 xl:text-xs 2xl:text-sm font-semibold'>Video #{video.id}</p>
+                                    </motion.div>
+                                </div>
+
+                                {/* Enhanced action buttons */}
+                                <div className="absolute right-3 z-50 flex flex-col gap-2 transition-all duration-300 ease-in-out transform -translate-y-1/2 top-1/2 translate-x-16 group-hover:translate-x-0">
+                                    <motion.div
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <Button
+                                            className="p-2 bg-slate-800/60 backdrop-blur-md border border-slate-600/40 rounded-xl hover:bg-gradient-to-r hover:from-blue-500/30 hover:via-cyan-400/20 hover:to-blue-500/30 hover:border-blue-400/60 hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-300"
+                                            onClick={handleFavorite}>
+                                            <div className='flex items-center justify-center'>
+                                                {favourites.length > 0 && favorite ?
+                                                    <HeartOff style={{ width: 18, height: 18 }} strokeWidth={2} className="text-red-400" />
+                                                    :
+                                                    <Heart style={{ width: 18, height: 18 }} strokeWidth={2} className="text-slate-300 hover:text-red-400 transition-colors duration-200" />
+                                                }
+                                            </div>
+                                        </Button>
+                                    </motion.div>
+                                    
+                                    {!showFavorites && (
+                                        <motion.div
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <Button
+                                                className="p-2 bg-slate-800/60 backdrop-blur-md border border-slate-600/40 rounded-xl hover:bg-gradient-to-r hover:from-red-500/30 hover:via-red-400/20 hover:to-red-500/30 hover:border-red-400/60 hover:shadow-lg hover:shadow-red-500/40 transition-all duration-300"
+                                                onClick={handleDelete}>
+                                                <div className='flex items-center justify-center'>
+                                                    <X style={{ width: 18, height: 18 }} strokeWidth={2} className="text-slate-300 hover:text-red-400 transition-colors duration-200" />
+                                                </div>
+                                            </Button>
+                                        </motion.div>
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </div>
+                )}
+
+                {/* Subtle corner accent */}
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-400/20 via-transparent to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
+        </motion.div>
     );
 }
 
